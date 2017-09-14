@@ -1,34 +1,73 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-import Mushroom from '../sprites/Mushroom'
+import Player from '../sprites/Player'
+import Ground from '../sprites/Ground'
+import Config from '../config'
 
 export default class extends Phaser.State {
-  init () {}
-  preload () {}
+  init () {
+    this.gameSpeed = 3
 
-  create () {
-    const bannerText = 'Phaser + ES6 + Webpack'
-    let banner = this.add.text(this.world.centerX, this.game.height - 80, bannerText)
-    banner.font = 'Bangers'
-    banner.padding.set(10, 16)
-    banner.fontSize = 40
-    banner.fill = '#77BFA3'
-    banner.smoothed = false
-    banner.anchor.setTo(0.5)
+    this.game.physics.startSystem(Phaser.Physics.ARCADE)
+    this.game.physics.arcade.gravity.y = 2000
 
-    this.mushroom = new Mushroom({
+    this.player = new Player({
       game: this.game,
-      x: this.world.centerX,
-      y: this.world.centerY,
-      asset: 'mushroom'
+      x: 240,
+      y: 100,
+      asset: 'player'
     })
 
-    this.game.add.existing(this.mushroom)
+    this.grounds = this.game.add.group()
   }
 
-  render () {
-    if (__DEV__) {
-      this.game.debug.spriteInfo(this.mushroom, 32, 32)
+  preload () {
+    this.game.physics.arcade.enable(this.player)
+    this.game.physics.arcade.enable(this.grounds)
+
+    this.player.body.collideWorldBounds = true
+    this.game.add.existing(this.player)
+  }
+
+  create () {
+    this.nextGap()
+    this.nextGround()
+  }
+
+  update () {
+    for (var i = 0; i < this.grounds.length; i++) {
+      if (this.game.physics.arcade.collide(this.player, this.grounds[i])) {
+        console.log('collided')
+      }
+    }
+
+    this.grounds.forEachAlive(this.updateGround, this)
+
+    let lastGround = this.grounds.getAt(this.grounds.children.length - 1)
+    if ((this.game.world.bounds.right - lastGround.right) > this.lastGap) {
+      this.nextGround()
+      this.nextGap()
+    }
+  }
+
+  nextGap () {
+    this.lastGap = Config.tileSize * this.game.rnd.integerInRange(Config.gaps.width.min, Config.gaps.width.max)
+  }
+
+  nextGround () {
+    let diff = Config.grounds.dropHeight * this.game.rnd.integerInRange(1, 10)
+
+    this.grounds.add(new Ground({
+      game: this.game,
+      x: this.game.world.width,
+      y: this.game.world.height - diff,
+      speed: -100 * this.gameSpeed
+    }))
+  }
+
+  updateGround (ground) {
+    if (ground.right < this.world.bounds.left) {
+      this.grounds.remove(ground, true)
     }
   }
 }
