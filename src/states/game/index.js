@@ -36,7 +36,8 @@ export default class extends Phaser.State {
   }
 
   create () {
-    //
+    this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+    this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ])
   }
 
   update () {
@@ -46,6 +47,10 @@ export default class extends Phaser.State {
 
     if (this.isGameOver()) {
       this.gameOver()
+    }
+
+    if (this.spaceKey.isDown) {
+      this.player.body.velocity.y = -600
     }
   }
 
