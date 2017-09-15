@@ -1,31 +1,21 @@
 import Phaser from 'phaser'
 import Config from '../config'
 
-export default class extends Phaser.Group {
+export default class extends Phaser.TileSprite {
   constructor ({ game, x, y, speed = 0 }) {
-    super(game)
+    let tiles = Math.random() * (Config.grounds.width.min + Config.grounds.width.max) + Config.grounds.width.min
+    let width = tiles * Config.tileSize
+    let height = Config.grounds.height * Config.tileSize
 
-    let groundLength = this.game.rnd.integerInRange(Config.grounds.width.min, Config.grounds.width.max)
-    for (var i = 0; i < groundLength; i++) {
-      let child = new Phaser.Sprite(game, Config.tileSize * i, 0, 'ground')
-      this.disableGravity(child)
-      this.addChild(child)
-    }
+    super(game, x, y, width, height, 'ground', 0)
 
-    this.enableBody = true
-    this.left = x
-    this.bottom = y
-    this.speed = speed
     this.game.physics.arcade.enable(this)
-  }
-
-  disableGravity (obj) {
-    this.game.physics.arcade.enable(obj)
-    obj.body.allowGravity = false
-    obj.body.immovable = true
+    this.body.allowGravity = false
+    this.body.immovable = true
+    this.speed = speed
   }
 
   set speed (value) {
-    this.setAll('body.velocity.x', value)
+    this.body.velocity.x = value
   }
 }

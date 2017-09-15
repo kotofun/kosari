@@ -4,11 +4,11 @@ export default {
   localStorageName: 'phaseres6webpack',
   tileSize: 32,
   grounds: {
+    height: 4,
     width: {
       min: 3,
       max: 10
-    },
-    dropHeight: 10
+    }
   },
   gaps: {
     width: {

@@ -6,11 +6,6 @@ import Config from '../config'
 
 export default class extends Phaser.State {
   init () {
-    this.gameSpeed = 3
-
-    this.game.physics.startSystem(Phaser.Physics.ARCADE)
-    this.game.physics.arcade.gravity.y = 2000
-
     this.player = new Player({
       game: this.game,
       x: 240,
@@ -22,6 +17,11 @@ export default class extends Phaser.State {
   }
 
   preload () {
+    this.gameSpeed = 3
+
+    this.game.physics.startSystem(Phaser.Physics.ARCADE)
+    this.game.physics.arcade.gravity.y = 2000
+
     this.game.physics.arcade.enable(this.player)
     this.game.physics.arcade.enable(this.grounds)
 
@@ -35,18 +35,17 @@ export default class extends Phaser.State {
   }
 
   update () {
-    for (var i = 0; i < this.grounds.length; i++) {
-      if (this.game.physics.arcade.collide(this.player, this.grounds[i])) {
-        console.log('collided')
-      }
-    }
-
+    this.game.physics.arcade.collide(this.player, this.grounds)
     this.grounds.forEachAlive(this.updateGround, this)
 
     let lastGround = this.grounds.getAt(this.grounds.children.length - 1)
     if ((this.game.world.bounds.right - lastGround.right) > this.lastGap) {
       this.nextGround()
       this.nextGap()
+    }
+
+    if (this.player.right < this.game.world.bounds.left) {
+      // end game
     }
   }
 
@@ -55,7 +54,7 @@ export default class extends Phaser.State {
   }
 
   nextGround () {
-    let diff = Config.grounds.dropHeight * this.game.rnd.integerInRange(1, 10)
+    let diff = this.game.rnd.integerInRange(1, Config.grounds.height) * Config.tileSize
 
     this.grounds.add(new Ground({
       game: this.game,
