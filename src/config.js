@@ -1,19 +1,25 @@
 export default {
-  gameWidth: 960,
-  gameHeight: 400,
+  gameWidth: 640,
+  gameHeight: 256,
   localStorageName: 'phaseres6webpack',
   tileSize: 32,
+  bg: {
+    color: '#5d5b6a'
+  },
   grounds: {
-    height: 4,
+    height: {
+      min: 1,
+      max: 3
+    },
     width: {
-      min: 3,
+      min: 2,
       max: 10
     }
   },
   gaps: {
     width: {
       min: 1,
-      max: 5
+      max: 4
     }
   }
 }
