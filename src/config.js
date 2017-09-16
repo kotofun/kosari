@@ -14,16 +14,6 @@ export default {
     height: {
       min: 1,
       max: 4
-    },
-    width: {
-      min: 2,
-      max: 10
-    }
-  },
-  gaps: {
-    width: {
-      min: 1,
-      max: 4
     }
   }
 }
