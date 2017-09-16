@@ -28,6 +28,8 @@ export default class extends Phaser.State {
   create () {
     this.Controller = new Controller(this)
 
+    // TODO: Remove this line after generating initial surface
+    // Now it helps not to drop out from the screen
     this.Player.body.collideWorldBounds = true
 
     this.Background.startAnimation()
