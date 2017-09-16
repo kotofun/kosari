@@ -2,56 +2,55 @@ import Config from '../../config'
 import Ground from '../../sprites/Ground'
 
 var ctx
-var game
-var grounds
 
 var lastGap = 0
 
-function nextGap () {
-  lastGap = Config.tileSize * ctx.game.rnd.integerInRange(Config.gaps.width.min, Config.gaps.width.max)
+function rnd (min, max) {
+  return Math.floor(Math.random() * (max - min) + min)
 }
 
-function nextGround () {
-  let ground = new Ground({ game })
-
-  grounds.add(ground)
-
-  ground.speed = -100
+function nextGapWidth () {
+  lastGap = Config.tileSize * rnd(Config.gaps.width.min, Config.gaps.width.max)
 }
 
-export default {
-  init (context) {
+function nextGround (game) {
+  return new Ground({ game })
+}
+
+export default class {
+  constructor (context) {
     ctx = context
-    game = ctx.game
+    this.game = context.game
 
-    if (undefined !== game.grounds) {
-      grounds = game.grounds
-    } else {
-      grounds = game.add.group()
-    }
+    this.land = this.game.add.group()
 
     this.next()
-
-    return grounds
-  },
+  }
 
   next () {
-    nextGap()
-    nextGround()
-  },
+    nextGapWidth()
+
+    let ground = nextGround(this.game)
+    ground.speed = -100
+    this.land.add(ground)
+  }
 
   update () {
-    grounds.forEachAlive(this.updateGround, this)
+    this.land.forEachAlive(this.updateGround, this)
 
-    let lastGround = grounds.getAt(grounds.children.length - 1)
-    if ((game.world.bounds.right - lastGround.right) > lastGap) {
+    let lastGround = this.land.getAt(this.land.children.length - 1)
+    if ((this.game.world.bounds.right - lastGround.right) > lastGap) {
       this.next()
     }
-  },
+  }
 
   updateGround (ground) {
-    if (ground.right < game.world.bounds.left) {
-      grounds.remove(ground, true)
+    if (ground.right < this.game.world.bounds.left) {
+      this.land.remove(ground, true)
     }
+  }
+
+  collide (obj) {
+    return this.game.physics.arcade.collide(obj, this.land)
   }
 }

@@ -14,7 +14,7 @@ export default class extends Phaser.State {
 
     this.player = new Player({ game: this.game, x: 240, y: 100, asset: 'player' })
 
-    this.land = Land.init(this)
+    this.land = new Land(this)
   }
 
   preload () {
@@ -35,9 +35,8 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.game.physics.arcade.collide(this.player, this.land)
-
-    Land.update()
+    this.land.collide(this.player)
+    this.land.update()
 
     if (this.isGameOver()) {
       this.gameOver()
