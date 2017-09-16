@@ -3,19 +3,11 @@ import Phaser from 'phaser'
 import Player from '../../sprites/Player'
 
 import Land from './Land'
+import Background from './Background'
 
 export default class extends Phaser.State {
   init () {
-    this.bg = {
-      forest: this.game.add.tileSprite(0, this.game.height - 192, this.game.width, 128, 'bg-forest'),
-      trees: this.game.add.tileSprite(0, this.game.height - 200, this.game.width, 169, 'bg-trees'),
-      grass: this.game.add.tileSprite(0, this.game.height - 94, this.game.width, 94, 'bg-grass'),
-      clouds: this.game.add.tileSprite(0, 0, this.game.width, 64, 'bg-clouds')
-    }
-    this.bg.forest.autoScroll(-25, 0)
-    this.bg.trees.autoScroll(-50, 0)
-    this.bg.grass.autoScroll(-75, 0)
-    this.bg.clouds.autoScroll(-100, 0)
+    this.background = new Background(this)
 
     this.distance = 0
 
@@ -38,6 +30,8 @@ export default class extends Phaser.State {
   create () {
     this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
     this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ])
+
+    this.background.startAnimation()
   }
 
   update () {
