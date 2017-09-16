@@ -6,10 +6,10 @@ export default {
   bg: {
     color: '#5d5b6a'
   },
-  grounds: {
+  ground: {
     height: {
       min: 1,
-      max: 3
+      max: 4
     },
     width: {
       min: 2,
