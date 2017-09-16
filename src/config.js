@@ -6,6 +6,9 @@ export default {
   bg: {
     color: '#5d5b6a'
   },
+  player: {
+    startPosition: { x: 240, y: 100 }
+  },
   ground: {
     height: {
       min: 1,

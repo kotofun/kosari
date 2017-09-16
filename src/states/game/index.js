@@ -8,12 +8,10 @@ import Controller from './Controller'
 
 export default class extends Phaser.State {
   init () {
+    this.speed = 100
+
     this.Background = new Background(this)
-
-    this.distance = 0
-
-    this.Player = new Player({ game: this.game, x: 240, y: 100, asset: 'player' })
-
+    this.Player = new Player(this)
     this.Surface = new Surface(this)
   }
 
@@ -48,10 +46,12 @@ export default class extends Phaser.State {
     }
   }
 
+  // TODO: check all game over events
   isGameOver () {
     return this.Player.right < this.game.world.bounds.left
   }
 
+  // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
     //
   }
