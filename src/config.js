@@ -7,7 +7,8 @@ export default {
     color: '#5d5b6a'
   },
   player: {
-    startPosition: { x: 240, y: 100 }
+    startPosition: { x: 240, y: 100 },
+    jumpSpeed: 600
   },
   ground: {
     height: {

@@ -1,12 +1,15 @@
 import Phaser from 'phaser'
+import Config from '../../config'
 
-var keys = {
+let jumpSpeed = Config.player.jumpSpeed
+
+let keys = {
   jump: Phaser.Keyboard.SPACEBAR,
   attack: Phaser.Keyboard.ENTER
 }
 
 // controller context
-var ctx
+let ctx
 
 export default class {
   constructor (context) {
@@ -23,5 +26,11 @@ export default class {
 
   isJumped () {
     return this.jumpKey.isDown
+  }
+
+  update () {
+    if (this.isJumped()) {
+      ctx.Player.body.velocity.y = -jumpSpeed
+    }
   }
 }

@@ -41,9 +41,7 @@ export default class extends Phaser.State {
       this.gameOver()
     }
 
-    if (this.Controller.isJumped()) {
-      this.Player.body.velocity.y = -600
-    }
+    this.Controller.update()
   }
 
   // TODO: check all game over events
