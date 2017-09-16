@@ -1,0 +1,16 @@
+{
+  "filename": "assets/images/surface.png",
+  "tileWidth": 32,
+  "tileHeight": 32,
+  "corners": {
+    "topLeft": [{ "x": 0, "y": 32, "w": 32, "h": 32 }],
+    "topRight": [{ "x": 64, "y": 32, "w": 32, "h": 32 }],
+    "bottomLeft": [{ "x": 0, "y": 64, "w": 32, "h": 32 }],
+    "bottomRight": [{ "x": 64, "y": 64, "w": 32, "h": 32 }]
+  },
+  "top": [{ "x":32, "y": 32, "w": 32, "h": 32 }],
+  "right": [{ "x": 64, "y": 64, "w": 32, "h": 32 }],
+  "bottom": [{ "x": 32, "y": 64, "w": 32, "h": 32 }],
+  "left": [{ "x": 0, "y": 64, "w": 32, "h": 32 }],
+  "middle": [{ "x": 32, "y": 64, "w": 32, "h": 32 }]
+}

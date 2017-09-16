@@ -56,8 +56,8 @@ export const generateSurfacePiceBitmap = (game, type, yCount, tileSet, alias) =>
 
   for (let y = 0; y < yCount; y++) {
     let rect = getArea(type, y)
-    let area = new Phaser.Rectangle(rect.x, rect.y, tileWidth, tileHeight)
-    bmd.copyRect(alias, area, 0, y * tileHeight)
+    let area = new Phaser.Rectangle(rect.x, rect.y, rect.w, rect.h)
+    bmd.copyRect(alias, area, 0, y * rect.h)
   }
 
   return bmd

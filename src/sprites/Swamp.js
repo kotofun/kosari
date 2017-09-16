@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import { generateSurfacePiceBitmap } from '../utils'
-import swampTileSet from '../../assets/images/land/swamp.json'
+import swampTileSet from '../../assets/images/swamp.json'
 
 export default class extends Phaser.Sprite {
   constructor ({ game, type, height = 1, speed = 0 }) {
-    let bmd = generateSurfacePiceBitmap(game, type, height, swampTileSet, 'land-swamp')
+    let bmd = generateSurfacePiceBitmap(game, type, height, swampTileSet, 'surface')
     let x = game.world.width
     let y = game.world.height - bmd.height
 

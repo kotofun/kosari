@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import { generateSurfacePiceBitmap } from '../utils'
-import groundTileSet from '../../assets/images/land/ground.json'
+import groundTileSet from '../../assets/images/ground.json'
 
 export default class extends Phaser.Sprite {
   constructor ({ game, type, height = 1, speed = 0 }) {
-    let bmd = generateSurfacePiceBitmap(game, type, height, groundTileSet, 'land-ground')
+    let bmd = generateSurfacePiceBitmap(game, type, height, groundTileSet, 'surface')
     let x = game.world.width
     let y = game.world.height - bmd.height
 
