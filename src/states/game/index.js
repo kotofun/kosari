@@ -4,6 +4,7 @@ import Player from '../../sprites/Player'
 
 import Land from './Land'
 import Background from './Background'
+import Controller from './Controller'
 
 export default class extends Phaser.State {
   init () {
@@ -28,8 +29,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-    this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ])
+    this.controller = new Controller(this)
 
     this.background.startAnimation()
   }
@@ -43,7 +43,7 @@ export default class extends Phaser.State {
       this.gameOver()
     }
 
-    if (this.spaceKey.isDown) {
+    if (this.controller.isJumped()) {
       this.player.body.velocity.y = -600
     }
   }
