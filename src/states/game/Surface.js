@@ -5,7 +5,7 @@ import Config from '../../config'
 import Ground from '../../sprites/Ground'
 import Swamp from '../../sprites/Swamp'
 
-var lastGap = 0
+var ctx
 
 var surfaceRoll = {
   prev: 'none',
@@ -21,8 +21,8 @@ var surfaceRoll = {
 
 var SurfaceTypes = { Swamp, Ground }
 
-function nextSurfaceType(current) {
-  return rnd(1, 10) > 3 ? 'Ground' : 'Swamp'
+function nextSurfaceType (current) {
+  return rnd(1, 10) > 2 ? 'Ground' : 'Swamp'
 }
 
 function nextSurfaceHeight (current, nextClass) {
@@ -60,6 +60,7 @@ function getSurfaceType () {
 
 export default class {
   constructor (context) {
+    ctx = context
     this.game = context.game
 
     this.surface = this.game.add.group()
@@ -68,11 +69,12 @@ export default class {
   }
 
   next () {
-    let type = getSurfaceType()
-    let piece = new SurfaceTypes[surfaceRoll.current.class]({ game: this.game, height: surfaceRoll.current.height, type })
-
-    piece.speed = -100
-    this.surface.add(piece)
+    this.surface.add(new SurfaceTypes[surfaceRoll.current.class]({
+      game: this.game,
+      height: surfaceRoll.current.height,
+      speed: -ctx.speed,
+      type: getSurfaceType()
+    }))
 
     updateSurfaceState()
   }
@@ -81,7 +83,7 @@ export default class {
     this.surface.forEachAlive(this.updateGround, this)
 
     let lastGround = this.surface.getAt(this.surface.children.length - 1)
-    if ((this.game.world.bounds.right - lastGround.right) >= lastGap - 3) {
+    if ((this.game.world.bounds.right - lastGround.right) >= -3) {
       this.next()
     }
   }
