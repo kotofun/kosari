@@ -1,25 +1,37 @@
-import Config from '../../config'
+import { rnd } from '../../utils'
 import Ground from '../../sprites/Ground'
-
-var ctx
+import Swamp from '../../sprites/Swamp'
 
 var lastGap = 0
 
-function rnd (min, max) {
-  return Math.floor(Math.random() * (max - min) + min)
+var surfaceRoll = {
+  prev: 'none',
+  current: 'Ground',
+  next: 'Ground'
 }
 
-function nextGapWidth () {
-  lastGap = Config.tileSize * rnd(Config.gaps.width.min, Config.gaps.width.max)
+var SurfaceTypes = { Swamp, Ground }
+
+function updateSurfaceState () {
+  surfaceRoll.prev = surfaceRoll.current
+  surfaceRoll.current = surfaceRoll.next
+  surfaceRoll.next = rnd(1, 10) > 3 ? 'Ground' : 'Swamp'
 }
 
-function nextGround (game) {
-  return new Ground({ game })
+function getSurfaceType () {
+  if (surfaceRoll.prev === surfaceRoll.current) {
+    if (surfaceRoll.current === surfaceRoll.next) {
+      return 'middle'
+    } else {
+      return 'right'
+    }
+  } else {
+    return 'left'
+  }
 }
 
 export default class {
   constructor (context) {
-    ctx = context
     this.game = context.game
 
     this.land = this.game.add.group()
@@ -28,18 +40,20 @@ export default class {
   }
 
   next () {
-    nextGapWidth()
+    let type = getSurfaceType()
+    let piece = new SurfaceTypes[surfaceRoll.current]({ game: this.game, type })
 
-    let ground = nextGround(this.game)
-    ground.speed = -100
-    this.land.add(ground)
+    piece.speed = -100
+    this.land.add(piece)
+
+    updateSurfaceState()
   }
 
   update () {
     this.land.forEachAlive(this.updateGround, this)
 
     let lastGround = this.land.getAt(this.land.children.length - 1)
-    if ((this.game.world.bounds.right - lastGround.right) > lastGap) {
+    if ((this.game.world.bounds.right - lastGround.right) >= lastGap - 3) {
       this.next()
     }
   }

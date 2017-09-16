@@ -1,0 +1,20 @@
+{
+  "filename": "assets/images/land/ground.png",
+  "x": 0,
+  "y": 0,
+  "width": 96,
+  "height": 64,
+  "tileWidth": 32,
+  "tileHeight": 32,
+  "corners": {
+    "topLeft": [{ "x": 0, "y": 0 }],
+    "topRight": [{ "x": 64, "y": 0 }],
+    "bottomLeft": [{ "x": 0, "y": 32 }],
+    "bottomRight": [{ "x": 64, "y": 32 }]
+  },
+  "top": [{ "x":32, "y": 0 }],
+  "right": [{ "x": 64, "y": 32 }],
+  "bottom": [{ "x": 32, "y": 32 }],
+  "left": [{ "x": 0, "y": 32 }],
+  "middle": [{ "x": 32, "y": 32 }]
+}
