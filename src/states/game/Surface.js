@@ -5,6 +5,10 @@ import Config from '../../config'
 import Ground from '../../sprites/Ground'
 import Swamp from '../../sprites/Swamp'
 
+// TODO: add generation:
+//    - grass
+//    - tombstone
+
 var ctx
 
 var surfaceRoll = {
