@@ -10,7 +10,6 @@ export default class extends Phaser.Sprite {
 
     super(game, x, y, bmd, 0)
 
-    this.debug = true
     this.game.physics.arcade.enable(this)
     this.body.allowGravity = false
     this.body.immovable = true
