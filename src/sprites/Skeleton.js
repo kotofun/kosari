@@ -1,6 +1,9 @@
-import Phaser from 'phaser'
+import DisplayCharacter from '../components/DisplayCharacter'
 
 // TODO: create Skeleton sprite
 
-export default class extends Phaser.Sprite {
+export default class extends DisplayCharacter {
+  constructor (ctx, x, y) {
+    super(ctx, x, y, 'character.skeleton')
+  }
 }

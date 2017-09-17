@@ -6,6 +6,8 @@ import Surface from './Surface'
 import Background from './Background'
 import Controller from './Controller'
 
+import Skeleton from '../../sprites/Skeleton'
+
 export default class extends Phaser.State {
   init () {
     this.speed = 100
@@ -16,6 +18,8 @@ export default class extends Phaser.State {
     ])
     this.Player = new Player(this)
     this.Surface = new Surface(this)
+    this.characters = []
+    this.characters.push(new Skeleton(this, this.game.width - 64, -64))
   }
 
   preload () {
@@ -24,8 +28,10 @@ export default class extends Phaser.State {
 
     this.game.physics.arcade.enable(this.Player)
     this.game.physics.arcade.enable(this.Surface)
+    this.game.physics.arcade.enable(this.characters)
 
     this.game.add.existing(this.Player)
+    this.game.add.existing(this.characters[0])
   }
 
   create () {
@@ -40,6 +46,7 @@ export default class extends Phaser.State {
 
   update () {
     this.Surface.collide(this.Player)
+    this.Surface.collide(this.characters)
     this.Surface.update()
 
     if (this.isGameOver()) {
