@@ -1,10 +1,13 @@
 import Phaser from 'phaser'
 import WebFont from 'webfontloader'
-import Config from '../config'
+import config from '../config'
 
 export default class extends Phaser.State {
   init () {
-    this.stage.backgroundColor = Config.bg.color
+    Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
+
+    this.stage.backgroundColor = config.bg.color
     this.fontsReady = false
     this.fontsLoaded = this.fontsLoaded.bind(this)
   }
