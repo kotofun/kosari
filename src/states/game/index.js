@@ -10,7 +10,10 @@ export default class extends Phaser.State {
   init () {
     this.speed = 100
 
-    this.Background = new Background(this)
+    this.Background = new Background(this, [
+      this.game.add.tileSprite(0, this.game.height - 256, this.game.width, 256, 'bg.layer2'),
+      this.game.add.tileSprite(0, this.game.height - 96, this.game.width, 96, 'bg.layer1')
+    ])
     this.Player = new Player(this)
     this.Surface = new Surface(this)
   }

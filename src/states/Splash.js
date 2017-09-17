@@ -15,10 +15,8 @@ export default class extends Phaser.State {
     //
     this.load.image('player', 'assets/images/player.png')
     this.load.image('surface', 'assets/images/surface.png')
-    this.load.image('bg-grass', 'assets/images/bg/grass.png')
-    this.load.image('bg-clouds', 'assets/images/bg/clouds.png')
-    this.load.image('bg-forest', 'assets/images/bg/forest.png')
-    this.load.image('bg-trees', 'assets/images/bg/trees.png')
+    this.load.image('bg.layer1', 'assets/images/bg/layer1.png')
+    this.load.image('bg.layer2', 'assets/images/bg/layer2.png')
   }
 
   create () {
