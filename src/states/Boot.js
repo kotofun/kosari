@@ -28,6 +28,11 @@ export default class extends Phaser.State {
     this.load.image('loaderBar', './assets/images/loader-bar.png')
   }
 
+  create () {
+    this.game.physics.startSystem(Phaser.Physics.ARCADE)
+    this.game.physics.arcade.gravity.y = config.gravity.y
+  }
+
   render () {
     if (this.fontsReady) {
       this.state.start('Splash')

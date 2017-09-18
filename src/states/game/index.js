@@ -23,9 +23,6 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE)
-    this.game.physics.arcade.gravity.y = 2000
-
     this.game.physics.arcade.enable(this.Player)
     this.game.physics.arcade.enable(this.Surface)
     this.game.physics.arcade.enable(this.characters)

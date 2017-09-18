@@ -3,6 +3,7 @@ export default {
   gameHeight: 256,
   localStorageName: 'phaseres6webpack',
   tileSize: 32,
+  gravity: { y: 2000 },
   bg: {
     color: '#5d5b6a'
   },
