@@ -23,7 +23,6 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.physics.arcade.enable(this.Player)
     this.game.physics.arcade.enable(this.Surface)
     this.game.physics.arcade.enable(this.characters)
 

@@ -13,6 +13,8 @@ export default class extends Phaser.Sprite {
 
     this.startPosition = { x: this.x, y: this.y }
     this.force = { x: 0, y: 0 }
+    this.game.physics.enable(this)
+    this.body.setSize(20, 56, this.width - 20, 0)
   }
 
   update () {
