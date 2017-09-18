@@ -7,7 +7,6 @@ export default class extends Phaser.State {
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE
     this.game.scale.setUserScale(this.game.scaleFactor, this.game.scaleFactor)
-    this.game.scale.forceOrientation(true)
 
     this.stage.backgroundColor = config.bg.color
     this.fontsReady = false
