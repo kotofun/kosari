@@ -1,6 +1,6 @@
 import { rnd } from '../../utils'
 
-import Config from '../../config'
+import config from '../../config'
 
 import Ground from '../../sprites/Ground'
 import Swamp from '../../sprites/Swamp'
@@ -12,7 +12,10 @@ import Swamp from '../../sprites/Swamp'
 var ctx
 
 var surfaceRoll = {
-  prev: 'none',
+  prev: {
+    class: 'Ground',
+    height: 1
+  },
   current: {
     class: 'Ground',
     height: 1
@@ -33,7 +36,7 @@ function nextSurfaceHeight (current, nextClass) {
   if (current.class === nextClass) {
     return current.height
   } else if (nextClass === 'Ground') {
-    return rnd(Config.ground.height.min, Config.ground.height.max)
+    return rnd(config.ground.height.min, config.ground.height.max)
   } else {
     return 1
   }
@@ -68,6 +71,22 @@ export default class {
     this.game = context.game
 
     this.surface = this.game.add.group()
+
+    this._init()
+  }
+
+  _init () {
+    const width = this.game.width
+    const tilesCount = Math.ceil(width / config.tileSize) + 1
+
+    for (let i = 0; i < tilesCount; i++) {
+      this.surface.add(new Ground({
+        game: this.game,
+        speed: -ctx.speed,
+        type: 'middle',
+        x: config.tileSize * i
+      }))
+    }
 
     this.next()
   }
