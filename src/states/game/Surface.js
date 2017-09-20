@@ -5,6 +5,8 @@ import config from '../../config'
 import Ground from '../../sprites/Ground'
 import Swamp from '../../sprites/Swamp'
 
+import Grass from '../../sprites/Grass'
+
 // TODO: add generation:
 //    - grass
 //    - tombstone
@@ -71,6 +73,7 @@ export default class {
     this.game = context.game
 
     this.surface = this.game.add.group()
+    this.objects = this.game.add.group()
 
     this._init()
   }
@@ -80,30 +83,50 @@ export default class {
     const tilesCount = Math.ceil(width / config.tileSize) + 1
 
     for (let i = 0; i < tilesCount; i++) {
-      this.surface.add(new Ground({
+      const ground = new Ground({
         game: this.game,
         speed: -ctx.speed,
         type: 'middle',
         x: config.tileSize * i
-      }))
+      })
+      this.surface.add(ground)
+
+      const grass = new Grass({
+        game: this.game,
+        x: config.tileSize * i,
+        y: ground.y - config.tileSize,
+        speed: -ctx.speed
+      })
+      this.objects.add(grass)
     }
 
     this.next()
   }
 
   next () {
-    this.surface.add(new SurfaceTypes[surfaceRoll.current.class]({
+    const surfaceObj = new SurfaceTypes[surfaceRoll.current.class]({
       game: this.game,
       height: surfaceRoll.current.height,
       speed: -ctx.speed,
       type: getSurfaceType()
-    }))
+    })
+    this.surface.add(surfaceObj)
+
+    if (surfaceRoll.current.class === 'Ground') {
+      this.objects.add(new Grass({
+        game: this.game,
+        x: this.game.world.width,
+        y: surfaceObj.y - config.tileSize,
+        speed: -ctx.speed
+      }))
+    }
 
     updateSurfaceState()
   }
 
   update () {
-    this.surface.forEachAlive(this.updateGround, this)
+    this.surface.forEachAlive(this.updateTile, this)
+    this.objects.forEachAlive(this.updateTile, this)
 
     let lastGround = this.surface.getAt(this.surface.children.length - 1)
     if ((this.game.world.bounds.right - lastGround.right) >= -3) {
@@ -111,9 +134,9 @@ export default class {
     }
   }
 
-  updateGround (ground) {
-    if (ground.right < this.game.world.bounds.left) {
-      this.surface.remove(ground, true)
+  updateTile (tile) {
+    if (tile.right < this.game.world.bounds.left) {
+      tile.parent.remove(tile, true)
     }
   }
 
