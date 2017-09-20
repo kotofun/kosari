@@ -1,5 +1,8 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
+
+import config from '../../config'
+
 import Player from '../../sprites/Player'
 
 import Surface from './Surface'
@@ -10,7 +13,7 @@ import Skeleton from '../../sprites/Skeleton'
 
 export default class extends Phaser.State {
   init () {
-    this.speed = 100
+    this.speed = config.initialSpeed
 
     this.Background = new Background(this, [
       this.game.add.tileSprite(0, this.game.height - 256, this.game.width, 256, 'bg.layer2'),
