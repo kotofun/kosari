@@ -23,11 +23,12 @@ export default class extends Phaser.Sprite {
 
   // TODO: Check acceleration math
   run () {
-    let deltaX = this.position.x - startPosition.x
+    const deltaX = this.position.x - startPosition.x
     let accelerationX = (-deltaX / (startPosition.x / 2))
+    accelerationX = Math.trunc(accelerationX) + ((accelerationX * 10) % 5 > 0 ? 5 : 0) / 10
 
     if (Math.abs(deltaX) > 1) {
-      this.body.velocity.x = ctx.speed * accelerationX
+      this.body.velocity.x = Math.ceil(ctx.speed * accelerationX)
       if (this.isOnSurface()) {
         this.body.velocity.x = ctx.speed * (1 + accelerationX)
       }
