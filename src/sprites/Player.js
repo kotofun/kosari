@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
-import Config from '../config'
+import config from '../config'
 
 var ctx
 
-var startPosition = Config.player.startPosition
+var startPosition = config.player.startPosition
 
 export default class extends Phaser.Sprite {
   constructor (context) {
@@ -38,5 +38,9 @@ export default class extends Phaser.Sprite {
   // this method should return Player position relatively to surface
   isOnSurface () {
     return this.body.touching.down
+  }
+
+  jump () {
+    this.body.velocity.y = -config.player.jumpSpeed.y
   }
 }

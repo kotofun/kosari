@@ -9,7 +9,7 @@ export default {
   },
   player: {
     startPosition: { x: 150, y: 100 },
-    jumpSpeed: 600
+    jumpSpeed: { x: 0, y: 600 }
   },
   ground: {
     height: {

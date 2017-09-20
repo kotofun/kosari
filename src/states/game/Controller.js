@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-import Config from '../../config'
+import config from '../../config'
 
-let jumpSpeed = Config.player.jumpSpeed
+let jumpSpeed = config.player.jumpSpeed
 
 let keys = {
   jump: Phaser.Keyboard.SPACEBAR,
@@ -29,8 +29,8 @@ export default class {
   }
 
   update () {
-    if (this.isJumped() && (ctx.Player.body.touching.down)) {
-      ctx.Player.body.velocity.y = -jumpSpeed
+    if (this.isJumped() && (ctx.Player.isOnSurface())) {
+      ctx.Player.jump()
     }
   }
 }
