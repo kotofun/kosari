@@ -2,6 +2,9 @@ import Phaser from 'phaser'
 import Config from '../../config'
 
 let jumpSpeed = Config.player.jumpSpeed
+// TODO: Remove after surface generating
+// Now it helps to jump on the surface from worldBounds
+let first = true
 
 let keys = {
   jump: Phaser.Keyboard.SPACEBAR,
@@ -29,8 +32,9 @@ export default class {
   }
 
   update () {
-    if (this.isJumped()) {
+    if (this.isJumped() && (ctx.Player.body.touching.down || first)) {
       ctx.Player.body.velocity.y = -jumpSpeed
+      first = false
     }
   }
 }

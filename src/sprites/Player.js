@@ -39,6 +39,6 @@ export default class extends Phaser.Sprite {
   // Player is moving backwards when is on the moving surface, so
   // this method should return Player position relatively to surface
   isOnSurface () {
-    return true
+    return this.body.touching.down ? true : false
   }
 }
