@@ -58,6 +58,15 @@ export default class extends Phaser.State {
 
   // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
-    //
+    this.game.paused = true
+
+    const bannerText = 'Game Over'
+    let banner = this.add.text(this.world.centerX, this.world.height / 2 - 20, bannerText)
+    banner.font = 'Bangers'
+    banner.padding.set(10, 16)
+    banner.fontSize = 40
+    banner.fill = '#8A0707'
+    banner.smoothed = false
+    banner.anchor.setTo(0.5)
   }
 }
