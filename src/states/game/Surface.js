@@ -25,8 +25,9 @@ var surfaceRoll = {
   }
 }
 
+// logic for generation next surface
 function nextSurfaceType (current) {
-  return rnd(1, 10) > 2 ? 'Ground' : 'Swamp'
+  return 'Ground'
 }
 
 function nextSurfaceHeight (current, nextClass) {
