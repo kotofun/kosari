@@ -1,8 +1,8 @@
-import Phaser from 'phaser'
 import { generateSurfacePiceBitmap } from '../utils'
 import groundTileSet from '../../assets/images/ground.json'
+import Surface from './Surface'
 
-export default class extends Phaser.Sprite {
+export default class extends Surface {
   constructor ({ game, type, height = 1, speed = 0, x = null, y = null }) {
     let bmd = generateSurfacePiceBitmap(game, type, height, groundTileSet, 'surface')
 
@@ -11,13 +11,6 @@ export default class extends Phaser.Sprite {
 
     super(game, _x, _y, bmd, 0)
 
-    this.game.physics.arcade.enable(this)
-    this.body.allowGravity = false
-    this.body.immovable = true
     this.speed = speed
-  }
-
-  set speed (value) {
-    this.body.velocity.x = value
   }
 }
