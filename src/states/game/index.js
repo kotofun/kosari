@@ -30,8 +30,6 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.physics.arcade.enable(this.Surface)
-
     this.game.add.existing(this.Player)
     this.characters.map(char => { this.game.add.existing(char) })
   }

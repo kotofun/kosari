@@ -72,6 +72,8 @@ export default class {
     ctx = context
     this.game = context.game
 
+    this.game.physics.arcade.enable(this)
+
     this.surface = this.game.add.group()
     this.objects = this.game.add.group()
 
