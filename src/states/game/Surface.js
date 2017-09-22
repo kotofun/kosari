@@ -2,10 +2,7 @@ import { rnd } from '../../utils'
 
 import config from '../../config'
 
-import Ground from '../../sprites/Ground'
-import Swamp from '../../sprites/Swamp'
-
-import Grass from '../../sprites/Grass'
+import SurfaceFactory from '../../components/SurfaceFactory'
 
 // TODO: add generation:
 //    - grass
@@ -27,8 +24,6 @@ var surfaceRoll = {
     height: 1
   }
 }
-
-var SurfaceTypes = { Swamp, Ground }
 
 function nextSurfaceType (current) {
   return rnd(1, 10) > 2 ? 'Ground' : 'Swamp'
@@ -77,51 +72,32 @@ export default class {
     this.surface = this.game.add.group()
     this.objects = this.game.add.group()
 
+    this.factory = new SurfaceFactory(ctx)
+
     this._init()
   }
 
   _init () {
-    const width = this.game.width
-    const tilesCount = Math.ceil(width / config.tileSize) + 1
-
-    for (let i = 0; i < tilesCount; i++) {
-      const ground = new Ground({
-        game: this.game,
-        speed: -ctx.speed,
-        type: 'middle',
-        x: config.tileSize * i
-      })
-      this.surface.add(ground)
-
-      const grass = new Grass({
-        game: this.game,
-        x: config.tileSize * i,
-        y: ground.y - config.tileSize,
-        speed: -ctx.speed
-      })
-      this.objects.add(grass)
-    }
+    this.factory.make({
+      cls: 'Ground',
+      type: 'middle',
+      count: Math.ceil(this.game.width / config.tileSize) + 1,
+      x: 0
+    }).map(obj => {
+      this.surface.add(obj)
+    })
 
     this.next()
   }
 
   next () {
-    const surfaceObj = new SurfaceTypes[surfaceRoll.current.class]({
-      game: this.game,
+    this.factory.make({
+      cls: surfaceRoll.current.class,
       height: surfaceRoll.current.height,
-      speed: -ctx.speed,
       type: getSurfaceType()
+    }).map(obj => {
+      this.surface.add(obj)
     })
-    this.surface.add(surfaceObj)
-
-    if (surfaceRoll.current.class === 'Ground') {
-      this.objects.add(new Grass({
-        game: this.game,
-        x: this.game.world.width,
-        y: surfaceObj.y - config.tileSize,
-        speed: -ctx.speed
-      }))
-    }
 
     updateSurfaceState()
   }
