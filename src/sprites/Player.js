@@ -42,6 +42,8 @@ export default class extends Phaser.Sprite {
   }
 
   jump () {
-    this.body.velocity.y = -config.player.jumpSpeed.y
+    if (this.isOnSurface()) {
+      this.body.velocity.y = -config.player.jumpSpeed.y
+    }
   }
 }

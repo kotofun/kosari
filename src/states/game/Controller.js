@@ -29,7 +29,7 @@ export default class {
   }
 
   update () {
-    if (this.isJumped() && (ctx.Player.isOnSurface())) {
+    if (this.isJumped()) {
       ctx.Player.jump()
     }
   }
