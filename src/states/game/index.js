@@ -37,8 +37,6 @@ export default class extends Phaser.State {
   create () {
     this.Controller = new Controller(this)
 
-    this.Background.startAnimation()
-
     // set camera
     this.game.camera.bounds = null
     this.game.camera.follow(this.Player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
@@ -51,6 +49,8 @@ export default class extends Phaser.State {
     this.Surface.collide(this.Player)
     this.Surface.collide(this.characters)
     this.Surface.update()
+
+    this.Background.update()
 
     if (this.isGameOver()) {
       this.gameOver()
