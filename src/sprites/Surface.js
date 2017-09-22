@@ -8,8 +8,4 @@ export default class extends Phaser.Sprite {
     this.body.allowGravity = false
     this.body.immovable = true
   }
-
-  update (value) {
-    this.body.velocity.x = -this.game.vars.speed
-  }
 }

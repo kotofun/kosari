@@ -94,6 +94,7 @@ export default class {
   next () {
     this.factory.make({
       cls: surfaceRoll.current.class,
+      x: this.surface.getAt(this.surface.children.length - 1).right,
       height: surfaceRoll.current.height,
       type: getSurfaceType()
     }).map(obj => {
@@ -104,18 +105,14 @@ export default class {
   }
 
   update () {
-    this.surface.forEachAlive(this.updateTile, this)
-    this.objects.forEachAlive(this.updateTile, this)
+    const firstSurface = this.surface.getAt(0)
+    if (!firstSurface.inCamera) {
+      this.surface.remove(firstSurface)
+    }
 
     let lastGround = this.surface.getAt(this.surface.children.length - 1)
-    if ((this.game.world.bounds.right - lastGround.right) >= -3) {
+    if (lastGround.right - (this.game.camera.view.x + this.game.camera.view.width) < -3) {
       this.next()
-    }
-  }
-
-  updateTile (tile) {
-    if (tile.right < this.game.world.bounds.left) {
-      tile.parent.remove(tile, true)
     }
   }
 

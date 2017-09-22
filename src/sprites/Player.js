@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
 import config from '../config'
 
-var ctx
+let ctx
 
-var startPosition = config.player.startPosition
+let startPosition = config.player.startPosition
 
 export default class extends Phaser.Sprite {
   constructor (context) {
@@ -21,17 +21,11 @@ export default class extends Phaser.Sprite {
     this.run()
   }
 
-  // TODO: Check acceleration math
   run () {
-    if (this.isOnSurface()) {
-      this.body.velocity.x = this.game.vars.speed
-    } else {
-      this.body.velocity.x = 0
-    }
+    this.body.velocity.x = this.game.vars.speed
   }
 
-  // Player is moving backwards when is on the moving surface, so
-  // this method should return Player position relatively to surface
+  // Check if player is on surface
   isOnSurface () {
     return this.body.touching.down
   }

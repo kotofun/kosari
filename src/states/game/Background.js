@@ -3,9 +3,11 @@ var ctx
 export default class {
   constructor (context, layers = []) {
     ctx = context
-    this.game = context.game
+    this.game = ctx.game
 
-    this.layers = layers
+    this.layers = []
+
+    layers.map(v => this.add(v))
   }
 
   startAnimation () {
@@ -21,6 +23,7 @@ export default class {
   }
 
   add (layer) {
+    layer.fixedToCamera = true
     this.layers.push(layer)
   }
 }

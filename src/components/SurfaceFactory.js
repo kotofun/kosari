@@ -14,7 +14,7 @@ export default class {
     this.game = ctx.game
   }
 
-  make ({ cls, type, count = 1, height = 1, x = this.game.width }) {
+  make ({ cls, type, x, count = 1, height = 1 }) {
     let surface = []
 
     for (let i = 0; i < count; i++) {
