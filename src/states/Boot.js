@@ -8,6 +8,15 @@ export default class extends Phaser.State {
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE
     this.game.scale.setUserScale(this.game.scaleFactor, this.game.scaleFactor)
 
+    this.game.vars = {
+      speed: config.initialSpeed,
+      gravity: config.gravity,
+      player: {
+        position: config.player.startPosition,
+        jumpSpeed: config.player.jumpSpeed
+      }
+    }
+
     this.stage.backgroundColor = config.bg.color
     this.fontsReady = false
     this.fontsLoaded = this.fontsLoaded.bind(this)
