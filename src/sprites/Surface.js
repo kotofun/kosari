@@ -9,7 +9,7 @@ export default class extends Phaser.Sprite {
     this.body.immovable = true
   }
 
-  set speed (value) {
-    this.body.velocity.x = value
+  update (value) {
+    this.body.velocity.x = -this.game.vars.speed
   }
 }

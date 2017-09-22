@@ -20,7 +20,6 @@ export default class {
     for (let i = 0; i < count; i++) {
       surface.push(new SurfaceTypes[cls]({
         game: this.game,
-        speed: -100,
         type: 'middle',
         x: x + config.tileSize * i,
         height: height
