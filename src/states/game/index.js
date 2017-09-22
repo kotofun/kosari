@@ -10,6 +10,8 @@ import Background from './Background'
 import Controller from './Controller'
 
 import Skeleton from '../../sprites/Skeleton'
+import Satan from '../../sprites/Satan'
+import Zombie from '../../sprites/Zombie'
 
 export default class extends Phaser.State {
   init () {
@@ -23,14 +25,15 @@ export default class extends Phaser.State {
     this.Surface = new Surface(this)
     this.characters = []
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
+    this.characters.push(new Satan(this, this.game.width - 32, 0))
+    this.characters.push(new Zombie(this, this.game.width - 64, 64))
   }
 
   preload () {
     this.game.physics.arcade.enable(this.Surface)
-    this.game.physics.arcade.enable(this.characters)
 
     this.game.add.existing(this.Player)
-    this.game.add.existing(this.characters[0])
+    this.characters.map(char => { this.game.add.existing(char) })
   }
 
   create () {
