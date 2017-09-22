@@ -59,7 +59,8 @@
             game.physics.arcade.gravity.y = +obj.value
         }
         function changePlayerPosition (obj) {
-            game.state.states.Game.Player.position.x = +obj.value
+            game.camera.deadzone.width = +obj.value
+            game.state.states.Game.Player.position.x = game.camera.view.x + game.camera.deadzone.width
         }
         function changePlayerJumpSpeed (obj) {
             game.vars.player.jumpSpeed.y = +obj.value
