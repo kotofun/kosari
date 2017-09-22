@@ -23,15 +23,10 @@ export default class extends Phaser.Sprite {
 
   // TODO: Check acceleration math
   run () {
-    const deltaX = this.position.x - startPosition.x
-    let accelerationX = (-deltaX / (startPosition.x / 2))
-    accelerationX = Math.trunc(accelerationX) + ((accelerationX * 10) % 5 > 0 ? 5 : 0) / 10
-
-    if (Math.abs(deltaX) > 1) {
-      this.body.velocity.x = Math.ceil(ctx.speed * accelerationX)
-      if (this.isOnSurface()) {
-        this.body.velocity.x = ctx.speed * (1 + accelerationX)
-      }
+    if (this.isOnSurface()) {
+      this.body.velocity.x = this.game.vars.speed
+    } else {
+      this.body.velocity.x = 0
     }
   }
 
@@ -43,7 +38,7 @@ export default class extends Phaser.Sprite {
 
   jump () {
     if (this.isOnSurface()) {
-      this.body.velocity.y = -config.player.jumpSpeed.y
+      this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
     }
   }
 }
