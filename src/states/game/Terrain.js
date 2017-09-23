@@ -2,7 +2,7 @@ import { rnd } from '../../utils'
 
 import config from '../../config'
 
-import SurfaceFactory from '../../components/SurfaceFactory'
+import FloorFactory from '../../components/FloorFactory'
 
 // TODO: add generation:
 //    - grass
@@ -70,10 +70,10 @@ export default class {
 
     this.game.physics.arcade.enable(this)
 
+    this.floor = this.game.add.group()
     this.surface = this.game.add.group()
-    this.objects = this.game.add.group()
 
-    this.factory = new SurfaceFactory(ctx)
+    this.factory = new FloorFactory(ctx)
 
     this._init()
   }
@@ -85,7 +85,7 @@ export default class {
       count: Math.ceil(this.game.width / config.tileSize) + 1,
       x: 0
     }).map(obj => {
-      this.surface.add(obj)
+      this.floor.add(obj)
     })
 
     this.next()
@@ -94,29 +94,29 @@ export default class {
   next () {
     this.factory.make({
       cls: surfaceRoll.current.class,
-      x: this.surface.getAt(this.surface.children.length - 1).right,
+      x: this.floor.getAt(this.floor.children.length - 1).right,
       height: surfaceRoll.current.height,
       type: getSurfaceType()
     }).map(obj => {
-      this.surface.add(obj)
+      this.floor.add(obj)
     })
 
     updateSurfaceState()
   }
 
   update () {
-    const firstSurface = this.surface.getAt(0)
+    const firstSurface = this.floor.getAt(0)
     if (!firstSurface.inCamera) {
-      this.surface.remove(firstSurface)
+      this.floor.remove(firstSurface)
     }
 
-    let lastGround = this.surface.getAt(this.surface.children.length - 1)
+    let lastGround = this.floor.getAt(this.floor.children.length - 1)
     if (lastGround.right - (this.game.camera.view.x + this.game.camera.view.width) < -3) {
       this.next()
     }
   }
 
   collide (obj) {
-    return this.game.physics.arcade.collide(obj, this.surface)
+    return this.game.physics.arcade.collide(obj, this.floor)
   }
 }

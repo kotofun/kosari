@@ -5,7 +5,7 @@ import config from '../../config'
 
 import Player from '../../sprites/Player'
 
-import Surface from './Surface'
+import Terrain from './Terrain'
 import Background from './Background'
 import Controller from './Controller'
 
@@ -25,7 +25,7 @@ export default class extends Phaser.State {
       this.game.add.tileSprite(0, this.game.height - 86, this.game.width, 86, 'bg', 'grass')
     ])
     this.Player = new Player(this)
-    this.Surface = new Surface(this)
+    this.Terrain = new Terrain(this)
     this.characters = []
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
     this.characters.push(new Satan(this, this.game.width - 32, 0))
@@ -49,9 +49,9 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.Surface.collide(this.Player)
-    this.Surface.collide(this.characters)
-    this.Surface.update()
+    this.Terrain.collide(this.Player)
+    this.Terrain.collide(this.characters)
+    this.Terrain.update()
 
     this.Background.update()
 

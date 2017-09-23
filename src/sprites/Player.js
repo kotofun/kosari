@@ -26,12 +26,12 @@ export default class extends Phaser.Sprite {
   }
 
   // Check if player is on surface
-  isOnSurface () {
+  isOnFloor () {
     return this.body.touching.down
   }
 
   jump () {
-    if (this.isOnSurface()) {
+    if (this.isOnFloor()) {
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
     }
   }

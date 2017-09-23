@@ -3,7 +3,7 @@ import config from '../config'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
-let SurfaceTypes = { Swamp, Ground }
+let FloorTypes = { Swamp, Ground }
 
 let ctx
 
@@ -15,10 +15,10 @@ export default class {
   }
 
   make ({ cls, type, x, count = 1, height = 1 }) {
-    let surface = []
+    let floorPieces = []
 
     for (let i = 0; i < count; i++) {
-      surface.push(new SurfaceTypes[cls]({
+      floorPieces.push(new FloorTypes[cls]({
         game: this.game,
         type: 'middle',
         x: x + config.tileSize * i,
@@ -26,6 +26,6 @@ export default class {
       }))
     }
 
-    return surface
+    return floorPieces
   }
 }
