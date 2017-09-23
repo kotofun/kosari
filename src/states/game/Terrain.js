@@ -2,7 +2,7 @@ import { rnd } from '../../utils'
 
 import config from '../../config'
 
-import FloorFactory from '../../components/FloorFactory'
+import TerrainFactory from '../../components/TerrainFactory'
 
 // TODO: add generation:
 //    - grass
@@ -70,35 +70,28 @@ export default class {
 
     this.game.physics.arcade.enable(this)
 
-    this.floor = this.game.add.group()
-    this.surface = this.game.add.group()
-
-    this.factory = new FloorFactory(ctx)
+    this.add = new TerrainFactory(ctx, this)
 
     this._init()
   }
 
   _init () {
-    this.factory.make({
+    this.add.floor({
       cls: 'Ground',
       type: 'middle',
       count: Math.ceil(this.game.width / config.tileSize) + 1,
       x: 0
-    }).map(obj => {
-      this.floor.add(obj)
     })
 
     this.next()
   }
 
   next () {
-    this.factory.make({
+    this.add.floor({
       cls: surfaceRoll.current.class,
       x: this.floor.getAt(this.floor.children.length - 1).right,
       height: surfaceRoll.current.height,
       type: getSurfaceType()
-    }).map(obj => {
-      this.floor.add(obj)
     })
 
     updateSurfaceState()
