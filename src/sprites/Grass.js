@@ -1,7 +1,7 @@
-import Surface from './Surface'
+import AbstractSurface from './AbstractSurface'
 
-export default class extends Surface {
-  constructor ({ game, x, y, speed = 0 }) {
-    super(game, x, y, 'surface.grass', game.rnd.between(1, 2))
+export default class extends AbstractSurface {
+  constructor ({ game, x, y }) {
+    super(false, game, x, y, 'surface.grass', game.rnd.between(1, 2))
   }
 }
