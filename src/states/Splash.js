@@ -18,8 +18,7 @@ export default class extends Phaser.State {
 
     this.load.atlas('surface.grass', 'assets/images/grass.png', 'assets/images/grass.json')
 
-    this.load.image('bg.layer1', 'assets/images/bg/layer1.png')
-    this.load.image('bg.layer2', 'assets/images/bg/layer2.png')
+    this.load.atlas('bg', 'assets/images/bg.png', 'assets/images/bg.json')
 
     this.load.image('character.skeleton', 'assets/images/characters/skeleton.png')
   }

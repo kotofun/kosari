@@ -18,8 +18,11 @@ export default class extends Phaser.State {
     this.speed = config.initialSpeed
 
     this.Background = new Background(this, [
-      this.game.add.tileSprite(0, this.game.height - 256, this.game.width, 256, 'bg.layer2'),
-      this.game.add.tileSprite(0, this.game.height - 96, this.game.width, 96, 'bg.layer1')
+      this.game.add.tileSprite(0, 0, this.game.width, 512, 'bg', 'sky'),
+      this.game.add.tileSprite(0, 0, this.game.width, 275, 'bg', 'clouds'),
+      this.game.add.tileSprite(0, this.game.height - 225, this.game.width, 225, 'bg', 'forest'),
+      this.game.add.tileSprite(0, this.game.height - 253, this.game.width, 253, 'bg', 'cemetery'),
+      this.game.add.tileSprite(0, this.game.height - 86, this.game.width, 86, 'bg', 'grass')
     ])
     this.Player = new Player(this)
     this.Surface = new Surface(this)
