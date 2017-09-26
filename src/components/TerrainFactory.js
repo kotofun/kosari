@@ -19,6 +19,14 @@ let _floor
 // Objects of this layer don't always have a physical body
 let _surface
 
+const getLastX = () => {
+  if (_floor.children.length === 0) {
+    return 0
+  }
+
+  return _floor.getAt(_floor.children.length - 1).right
+}
+
 export default class {
   constructor (context, _parent) {
     ctx = context
@@ -35,12 +43,28 @@ export default class {
     parent.surface = _surface
   }
 
-  floor ({ cls, type, x, count = 1, height = 1 }) {
+  initial () {
+    this.plateau({
+      count: Math.ceil(this.game.width / config.tileSize) + 1
+    })
+  }
+
+  plateau ({ count = 1, height = 1, withEdges = false }) {
     for (let i = 0; i < count; i++) {
-      _floor.add(new FloorTypes[cls]({
+      let type = 'middle'
+
+      if (withEdges) {
+        switch (i) {
+          case 0: { type = 'left'; break }
+          case count - 1: { type = 'right'; break }
+          default: { type = 'middle'; break }
+        }
+      }
+
+      _floor.add(new Ground({
         game: this.game,
-        type: 'middle',
-        x: x + config.tileSize * i,
+        type,
+        x: getLastX(),
         height: height
       }))
     }

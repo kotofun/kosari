@@ -70,29 +70,13 @@ export default class {
 
     this.game.physics.arcade.enable(this)
 
-    this.add = new TerrainFactory(ctx, this)
+    this.create = new TerrainFactory(ctx, this)
 
-    this._init()
-  }
-
-  _init () {
-    this.add.floor({
-      cls: 'Ground',
-      type: 'middle',
-      count: Math.ceil(this.game.width / config.tileSize) + 1,
-      x: 0
-    })
-
-    this.next()
+    this.create.initial()
   }
 
   next () {
-    this.add.floor({
-      cls: surfaceRoll.current.class,
-      x: this.floor.getAt(this.floor.children.length - 1).right,
-      height: surfaceRoll.current.height,
-      type: getSurfaceType()
-    })
+    this.create.plateau({ height: surfaceRoll.current.height })
 
     updateSurfaceState()
   }
