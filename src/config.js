@@ -1,6 +1,6 @@
 export default {
   gameWidth: 768,
-  gameHeight: 512,
+  gameHeight: 352,
   tileSize: 32,
 
   bg: {
@@ -12,7 +12,7 @@ export default {
   initialSpeed: 100,
 
   player: {
-    startPosition: { x: 360, y: 424 },
+    startPosition: { x: 360, y: 264 },
     jumpSpeed: { x: 0, y: 600 }
   },
 
