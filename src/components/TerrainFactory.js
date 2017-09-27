@@ -1,12 +1,15 @@
 import config from '../config'
 
+import { terrainTypes } from '../consts'
+
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
-let FloorTypes = { Swamp, Ground }
-
 // Game state context reference
 let ctx
+
+// Game reference
+let game
 
 // Reference to a parent class for binding terrain group vars
 let parent
@@ -19,12 +22,43 @@ let _floor
 // Objects of this layer don't always have a physical body
 let _surface
 
-const getLastX = () => {
-  if (_floor.children.length === 0) {
-    return 0
-  }
+// Terrain types roll which is using on updates and terrain changes
+let _current = terrainTypes.plateau
 
-  return _floor.getAt(_floor.children.length - 1).right
+const getLastFloor = () => { return _floor.getAt(_floor.children.length - 1) }
+
+const getLastRight = () => {
+  const floor = getLastFloor()
+
+  if (floor === -1) return 0
+
+  return floor.right
+}
+
+const getLastHeight = () => { return getLastFloor().height / config.tileSize || 1 }
+
+// Add ending terrain tile
+const _finish = (terrain) => {
+  if (terrain === terrainTypes.plateau) {
+    _floor.add(new Ground({
+      game,
+      type: 'right',
+      x: getLastRight(),
+      height: getLastFloor().height / config.tileSize
+    }))
+  }
+}
+
+// Add starting terrain tile
+const _start = (terrain) => {
+  if (terrain === terrainTypes.plateau) {
+    _floor.add(new Ground({
+      game,
+      type: 'left',
+      x: getLastRight(),
+      height: getLastFloor().height / config.tileSize
+    }))
+  }
 }
 
 export default class {
@@ -33,6 +67,7 @@ export default class {
     parent = _parent
 
     this.game = ctx.game
+    game = ctx.game
 
     // init terrain objects
     _floor = this.game.add.group()
@@ -43,32 +78,40 @@ export default class {
     parent.surface = _surface
   }
 
-  initial () {
-    this.plateau({
-      count: Math.ceil(this.game.width / config.tileSize) + 1
-    })
+  get current () {
+    return _current
   }
 
-  plateau ({ count = 1, height = 1, withEdges = false }) {
-    for (let i = 0; i < count; i++) {
-      let type = 'middle'
+  init () {
+    do {
+      this.plateau()
+    } while (getLastFloor().right <= game.world.width)
+  }
 
-      if (withEdges) {
-        switch (i) {
-          case 0: { type = 'left'; break }
-          case count - 1: { type = 'right'; break }
-          default: { type = 'middle'; break }
-        }
-      }
+  update () {
+    const firstFloor = _floor.getAt(0)
+    if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
-      _floor.add(new Ground({
-        game: this.game,
-        type,
-        x: getLastX(),
-        height: height
-      }))
+    if (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < -3) {
+      this[terrainTypes[_current]]()
+    }
+  }
+
+  change (next) {
+    if (terrainTypes[next] === undefined) {
+      throw new Error('undefined terrain type')
     }
 
-    return _floor
+    _finish(_current)
+    _start(next)
+
+    _current = next
+  }
+
+  // Terrain generators
+  plateau (height = getLastHeight(), type = 'middle') {
+    const x = getLastRight()
+
+    _floor.add(new Ground({ game, type, x, height }))
   }
 }
