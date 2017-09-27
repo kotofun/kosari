@@ -49,8 +49,11 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.Terrain.collide(this.Player)
-    this.Terrain.collide(this.characters)
+    this.Terrain.collideFloor(this.Player)
+    this.Terrain.collideFloor(this.characters)
+
+    this.Terrain.collideSurface(this.Player)
+
     this.Terrain.update()
 
     this.Background.update()

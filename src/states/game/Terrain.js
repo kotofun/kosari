@@ -4,7 +4,9 @@ import { terrainTypes } from '../../consts'
 
 import { rnd } from '../../utils'
 
-var ctx
+let ctx
+
+let game
 
 let _roll = [
   { type: terrainTypes.plateau, length: 1 },
@@ -23,9 +25,9 @@ const nextTerrain = () => {
 export default class {
   constructor (context) {
     ctx = context
-    this.game = ctx.game
+    game = ctx.game
 
-    this.game.physics.arcade.enable(this)
+    game.physics.arcade.enable(this)
 
     this.terrain = new TerrainFactory(ctx, this)
 
@@ -40,7 +42,11 @@ export default class {
     }
   }
 
-  collide (obj) {
-    return this.game.physics.arcade.collide(obj, this.floor)
+  collideFloor (obj) {
+    return game.physics.arcade.collide(obj, this.floor)
+  }
+
+  collideSurface (obj) {
+    return game.physics.arcade.collide(obj, this.surface)
   }
 }
