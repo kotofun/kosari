@@ -25,6 +25,9 @@ let _surface
 // Terrain types roll which is using on updates and terrain changes
 let _current = terrainTypes.plateau
 
+// Last terrain length after changing
+let _lastLength = 0
+
 const getLastFloor = () => { return _floor.getAt(_floor.children.length - 1) }
 
 const getLastRight = () => {
@@ -94,7 +97,11 @@ export default class {
 
     if (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < -3) {
       this[terrainTypes[_current]]()
+
+      _lastLength++
     }
+
+    return _lastLength
   }
 
   change (next) {
@@ -106,6 +113,7 @@ export default class {
     _start(next)
 
     _current = next
+    _lastLength = 0
   }
 
   // Terrain generators
