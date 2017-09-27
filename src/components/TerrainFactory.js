@@ -45,7 +45,7 @@ const _finish = (terrain) => {
   if (terrain === terrainTypes.plateau) {
     _floor.add(new Ground({
       game,
-      type: 'right',
+      type: 'middle',
       x: getLastRight(),
       height: getLastFloor().height / config.tileSize
     }))
@@ -57,7 +57,7 @@ const _start = (terrain) => {
   if (terrain === terrainTypes.plateau) {
     _floor.add(new Ground({
       game,
-      type: 'left',
+      type: 'middle',
       x: getLastRight(),
       height: getLastFloor().height / config.tileSize
     }))
@@ -136,5 +136,11 @@ export default class {
     } else {
       _floor.add(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
     }
+  }
+
+  swampy () {
+    _floor.add(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
+    _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
+    _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
   }
 }
