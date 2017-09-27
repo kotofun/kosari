@@ -12,10 +12,13 @@ export default class extends Phaser.Sprite {
 
     super(ctx.game, startPosition.x, startPosition.y, 'player')
 
+    this.animations.add('run')
+    this.animations.play('run', 30, true)
+
     this.startPosition = { x: this.x, y: this.y }
     this.force = { x: 0, y: 0 }
     this.game.physics.enable(this)
-    this.body.setSize(20, 56, this.width - 20, 0)
+    this.body.setSize(19, 54, 43, 10)
 
     signals.jump.add(this.jump, this)
     signals.attack.add(this.attack, this)

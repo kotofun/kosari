@@ -12,7 +12,7 @@ export default {
   initialSpeed: 100,
 
   player: {
-    startPosition: { x: 360, y: 264 },
+    startPosition: { x: 360, y: 256 },
     jumpSpeed: { x: 0, y: 600 }
   },
 
