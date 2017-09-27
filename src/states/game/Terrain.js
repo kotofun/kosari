@@ -1,8 +1,13 @@
+import Phaser from 'phaser'
+
 import TerrainFactory from '../../components/TerrainFactory'
+import Grass from '../../sprites/Grass'
 
 import { terrainTypes } from '../../consts'
 
 import { rnd } from '../../utils'
+
+import signals from '../../signals'
 
 let ctx
 
@@ -31,6 +36,8 @@ export default class {
 
     this.terrain = new TerrainFactory(ctx, this)
 
+    signals.attack.add(this.mowGrass, this)
+
     this.terrain.init()
   }
 
@@ -48,5 +55,17 @@ export default class {
 
   collideSurface (obj) {
     return game.physics.arcade.collide(obj, this.surface)
+  }
+
+  mowGrass () {
+    const player = ctx.Player
+
+    if (player.isOnFloor()) {
+      this.surface.children.filter(elem => {
+        if (!(elem instanceof Grass)) return false
+
+        return Phaser.Rectangle.intersects(elem.getBounds(), player.getBounds())
+      }).map(e => this.surface.remove(e))
+    }
   }
 }
