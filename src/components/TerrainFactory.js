@@ -4,6 +4,7 @@ import { terrainTypes } from '../consts'
 
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
+import Grass from '../sprites/Grass'
 
 // Game state context reference
 let ctx
@@ -64,6 +65,12 @@ const _start = (terrain) => {
   }
 }
 
+const _addSurface = () => {
+  if (10 * Math.random() << 0 > 3) {
+    return _surface.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+  }
+}
+
 export default class {
   constructor (context, _parent) {
     ctx = context
@@ -101,6 +108,9 @@ export default class {
       _lastLength++
     }
 
+    const firstSurface = _surface.getAt(0)
+    if (!firstSurface.inCamera) _surface.remove(firstSurface)
+
     return _lastLength
   }
 
@@ -121,6 +131,7 @@ export default class {
     const x = getLastRight()
 
     _floor.add(new Ground({ game, type, x, height }))
+    _addSurface()
   }
 
   habitual () {
@@ -135,12 +146,17 @@ export default class {
       _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
     } else {
       _floor.add(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
+      _addSurface()
     }
   }
 
   swampy () {
     _floor.add(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
+    _addSurface()
+
     _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
+
     _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
+    _addSurface()
   }
 }
