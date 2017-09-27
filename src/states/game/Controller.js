@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
-import config from '../../config'
 
-let jumpSpeed = config.player.jumpSpeed
+import signals from '../../signals'
 
 let keys = {
   jump: Phaser.Keyboard.SPACEBAR,
@@ -11,26 +10,21 @@ let keys = {
 // controller context
 let ctx
 
+// global game reference
+let game
+
 export default class {
   constructor (context) {
     ctx = context
-    this.game = context.game
+    game = ctx.game
 
-    this.jumpKey = this.game.input.keyboard.addKey(keys.jump)
-    this.attackKey = this.game.input.keyboard.addKey(keys.attack)
-
-    for (let action in keys) {
-      this.game.input.keyboard.addKeyCapture(keys[action])
-    }
-  }
-
-  isJumped () {
-    return this.jumpKey.isDown
+    this.jumpKey = game.input.keyboard.addKey(keys.jump)
+    this.jumpKey.onDown.add(() => { signals.jump.dispatch() })
+    this.attackKey = game.input.keyboard.addKey(keys.attack)
+    this.attackKey.onDown.add(() => { signals.attack.dispatch() })
   }
 
   update () {
-    if (this.isJumped()) {
-      ctx.Player.jump()
-    }
+    //
   }
 }

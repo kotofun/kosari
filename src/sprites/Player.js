@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import config from '../config'
+import signals from '../signals'
 
 let ctx
 
@@ -15,6 +16,9 @@ export default class extends Phaser.Sprite {
     this.force = { x: 0, y: 0 }
     this.game.physics.enable(this)
     this.body.setSize(20, 56, this.width - 20, 0)
+
+    signals.jump.add(this.jump, this)
+    signals.attack.add(this.attack, this)
   }
 
   update () {
@@ -34,5 +38,9 @@ export default class extends Phaser.Sprite {
     if (this.isOnFloor()) {
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
     }
+  }
+
+  attack () {
+    // attack animation
   }
 }
