@@ -5,6 +5,7 @@ import { terrainTypes } from '../consts'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 import Grass from '../sprites/Grass'
+import Thombstone from '../sprites/Thombstone'
 
 // Game state context reference
 let ctx
@@ -68,6 +69,10 @@ const _start = (terrain) => {
 const _addSurface = () => {
   if (10 * Math.random() << 0 > 3) {
     return _surface.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+  }
+
+  if (10 * Math.random() << 0 > 8) {
+    return _surface.add(new Thombstone({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
   }
 }
 
