@@ -114,4 +114,19 @@ export default class {
 
     _floor.add(new Ground({ game, type, x, height }))
   }
+
+  habitual () {
+    const swampsCount = _floor.children.reduce((sum, f) => {
+      return sum + (f instanceof Swamp ? 1 : 0)
+    }, 0)
+
+    if (swampsCount < 2) {
+      _floor.add(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
+      _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
+      _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
+      _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
+    } else {
+      _floor.add(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
+    }
+  }
 }
