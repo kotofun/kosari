@@ -13,6 +13,8 @@ import Skeleton from '../../sprites/Skeleton'
 import Satan from '../../sprites/Satan'
 import Zombie from '../../sprites/Zombie'
 
+import Swamp from '../../sprites/Swamp'
+
 export default class extends Phaser.State {
   init () {
     this.speed = config.initialSpeed
@@ -67,13 +69,11 @@ export default class extends Phaser.State {
 
   // TODO: check all game over events
   isGameOver () {
-    return this.Player.right < this.game.world.bounds.left
+    return this.Terrain.isTouched(Swamp)
   }
 
   // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
-    this.game.paused = true
-
     const bannerText = 'Game Over'
     let banner = this.add.text(this.world.centerX, this.world.height / 2 - 20, bannerText)
     banner.font = 'Bangers'
@@ -82,5 +82,8 @@ export default class extends Phaser.State {
     banner.fill = '#8A0707'
     banner.smoothed = false
     banner.anchor.setTo(0.5)
+    banner.fixedToCamera = true
+
+    this.game.paused = true
   }
 }
