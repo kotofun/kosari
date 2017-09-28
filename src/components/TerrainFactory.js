@@ -115,7 +115,7 @@ export default class {
     const firstFloor = _floor.getAt(0)
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
-    if (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < -3) {
+    while (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
       this[terrainTypes[_current]]()
 
       _lastLength++
