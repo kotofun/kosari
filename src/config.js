@@ -9,7 +9,7 @@ export default {
 
   gravity: { y: 2000 },
 
-  initialSpeed: 100,
+  initialSpeed: 200,
 
   player: {
     startPosition: { x: 360, y: 196 },
