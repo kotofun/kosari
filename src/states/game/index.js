@@ -17,8 +17,6 @@ import Swamp from '../../sprites/Swamp'
 
 export default class extends Phaser.State {
   init () {
-    this.speed = config.initialSpeed
-
     this.Background = new Background(this, [
       this.game.add.tileSprite(0, -192, this.game.width, 512, 'bg', 'sky'),
       this.game.add.tileSprite(0, 0, this.game.width, 275, 'bg', 'clouds'),
@@ -54,7 +52,11 @@ export default class extends Phaser.State {
     this.Terrain.collideFloor(this.Player)
     this.Terrain.collideFloor(this.characters)
 
-    this.Terrain.collideSurface(this.Player)
+    if (this.Terrain.collideSurface(this.Player) && this.Player.body.touching.right) {
+      this.Background.stopAnimation()
+    } else {
+      this.Background.startAnimation()
+    }
 
     this.Terrain.update()
 
