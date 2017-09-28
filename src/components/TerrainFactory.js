@@ -2,10 +2,13 @@ import config from '../config'
 
 import { terrainTypes } from '../consts'
 
+// Terrain objects
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
+
+// Surface objects
 import Grass from '../sprites/Grass'
-import Thombstone from '../sprites/Thombstone'
+import Grave from '../sprites/Grave'
 
 // Game state context reference
 let ctx
@@ -45,7 +48,7 @@ const getLastHeight = () => { return getLastFloor().height / config.tileSize || 
 // Add ending terrain tile
 const _finish = (terrain) => {
   if (terrain === terrainTypes.plateau) {
-    _floor.add(new Ground({
+    addFloor(new Ground({
       game,
       type: 'middle',
       x: getLastRight(),
@@ -57,7 +60,7 @@ const _finish = (terrain) => {
 // Add starting terrain tile
 const _start = (terrain) => {
   if (terrain === terrainTypes.plateau) {
-    _floor.add(new Ground({
+    addFloor(new Ground({
       game,
       type: 'middle',
       x: getLastRight(),
@@ -66,14 +69,19 @@ const _start = (terrain) => {
   }
 }
 
-const _addSurface = () => {
-  if (10 * Math.random() << 0 > 3) {
-    return _surface.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
-  }
+const _addSurface = (e) => {
+  if (!(e instanceof Ground)) { return }
 
-  if (10 * Math.random() << 0 > 8) {
-    return _surface.add(new Thombstone({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+  _surface.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+
+  if (10 * Math.random() << 0 > 8 && _floor.getAt(_floor.children.length - 2) instanceof Ground) {
+    _surface.add(new Grave({ game, x: getLastFloor().left - config.tileSize, y: getLastFloor().top - config.tileSize }))
   }
+}
+
+const addFloor = e => {
+  _floor.add(e)
+  _addSurface(e)
 }
 
 export default class {
@@ -133,10 +141,7 @@ export default class {
 
   // Terrain generators
   plateau (height = getLastHeight(), type = 'middle') {
-    const x = getLastRight()
-
-    _floor.add(new Ground({ game, type, x, height }))
-    _addSurface()
+    addFloor(new Ground({ game, type, x: getLastRight(), height }))
   }
 
   habitual () {
@@ -145,23 +150,18 @@ export default class {
     }, 0)
 
     if (swampsCount < 2) {
-      _floor.add(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
-      _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
-      _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
-      _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
+      addFloor(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
+      addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
+      addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
+      addFloor(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
     } else {
-      _floor.add(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
-      _addSurface()
+      addFloor(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
     }
   }
 
   swampy () {
-    _floor.add(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
-    _addSurface()
-
-    _floor.add(new Swamp({ game, type: 'middle', x: getLastRight() }))
-
-    _floor.add(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
-    _addSurface()
+    addFloor(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
+    addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
+    addFloor(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
   }
 }
