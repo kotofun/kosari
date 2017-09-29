@@ -17,6 +17,10 @@ export default {
     jumpSpeed: { x: 0, y: 600 }
   },
 
+  chaser: {
+    backlogRate: 0.75
+  },
+
   ground: {
     height: { min: 1, max: 4 }
   }

@@ -1,5 +1,8 @@
 import Phaser from 'phaser'
 
+import signals from '../signals'
+import config from '../config'
+
 import Ground from './Ground'
 import Swamp from './Swamp'
 
@@ -25,6 +28,10 @@ export default class extends Phaser.Sprite {
 
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
+
+    this.backlogRate = 1
+
+    signals.speedReset.add(this.slowDown, this)
   }
 
   isTimeToJump () {
@@ -37,11 +44,15 @@ export default class extends Phaser.Sprite {
 
     terrain.mowGrass(this)
 
+    if (this.left <= game.camera.x) {
+      this.backlogRate = 1
+    }
+
     this.run()
   }
 
   run () {
-    this.body.velocity.x = this.game.vars.speed
+    this.body.velocity.x = this.game.vars.speed * this.backlogRate
   }
 
   isOnFloor () {
@@ -56,5 +67,9 @@ export default class extends Phaser.Sprite {
 
   attack () {
     // attack animation
+  }
+
+  slowDown () {
+    this.backlogRate = config.chaser.backlogRate
   }
 }
