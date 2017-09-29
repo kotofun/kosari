@@ -43,6 +43,7 @@ export default class extends Phaser.Sprite {
   jump () {
     if (this.isOnFloor()) {
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
+      ctx.sounds.jump.play()
     }
   }
 
