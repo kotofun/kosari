@@ -30,11 +30,11 @@ export default class extends Phaser.State {
     this.characters.push(new Satan(this, this.game.width - 32, 0))
     this.characters.push(new Zombie(this, this.game.width - 64, 64))
 
-    this.sounds = {}
     const { background, jump, attack } = this.game.vars.sounds
-    this.sounds.background = this.game.sound.add('sound.background', background.volume, background.loop)
-    this.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
-    this.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
+    this.game.sounds = {}
+    this.game.sounds.background = this.game.sound.add('sound.background', background.volume, background.loop)
+    this.game.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
+    this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
   }
 
   preload () {
@@ -70,7 +70,7 @@ export default class extends Phaser.State {
     this.gameOverBanner.fixedToCamera = true
 
     // play background music
-    this.sounds.background.play()
+    this.game.sounds.background.play()
   }
 
   update () {
