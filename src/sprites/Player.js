@@ -15,13 +15,15 @@ export default class extends Phaser.Sprite {
     this.animations.add('run')
     this.animations.play('run', 30, true)
 
-    this.startPosition = { x: this.x, y: this.y }
-    this.force = { x: 0, y: 0 }
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
 
+    this.slowedDown = false
+
     signals.jump.add(this.jump, this)
     signals.attack.add(this.attack, this)
+    signals.speedDown.add(this.slowDown, this)
+    signals.normalSpeed.add(this.resetSpeed, this)
   }
 
   update () {
@@ -45,5 +47,13 @@ export default class extends Phaser.Sprite {
 
   attack () {
     // attack animation
+  }
+
+  slowDown () {
+    this.slowedDown = true
+  }
+
+  resetSpeed () {
+    this.slowedDown = false
   }
 }
