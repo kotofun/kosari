@@ -24,6 +24,7 @@
     <form action="#" onsubmit="return false">
         <button onclick="togglePause(this)">Пауза</button>
         <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
+        <button onclick="toggleBgMusic(this)">Отключить фоновую музыку</button>
         <br>
         <label for="speed">
             Скорость игрового мира
@@ -71,6 +72,15 @@
             obj.innerText = godMode ? 'Включить режим бессмертия' : 'Отключить режим бессмертия'
             game.vars.godMode = !godMode
             if (game.vars.godMode) game.paused = false
+        }
+        function toggleBgMusic (obj) {
+            if (game.sounds.background.isPlaying) {
+                obj.innerText = 'Включить фоновую музыку'
+                game.sounds.background.stop()
+            } else {
+                obj.innerText = 'Отключить фоновую музыку'
+                game.sounds.background.play()
+            }
         }
     </script>
 </body>
