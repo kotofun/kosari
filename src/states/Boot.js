@@ -24,6 +24,10 @@ export default class extends Phaser.State {
         background: {
           volume: 0.4,
           loop: true
+        },
+        attack: {
+          volume: 0.3,
+          loop: false
         }
       }
     }

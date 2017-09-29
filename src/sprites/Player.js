@@ -48,6 +48,7 @@ export default class extends Phaser.Sprite {
   }
 
   attack () {
+    ctx.sounds.attack.play()
     // attack animation
   }
 
