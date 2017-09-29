@@ -53,8 +53,8 @@ export default class {
     return game.physics.arcade.collide(obj, this.floor)
   }
 
-  collideSurface (obj) {
-    return game.physics.arcade.collide(obj, this.surface)
+  collideSurface (obj, ...args) {
+    return game.physics.arcade.collide(obj, this.surface, ...args)
   }
 
   isTouched (floorType, obj = ctx.Player) {

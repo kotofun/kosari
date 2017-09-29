@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 
 import config from '../../config'
+import signals from '../../signals'
 
 import Player from '../../sprites/Player'
 
@@ -14,6 +15,7 @@ import Satan from '../../sprites/Satan'
 import Zombie from '../../sprites/Zombie'
 
 import Swamp from '../../sprites/Swamp'
+import Grave from '../../sprites/Grave'
 
 export default class extends Phaser.State {
   init () {
@@ -49,24 +51,25 @@ export default class extends Phaser.State {
   }
 
   update () {
+    this.Background.update()
+
     this.Terrain.collideFloor(this.Player)
     this.Terrain.collideFloor(this.characters)
 
-    if (this.Terrain.collideSurface(this.Player) && this.Player.body.touching.right) {
-      this.Background.stopAnimation()
-    } else {
-      this.Background.startAnimation()
-    }
+    this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
     this.Terrain.update()
-
-    this.Background.update()
 
     if (this.isGameOver()) {
       this.gameOver()
     }
 
     this.Controller.update()
+  }
+
+  surfaceCollision (player, surface) {
+    // Player bumbed into grave
+    if (surface instanceof Grave && player.body.touching.right) signals.speedDown.dispatch()
   }
 
   // TODO: check all game over events
