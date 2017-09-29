@@ -29,6 +29,8 @@ export default class extends Phaser.State {
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
     this.characters.push(new Satan(this, this.game.width - 32, 0))
     this.characters.push(new Zombie(this, this.game.width - 64, 64))
+
+    this.sounds = {}
   }
 
   preload () {
@@ -62,6 +64,10 @@ export default class extends Phaser.State {
     this.gameOverBanner.smoothed = false
     this.gameOverBanner.anchor.setTo(0.5)
     this.gameOverBanner.fixedToCamera = true
+
+    // play background music
+    this.sounds.background = this.game.sound.add('sound.background', 0.3, true)
+    this.sounds.background.play()
   }
 
   update () {
