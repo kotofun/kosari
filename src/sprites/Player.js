@@ -22,8 +22,9 @@ export default class extends Phaser.Sprite {
 
     signals.jump.add(this.jump, this)
     signals.attack.add(this.attack, this)
+
     signals.speedDown.add(this.slowDown, this)
-    signals.normalSpeed.add(this.resetSpeed, this)
+    signals.speedReset.add(this.resetSpeed, this)
   }
 
   update () {

@@ -71,7 +71,7 @@ export default class extends Phaser.State {
     this.Terrain.collideFloor(this.Chaser)
     this.Terrain.collideFloor(this.characters)
     if (!this.Terrain.collideSurface(this.Player, this.surfaceCollision) && this.Player.slowedDown) {
-      signals.normalSpeed.dispatch()
+      signals.speedReset.dispatch()
     }
 
     this.game.physics.arcade.collide(this.Player, this.Chaser, this.catched)
