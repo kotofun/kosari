@@ -15,6 +15,16 @@ export default class extends Phaser.State {
       player: {
         position: config.player.startPosition,
         jumpSpeed: config.player.jumpSpeed
+      },
+      sounds: {
+        jump: {
+          volume: 0.3,
+          loop: false
+        },
+        background: {
+          volume: 0.4,
+          loop: true
+        }
       }
     }
 

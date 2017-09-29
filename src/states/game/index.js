@@ -31,8 +31,9 @@ export default class extends Phaser.State {
     this.characters.push(new Zombie(this, this.game.width - 64, 64))
 
     this.sounds = {}
-    this.sounds.background = this.game.sound.add('sound.background', 0.5, true)
-    this.sounds.jump = this.game.sound.add('sound.jump', 0.3)
+    const { background, jump } = this.game.vars.sounds
+    this.sounds.background = this.game.sound.add('sound.background', background.volume, background.loop)
+    this.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
   }
 
   preload () {
