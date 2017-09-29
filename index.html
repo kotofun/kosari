@@ -21,10 +21,9 @@
 <body>
 
     <div id="content"></div>
-    <form action="#" onsubmit="void()">
+    <form action="#" onsubmit="return false">
         <button onclick="togglePause(this)">Пауза</button>
-        <br>
-        <label for="godmode">GodMode: <input type="checkbox" name="godmode" checked="checked" onchange="changeMode(this)"></label>
+        <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
         <br>
         <label for="speed">
             Скорость игрового мира
@@ -47,11 +46,11 @@
     <script src="dist/bundle.js"></script>
 
     <script>
-        var game = window.game;
+        var game = window.game
 
         function togglePause (obj) {
-            game.paused = !game.paused;
-            obj.innerText = game.paused ? 'Продолжить' : 'Пауза';
+            game.paused = !game.paused
+            obj.innerText = game.paused ? 'Продолжить' : 'Пауза'
         }
         function changeSpeed (obj) {
             game.vars.speed = +obj.value
@@ -67,10 +66,11 @@
         function changePlayerJumpSpeed (obj) {
             game.vars.player.jumpSpeed.y = +obj.value
         }
-        function changeMode (obj) {
-            game.vars.godMode = obj.checked
-            if (game.vars.godMode) 
-                game.paused = false
+        function toggleGodMode (obj) {
+            var godMode = game.vars.godMode
+            obj.innerText = godMode ? 'Включить режим бессмертия' : 'Отключить режим бессмертия'
+            game.vars.godMode = !godMode
+            if (game.vars.godMode) game.paused = false
         }
     </script>
 </body>
