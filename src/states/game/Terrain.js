@@ -57,14 +57,12 @@ export default class {
     return game.physics.arcade.collide(obj, this.surface, ...args)
   }
 
-  mowGrass () {
-    const player = ctx.Player
-
-    if (player.isOnFloor()) {
+  mowGrass (mower = ctx.Player) {
+    if (mower.isOnFloor()) {
       this.surface.children.filter(elem => {
         if (!(elem instanceof Grass)) return false
 
-        return Phaser.Rectangle.intersects(elem.getBounds(), player.getBounds())
+        return Phaser.Rectangle.intersects(elem.getBounds(), mower.getBounds())
       }).map(e => this.surface.remove(e))
     }
   }

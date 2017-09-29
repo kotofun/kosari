@@ -4,6 +4,8 @@ import signals from '../../signals'
 
 import Player from '../../sprites/Player'
 
+import Chaser from '../../sprites/Chaser'
+
 import Terrain from './Terrain'
 import Background from './Background'
 import Controller from './Controller'
@@ -21,6 +23,8 @@ export default class extends Phaser.State {
     this.Player = new Player(this)
     this.Terrain = new Terrain(this)
 
+    this.Chaser = new Chaser(this, this.Terrain)
+
     this.characters = []
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
     this.characters.push(new Satan(this, this.game.width - 32, 0))
@@ -29,6 +33,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.game.add.existing(this.Player)
+    this.game.add.existing(this.Chaser)
     this.characters.map(char => { this.game.add.existing(char) })
   }
 
@@ -52,6 +57,7 @@ export default class extends Phaser.State {
     this.Background.update()
 
     this.Terrain.collideFloor(this.Player, this.floorCollision)
+    this.Terrain.collideFloor(this.Chaser)
     this.Terrain.collideFloor(this.characters)
     this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
