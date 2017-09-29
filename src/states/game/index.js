@@ -51,6 +51,17 @@ export default class extends Phaser.State {
 
     // enables fps
     this.game.time.advancedTiming = true
+
+    const bannerText = 'Game Over'
+    this.gameOverBanner = this.add.text(this.world.centerX, this.world.height / 2 - 20, bannerText)
+    this.gameOverBanner.visible = false
+    this.gameOverBanner.font = 'Bangers'
+    this.gameOverBanner.padding.set(10, 16)
+    this.gameOverBanner.fontSize = 40
+    this.gameOverBanner.fill = '#8A0707'
+    this.gameOverBanner.smoothed = false
+    this.gameOverBanner.anchor.setTo(0.5)
+    this.gameOverBanner.fixedToCamera = true
   }
 
   update () {
@@ -67,7 +78,8 @@ export default class extends Phaser.State {
   }
 
   render () {
-    this.game.debug.text(this.game.time.fps, 2, 14, '#00ff00')
+    this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
+    this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
   }
 
   catched (player, chaser) {
@@ -85,16 +97,16 @@ export default class extends Phaser.State {
 
   // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
-    const bannerText = 'Game Over'
-    let banner = this.add.text(this.world.centerX, this.world.height / 2 - 20, bannerText)
-    banner.font = 'Bangers'
-    banner.padding.set(10, 16)
-    banner.fontSize = 40
-    banner.fill = '#8A0707'
-    banner.smoothed = false
-    banner.anchor.setTo(0.5)
-    banner.fixedToCamera = true
+    this.gameOverBanner.visible = true
 
-    this.game.paused = true
+    if (!this.game.vars.godMode) {
+      this.game.paused = true
+    } else {
+      this.game.time.events.add(Phaser.Timer.SECOND, this.hideGameOverBanner, this).autoDestroy = true
+    }
+  }
+
+  hideGameOverBanner () {
+    this.gameOverBanner.visible = false
   }
 }

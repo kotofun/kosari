@@ -9,6 +9,7 @@ export default class extends Phaser.State {
     this.game.scale.setUserScale(this.game.scaleFactor, this.game.scaleFactor)
 
     this.game.vars = {
+      godMode: config.godMode,
       speed: config.initialSpeed,
       gravity: config.gravity,
       player: {

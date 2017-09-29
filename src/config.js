@@ -1,4 +1,5 @@
 export default {
+  godMode: true,
   gameWidth: 768,
   gameHeight: 288,
   tileSize: 32,

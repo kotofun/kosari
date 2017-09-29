@@ -24,9 +24,11 @@
     <form action="#" onsubmit="void()">
         <button onclick="togglePause(this)">Пауза</button>
         <br>
+        <label for="godmode">GodMode: <input type="checkbox" name="godmode" checked="checked" onchange="changeMode(this)"></label>
+        <br>
         <label for="speed">
             Скорость игрового мира
-            <input name="speed" type="number" min="0" max="500" value="100" oninput="changeSpeed(this)">
+            <input name="speed" type="number" min="0" max="500" value="200" oninput="changeSpeed(this)">
             <span>100</span>
         </label>
         <br>
@@ -64,6 +66,11 @@
         }
         function changePlayerJumpSpeed (obj) {
             game.vars.player.jumpSpeed.y = +obj.value
+        }
+        function changeMode (obj) {
+            game.vars.godMode = obj.checked
+            if (game.vars.godMode) 
+                game.paused = false
         }
     </script>
 </body>
