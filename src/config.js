@@ -8,12 +8,12 @@ export default {
     color: '#5d5b6a'
   },
 
-  gravity: { y: 2000 },
+  gravity: { y: 3000 },
 
   initialSpeed: 200,
 
   player: {
-    startPosition: { x: 360, y: 196 },
+    startPosition: { x: 360, y: 192 },
     jumpSpeed: { x: 0, y: 600 }
   },
 
