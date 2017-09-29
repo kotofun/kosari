@@ -48,33 +48,29 @@ export default class extends Phaser.State {
     this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.game.vars.player.position.x, this.game.height)
     // don't remove this prevents player sprite jiggling
     this.game.renderer.renderSession.roundPixels = true
+
+    signals.gameOver.add(this.gameOver, this)
   }
 
   update () {
     this.Background.update()
 
-    this.Terrain.collideFloor(this.Player)
+    this.Terrain.collideFloor(this.Player, this.floorCollision)
     this.Terrain.collideFloor(this.characters)
-
     this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
     this.Terrain.update()
 
-    if (this.isGameOver()) {
-      this.gameOver()
-    }
-
     this.Controller.update()
+  }
+
+  floorCollision (player, floor) {
+    if (floor instanceof Swamp) signals.gameOver.dispatch()
   }
 
   surfaceCollision (player, surface) {
     // Player bumbed into grave
     if (surface instanceof Grave && player.body.touching.right) signals.speedDown.dispatch()
-  }
-
-  // TODO: check all game over events
-  isGameOver () {
-    return this.Terrain.isTouched(Swamp)
   }
 
   // TODO: Stop the game, show game over animation and show highscores

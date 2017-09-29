@@ -49,27 +49,12 @@ export default class {
     }
   }
 
-  collideFloor (obj) {
-    return game.physics.arcade.collide(obj, this.floor)
+  collideFloor (obj, ...args) {
+    return game.physics.arcade.collide(obj, this.floor, ...args)
   }
 
   collideSurface (obj, ...args) {
     return game.physics.arcade.collide(obj, this.surface, ...args)
-  }
-
-  isTouched (floorType, obj = ctx.Player) {
-    if (!obj.body.touching.down) return false
-
-    return this.floor.filter(f => {
-      if (!(f instanceof floorType)) return false
-
-      return (f.top === obj.body.bottom) &&
-        (
-          (f.left >= obj.body.left && f.left < obj.body.right) ||
-          (f.right > obj.body.left && f.right <= obj.body.right) ||
-          (f.left <= obj.body.left && f.right >= obj.body.right)
-        )
-    }).list.length > 0
   }
 
   mowGrass () {
