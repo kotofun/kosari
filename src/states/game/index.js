@@ -61,11 +61,17 @@ export default class extends Phaser.State {
     this.Terrain.collideFloor(this.characters)
     this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
+    this.game.physics.arcade.collide(this.Player, this.Chaser, this.catched)
+
     this.Terrain.update()
   }
 
   render () {
     this.game.debug.text(this.game.time.fps, 2, 14, '#00ff00')
+  }
+
+  catched (player, chaser) {
+    signals.gameOver.dispatch()
   }
 
   floorCollision (player, floor) {
