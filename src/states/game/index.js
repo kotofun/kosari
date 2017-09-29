@@ -43,6 +43,9 @@ export default class extends Phaser.State {
     this.game.renderer.renderSession.roundPixels = true
 
     signals.gameOver.add(this.gameOver, this)
+
+    // enables fps
+    this.game.time.advancedTiming = true
   }
 
   update () {
@@ -53,6 +56,10 @@ export default class extends Phaser.State {
     this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
     this.Terrain.update()
+  }
+
+  render () {
+    this.game.debug.text(this.game.time.fps, 2, 14, '#00ff00')
   }
 
   floorCollision (player, floor) {
