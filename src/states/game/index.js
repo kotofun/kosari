@@ -1,7 +1,5 @@
-/* globals __DEV__ */
 import Phaser from 'phaser'
 
-import config from '../../config'
 import signals from '../../signals'
 
 import Player from '../../sprites/Player'
@@ -19,15 +17,10 @@ import Grave from '../../sprites/Grave'
 
 export default class extends Phaser.State {
   init () {
-    this.Background = new Background(this, [
-      this.game.add.tileSprite(0, -192, this.game.width, 512, 'bg', 'sky'),
-      this.game.add.tileSprite(0, 0, this.game.width, 275, 'bg', 'clouds'),
-      this.game.add.tileSprite(0, this.game.height - 225, this.game.width, 225, 'bg', 'forest'),
-      this.game.add.tileSprite(0, this.game.height - 253, this.game.width, 253, 'bg', 'cemetery'),
-      this.game.add.tileSprite(0, this.game.height - 86, this.game.width, 86, 'bg', 'grass')
-    ])
+    this.Background = new Background(this)
     this.Player = new Player(this)
     this.Terrain = new Terrain(this)
+
     this.characters = []
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
     this.characters.push(new Satan(this, this.game.width - 32, 0))
@@ -60,8 +53,6 @@ export default class extends Phaser.State {
     this.Terrain.collideSurface(this.Player, this.surfaceCollision)
 
     this.Terrain.update()
-
-    this.Controller.update()
   }
 
   floorCollision (player, floor) {

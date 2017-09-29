@@ -23,8 +23,4 @@ export default class {
     this.attackKey = game.input.keyboard.addKey(keys.attack)
     this.attackKey.onDown.add(() => { signals.attack.dispatch() })
   }
-
-  update () {
-    //
-  }
 }
