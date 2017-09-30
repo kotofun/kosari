@@ -1,15 +1,19 @@
 import Phaser from 'phaser'
 
-var ctx
+let ctx
+let game
 
 export default class extends Phaser.Sprite {
   constructor (context, x, y, asset, body = false) {
     ctx = context
+    game = ctx.game
 
-    super(ctx.game, x, y, asset)
+    super(game, x, y, asset)
 
     if (body) {
       this.game.physics.arcade.enable(this)
     }
+
+    game.add.existing(this)
   }
 }

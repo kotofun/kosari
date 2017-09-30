@@ -15,6 +15,8 @@ import Satan from '../../sprites/Satan'
 import Zombie from '../../sprites/Zombie'
 import Bat from '../../sprites/Bat'
 
+import EnemyManager from './EnemyManager'
+
 import Swamp from '../../sprites/Swamp'
 import Grave from '../../sprites/Grave'
 
@@ -26,11 +28,7 @@ export default class extends Phaser.State {
 
     this.Chaser = new Chaser(this, this.Terrain)
 
-    this.characters = []
-    this.characters.push(new Skeleton(this, this.game.width - 64, -64))
-    this.characters.push(new Satan(this, this.game.width - 32, 0))
-    this.characters.push(new Zombie(this, this.game.width - 64, 64))
-    this.characters.push(new Bat(this, this.game.width - 64, this.game.height - 96))
+    this.enemies = new EnemyManager(this)
 
     const { background, jump, attack } = this.game.vars.sounds
     this.game.sounds = {}
@@ -42,7 +40,6 @@ export default class extends Phaser.State {
   preload () {
     this.game.add.existing(this.Player)
     this.game.add.existing(this.Chaser)
-    this.characters.map(char => { this.game.add.existing(char) })
   }
 
   create () {
@@ -80,7 +77,7 @@ export default class extends Phaser.State {
 
     this.Terrain.collideFloor(this.Player, this.floorCollision)
     this.Terrain.collideFloor(this.Chaser)
-    this.Terrain.collideFloor(this.characters)
+    this.enemies.collide(this.Terrain.floor)
     if (!this.Terrain.collideSurface(this.Player, this.surfaceCollision) && this.Player.slowedDown) {
       signals.speedReset.dispatch()
     }
