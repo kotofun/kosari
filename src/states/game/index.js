@@ -13,6 +13,7 @@ import Controller from './Controller'
 import Skeleton from '../../sprites/Skeleton'
 import Satan from '../../sprites/Satan'
 import Zombie from '../../sprites/Zombie'
+import Bat from '../../sprites/Bat'
 
 import Swamp from '../../sprites/Swamp'
 import Grave from '../../sprites/Grave'
@@ -29,6 +30,7 @@ export default class extends Phaser.State {
     this.characters.push(new Skeleton(this, this.game.width - 64, -64))
     this.characters.push(new Satan(this, this.game.width - 32, 0))
     this.characters.push(new Zombie(this, this.game.width - 64, 64))
+    this.characters.push(new Bat(this, this.game.width - 64, this.game.height - 96))
 
     const { background, jump, attack } = this.game.vars.sounds
     this.game.sounds = {}
