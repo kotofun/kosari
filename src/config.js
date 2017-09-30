@@ -8,7 +8,7 @@ export default {
     color: '#5d5b6a'
   },
 
-  gravity: { y: 3000 },
+  gravity: { y: 2900 },
 
   initialSpeed: 200,
 
