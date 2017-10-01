@@ -30,6 +30,12 @@ export default class extends Phaser.State {
   }
 
   create () {
+    const { background, jump, attack } = this.game.vars.sounds
+    this.game.sounds = {}
+    this.game.sounds.background = this.game.sound.add('sound.background', background.volume, background.loop)
+    this.game.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
+    this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
+
     this.state.start('Game')
   }
 }
