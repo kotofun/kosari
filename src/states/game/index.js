@@ -76,7 +76,7 @@ export default class extends Phaser.State {
       signals.speedReset.dispatch()
     }
 
-    this.game.physics.arcade.collide(this.player, this.phaser, this.catched)
+    this.game.physics.arcade.collide(this.player, this.chaser, this.catched)
 
     this.terrain.update()
     this.enemies.update()
