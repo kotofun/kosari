@@ -76,7 +76,7 @@ export default class extends Phaser.State {
       signals.speedReset.dispatch()
     }
 
-    this.game.physics.arcade.collide(this.player, this.chaser, this.catched)
+    this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
 
     this.terrain.update()
     this.enemies.update()
@@ -85,10 +85,6 @@ export default class extends Phaser.State {
   render () {
     this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
     this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
-  }
-
-  catched (player, chaser) {
-    signals.gameOver.dispatch()
   }
 
   floorCollision (player, floor) {

@@ -34,6 +34,10 @@ export default class extends Phaser.Sprite {
     signals.speedReset.add(this.slowDown, this)
   }
 
+  catch (obj, ...args) {
+    return this.game.physics.arcade.collide(obj, this, ...args)
+  }
+
   isTimeToJump () {
     return (terrain.floor.getAt(0) instanceof Ground) &&
       (terrain.floor.getAt(2) instanceof Swamp)
