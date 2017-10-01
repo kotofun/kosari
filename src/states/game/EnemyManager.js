@@ -1,3 +1,7 @@
+import Phaser from 'phaser'
+
+import signals from '../../signals'
+
 import Skeleton from '../../sprites/Skeleton'
 import Bat from '../../sprites/Bat'
 
@@ -30,6 +34,8 @@ export default class {
 
     _enemies = game.add.group()
 
+    signals.attack.add(this.attack, this)
+
     _init()
   }
 
@@ -40,5 +46,11 @@ export default class {
   update () {
     _enemies.forEachDead(_updateDead)
     _enemies.forEachAlive(_updateAlive)
+  }
+
+  attack () {
+    _enemies.forEachAlive(enemy => {
+      if (Phaser.Rectangle.intersects(ctx.player.getBounds(), enemy.getBounds())) enemy.kill()
+    })
   }
 }
