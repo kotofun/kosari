@@ -2,20 +2,27 @@ import Phaser from 'phaser'
 import config from '../config'
 import signals from '../signals'
 
+// controller context
 let ctx
 
-let startPosition = config.player.startPosition
+// global game reference
+let game
+
+// game terrain instance
+let terrain
 
 export default class extends Phaser.Sprite {
-  constructor (context) {
+  constructor (context, terrainInstance) {
     ctx = context
+    game = ctx.game
+    terrain = terrainInstance
 
-    super(ctx.game, startPosition.x, startPosition.y, 'player')
+    super(game, config.player.startPosition.x, config.player.startPosition.y, 'player')
 
     this.animations.add('run')
     this.animations.play('run', 30, true)
 
-    this.game.physics.enable(this)
+    game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
 
     this.slowedDown = false
@@ -36,9 +43,7 @@ export default class extends Phaser.Sprite {
   }
 
   // Check if player is on surface
-  isOnFloor () {
-    return this.body.touching.down
-  }
+  isOnFloor () { return this.body.touching.down }
 
   jump () {
     if (this.isOnFloor()) {
@@ -49,6 +54,7 @@ export default class extends Phaser.Sprite {
 
   attack () {
     this.game.sounds.attack.play()
+    terrain.mowGrass(this)
     // attack animation
   }
 

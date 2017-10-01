@@ -3,18 +3,11 @@ import Phaser from 'phaser'
 import signals from '../../signals'
 
 import Player from '../../sprites/Player'
-
 import Chaser from '../../sprites/Chaser'
 
 import Terrain from './Terrain'
 import Background from './Background'
 import Controller from './Controller'
-
-import Skeleton from '../../sprites/Skeleton'
-import Satan from '../../sprites/Satan'
-import Zombie from '../../sprites/Zombie'
-import Bat from '../../sprites/Bat'
-
 import EnemyManager from './EnemyManager'
 
 import Swamp from '../../sprites/Swamp'
@@ -22,13 +15,14 @@ import Grave from '../../sprites/Grave'
 
 export default class extends Phaser.State {
   init () {
-    this.Background = new Background(this)
-    this.Player = new Player(this)
-    this.Terrain = new Terrain(this)
+    this.background = new Background(this)
 
-    this.Chaser = new Chaser(this, this.Terrain)
+    this.terrain = new Terrain(this)
 
     this.enemies = new EnemyManager(this)
+
+    this.player = new Player(this, this.terrain)
+    this.chaser = new Chaser(this, this.terrain)
 
     const { background, jump, attack } = this.game.vars.sounds
     this.game.sounds = {}
@@ -38,16 +32,16 @@ export default class extends Phaser.State {
   }
 
   preload () {
-    this.game.add.existing(this.Player)
-    this.game.add.existing(this.Chaser)
+    this.game.add.existing(this.player)
+    this.game.add.existing(this.chaser)
   }
 
   create () {
-    this.Controller = new Controller(this)
+    this.controller = new Controller(this)
 
     // set camera
     this.game.camera.bounds = null
-    this.game.camera.follow(this.Player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
+    this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
     this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.game.vars.player.position.x, this.game.height)
     // don't remove this prevents player sprite jiggling
     this.game.renderer.renderSession.roundPixels = true
@@ -73,18 +67,18 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.Background.update()
+    this.background.update()
 
-    this.Terrain.collideFloor(this.Player, this.floorCollision)
-    this.Terrain.collideFloor(this.Chaser)
-    this.enemies.collide(this.Terrain.floor)
-    if (!this.Terrain.collideSurface(this.Player, this.surfaceCollision) && this.Player.slowedDown) {
+    this.terrain.collideFloor(this.player, this.floorCollision)
+    this.terrain.collideFloor(this.chaser)
+    this.enemies.collide(this.terrain.floor)
+    if (!this.terrain.collideSurface(this.player, this.surfaceCollision) && this.player.slowedDown) {
       signals.speedReset.dispatch()
     }
 
-    this.game.physics.arcade.collide(this.Player, this.Chaser, this.catched)
+    this.game.physics.arcade.collide(this.player, this.phaser, this.catched)
 
-    this.Terrain.update()
+    this.terrain.update()
   }
 
   render () {

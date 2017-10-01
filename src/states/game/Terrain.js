@@ -7,8 +7,6 @@ import { terrainTypes } from '../../consts'
 
 import { rnd } from '../../utils'
 
-import signals from '../../signals'
-
 let ctx
 
 let game
@@ -36,8 +34,6 @@ export default class {
 
     this.terrain = new TerrainFactory(ctx, this)
 
-    signals.attack.add(this.mowGrass, this)
-
     this.terrain.init()
   }
 
@@ -57,7 +53,7 @@ export default class {
     return game.physics.arcade.collide(obj, this.surface, ...args)
   }
 
-  mowGrass (mower = ctx.Player) {
+  mowGrass (mower) {
     if (mower.isOnFloor()) {
       this.surface.children.filter(elem => {
         if (!(elem instanceof Grass)) return false
