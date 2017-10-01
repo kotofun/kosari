@@ -79,6 +79,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.collide(this.player, this.phaser, this.catched)
 
     this.terrain.update()
+    this.enemies.update()
   }
 
   render () {
