@@ -9,6 +9,8 @@ export default class extends DisplayCharacter {
 
     game = ctx.game
 
+    this.body.setSize(40, 20, 12, 4)
+
     this.body.allowGravity = false
     this.body.immovable = true
 

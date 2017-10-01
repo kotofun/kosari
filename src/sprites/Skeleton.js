@@ -6,6 +6,8 @@ export default class extends DisplayCharacter {
   constructor (ctx, x, y) {
     super(ctx, x, y, 'character.skeleton', true)
 
+    this.body.setSize(28, 50, 2, 16)
+
     this.body.allowGravity = false
     this.body.immovable = true
   }
