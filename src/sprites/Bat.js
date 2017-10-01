@@ -10,6 +10,7 @@ export default class extends DisplayCharacter {
     game = ctx.game
 
     this.body.allowGravity = false
+    this.body.immovable = true
 
     game.add.tween(this)
       .to({ y: y - 32 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
