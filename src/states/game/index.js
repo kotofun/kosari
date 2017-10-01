@@ -61,6 +61,7 @@ export default class extends Phaser.State {
     this.terrain.collideFloor(this.player, this.floorCollision)
     this.terrain.collideFloor(this.chaser)
     this.enemies.collide(this.terrain.floor)
+    this.enemies.collide(this.player)
     if (!this.terrain.collideSurface(this.player, this.surfaceCollision) && this.player.slowedDown) {
       signals.speedReset.dispatch()
     }
