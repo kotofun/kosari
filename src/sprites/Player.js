@@ -25,6 +25,8 @@ export default class extends Phaser.Sprite {
     game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
 
+    game.add.existing(this)
+
     this.slowedDown = false
 
     signals.jump.add(this.jump, this)

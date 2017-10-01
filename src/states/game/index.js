@@ -31,11 +31,6 @@ export default class extends Phaser.State {
     this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
   }
 
-  preload () {
-    this.game.add.existing(this.player)
-    this.game.add.existing(this.chaser)
-  }
-
   create () {
     this.controller = new Controller(this)
 

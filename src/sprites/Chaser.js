@@ -29,6 +29,8 @@ export default class extends Phaser.Sprite {
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
 
+    game.add.existing(this)
+
     this.backlogRate = 1
 
     signals.speedReset.add(this.slowDown, this)
