@@ -4,6 +4,7 @@ import TerrainFactory from '../../components/TerrainFactory'
 import Grass from '../../sprites/Grass'
 
 import { terrainTypes } from '../../consts'
+import config from '../../config'
 
 import { rnd } from '../../utils'
 
@@ -13,7 +14,7 @@ let game
 
 let _roll = [
   { type: terrainTypes.plateau, length: 1 },
-  { type: terrainTypes.habitual, length: 5 }
+  { type: terrainTypes.habitual, length: config.gameWidth / config.tileSize }
 ]
 
 const nextTerrain = () => {
@@ -21,7 +22,7 @@ const nextTerrain = () => {
 
   return {
     type: terrainTypes[terrainKeys[terrainKeys.length * Math.random() << 0]],
-    length: rnd(1, 5)
+    length: rnd(config.gameWidth / config.tileSize / 2, config.gameWidth / config.tileSize)
   }
 }
 
