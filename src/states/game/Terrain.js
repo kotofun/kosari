@@ -54,17 +54,17 @@ export default class {
     return game.physics.arcade.collide(obj, this.floor, ...args)
   }
 
-  collideSurface (obj, ...args) {
-    return game.physics.arcade.collide(obj, this.surface, ...args)
+  collideObstacles (obj, ...args) {
+    return game.physics.arcade.collide(obj, this.obstacles, ...args)
   }
 
   mowGrass (mower) {
     if (mower.isOnFloor()) {
-      this.surface.children.filter(elem => {
+      this.grass.children.filter(elem => {
         if (!(elem instanceof Grass)) return false
 
         return Phaser.Rectangle.intersects(elem.getBounds(), mower.getBounds())
-      }).map(e => this.surface.remove(e))
+      }).map(e => this.grass.remove(e))
     }
   }
 }

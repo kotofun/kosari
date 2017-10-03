@@ -23,9 +23,12 @@ let parent
 // This layer always have body and enabled physics 
 let _floor
 
-// On-floor surface which consists of grass, thombstones, thombs and etc.
-// Objects of this layer don't always have a physical body
-let _surface
+// On-floor obstacles which consists of thombstones, thombs and etc.
+// Objects of this layer always have a physical body
+let _obstacles
+
+// Grass group
+let _grass
 
 // Terrain types roll which is using on updates and terrain changes
 let _current = terrainTypes.plateau
@@ -70,9 +73,10 @@ const _start = (terrain) => {
 }
 
 const _addSurface = (e) => {
-  if (!(e instanceof Ground)) { return }
+  if (!(e instanceof Ground)) return
 
-  _surface.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+  // Grass exists always!
+  _grass.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
 
   if (10 * Math.random() << 0 > 8 && _floor.getAt(_floor.children.length - 2) instanceof Ground) {
     _surface.add(new Grave({ game, x: getLastFloor().left - config.tileSize, y: getLastFloor().top - config.tileSize }))
@@ -93,12 +97,14 @@ export default class {
     game = ctx.game
 
     // init terrain objects
-    _floor = this.game.add.group()
-    _surface = this.game.add.group()
+    _floor = game.add.group()
+    _grass = game.add.group()
+    _obstacles = game.add.group()
 
     // bind terrain objects to parent
     parent.floor = _floor
-    parent.surface = _surface
+    parent.obstacles = _obstacles
+    parent.grass = _grass
   }
 
   get current () {
@@ -121,8 +127,11 @@ export default class {
       _lastLength++
     }
 
-    const firstSurface = _surface.getAt(0)
-    if (!firstSurface.inCamera) _surface.remove(firstSurface)
+    const firstObstacle = _obstacles.getAt(0)
+    if (firstObstacle.right < game.camera.x) _obstacles.remove(firstObstacle)
+
+    const firstGrass = _grass.getAt(0)
+    if (!firstGrass.inCamera) _grass.remove(firstGrass)
 
     return _lastLength
   }
