@@ -1,3 +1,5 @@
+import Phaser from 'phaser'
+
 import config from '../config'
 
 import { terrainTypes } from '../consts'
@@ -31,7 +33,7 @@ let _obstacles
 let _grass
 
 // Terrain types roll which is using on updates and terrain changes
-let _current = terrainTypes.plateau
+let _current = terrainTypes.relax
 
 // Last terrain length after changing
 let _lastLength = 0
@@ -78,8 +80,25 @@ const _addSurface = (e) => {
   // Grass exists always!
   _grass.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
 
-  if (10 * Math.random() << 0 > 8 && _floor.getAt(_floor.children.length - 2) instanceof Ground) {
-    _surface.add(new Grave({ game, x: getLastFloor().left - config.tileSize, y: getLastFloor().top - config.tileSize }))
+  _addObstacle()
+}
+
+const _addObstacle = () => {
+  // There is no surfaces in current terrain type
+  if (config.terrain[_current].obstacles === undefined) return
+
+  // There are graves in current terrain type
+  if (config.terrain[_current].obstacles.grave !== undefined) {
+    const gapBetween = config.terrain[_current].obstacles.grave.between.min * config.tileSize
+    const lastObstacle = _obstacles.getAt(_obstacles.children.length - 1)
+
+    const isHappened = Phaser.Utils.chanceRoll(config.terrain[_current].obstacles.grave.p)
+    const isGrounded = _floor.getAt(_floor.children.length - 2) instanceof Ground
+    const isDistanced = _obstacles.children.length === 0 || (getLastFloor().left - lastObstacle.right) >= gapBetween
+    if (isHappened && isGrounded && isDistanced) {
+      const grave = new Grave({ game, x: getLastFloor().left - config.tileSize, y: getLastFloor().top - config.tileSize })
+      _obstacles.add(grave)
+    }
   }
 }
 
@@ -146,6 +165,10 @@ export default class {
 
     _current = next
     _lastLength = 0
+  }
+
+  relax () {
+    addFloor(new Ground({ game, type: 'middle', x: getLastRight(), height: config.terrain.relax.height }))
   }
 
   // Terrain generators
