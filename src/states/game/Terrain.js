@@ -38,6 +38,10 @@ export default class {
     this.terrain.init()
   }
 
+  get current () {
+    return _roll[0]
+  }
+
   update () {
     if (this.terrain.update() >= _roll[0].length) {
       _roll.shift()
