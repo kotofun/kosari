@@ -13,8 +13,13 @@ import Grass from '../sprites/Grass'
 import Grave from '../sprites/Grave'
 
 const _floorTypes = { Ground, Swamp }
-let _lastRow = { 'Ground': 0 }
-const _lastBetween = { 'Ground': 0, 'Swamp': 0 }
+
+const _counters = {
+  row: { 'Ground': 0 },
+  between: { 'Ground': 0, 'Swamp': 0 },
+  last: 'Ground',
+  terrainLength: 0
+}
 
 // Game state context reference
 let ctx
@@ -38,9 +43,6 @@ let _grass
 
 // Terrain types roll which is using on updates and terrain changes
 let _current
-
-// Last terrain length after changing
-let _lastLength = 0
 
 const last = group => group.getAt(_floor.children.length - 1)
 const lastRight = group => last(group) === -1 ? 0 : last(group).right
@@ -111,7 +113,7 @@ export default class {
     while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(terrainTypes[_current])
 
-      _lastLength++
+      _counters.terrainLength++
     }
 
     const firstObstacle = _obstacles.getAt(0)
@@ -120,7 +122,7 @@ export default class {
     const firstGrass = _grass.getAt(0)
     if (!firstGrass.inCamera) _grass.remove(firstGrass)
 
-    return _lastLength
+    return _counters.terrainLength
   }
 
   change (next) {
@@ -129,7 +131,7 @@ export default class {
     }
 
     _current = next
-    _lastLength = 0
+    _counters.terrainLength = 0
   }
 
   generate (terrain) {
@@ -145,12 +147,8 @@ export default class {
       if (!Phaser.Utils.chanceRoll(probability)) continue
 
       if (floorConfig[floorType].between !== undefined) {
-        if (_lastBetween[floorType] < floorConfig[floorType].between.min) continue
-        if (_lastBetween[floorType] >= floorConfig[floorType].between.max) {
-          nextFloor = { [floorType]: floorConfig[floorType] }
-          nextFloorName = floorType
-          break
-        }
+        if (_counters.between[floorType] < floorConfig[floorType].between.min) continue
+        if (_counters.between[floorType] >= floorConfig[floorType].between.max) continue
       }
 
       nextFloor = { [floorType]: floorConfig[floorType] }
@@ -158,13 +156,21 @@ export default class {
       break
     }
 
-    if (_lastRow[nextFloorName] === undefined) _lastRow = { [nextFloorName]: 0 }
+    if (_counters.row[nextFloorName] === undefined) _counters.row = { [nextFloorName]: 0 }
+    _counters.row[nextFloorName]++
 
-    _lastRow[nextFloorName]++
-    for (const btwName in _lastBetween) {
-      _lastBetween[btwName] = btwName === nextFloorName ? 0 : _lastBetween[btwName] + 1
+    for (const btwName in _counters.between) {
+      _counters.between[btwName] = btwName === nextFloorName ? 0 : _counters.between[btwName] + 1
     }
 
-    addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: lastRight(_floor), height: 1 }))
+    if (_counters.last === nextFloorName) {
+      addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: lastRight(_floor), height: 1 }))
+    } else {
+      _floor.remove(last(_floor))
+      addFloor(new _floorTypes[_counters.last]({ game, type: 'right', x: lastRight(_floor), height: 1 }))
+      addFloor(new _floorTypes[nextFloorName]({ game, type: 'left', x: lastRight(_floor), height: 1 }))
+    }
+
+    _counters.last = nextFloorName
   }
 }
