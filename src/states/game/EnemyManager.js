@@ -31,18 +31,18 @@ const _updateAlive = (enemy) => {
   if (enemy.right < game.camera.view.x) enemy.kill()
 }
 
-const _updateDead = () => {
+const _revive = (floor) => {
   const enemiesConfig = config.terrain[_terrain.current.type].enemies
   if (enemiesConfig === undefined) return
 
   for (const enemyType in enemiesConfig) {
-    if (!_terrain.lastFloor.standable) continue
+    if (!floor.standable) continue
     if (!Phaser.Utils.chanceRoll(enemiesConfig[enemyType].p)) continue
 
     const enemy = _enemies[enemyType].getFirstDead()
     if (enemy === null) continue
 
-    enemy.reset(_terrain.lastFloor.left, game.world.height - _terrain.lastFloor.height - enemy.height)
+    enemy.reset(floor.left, game.world.height - floor.height - enemy.height)
     break
   }
 }
@@ -56,6 +56,8 @@ export default class {
 
     signals.attack.add(this.attack, this)
 
+    signals.terrainCreated.add(_revive, this)
+
     _init()
   }
 
@@ -67,8 +69,6 @@ export default class {
     for (const enemyType in _enemies) {
       _enemies[enemyType].forEachAlive(_updateAlive)
     }
-
-    _updateDead()
   }
 
   attack () {

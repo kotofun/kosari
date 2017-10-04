@@ -5,6 +5,9 @@ export default {
   jump: new Phaser.Signal(),
   attack: new Phaser.Signal(),
 
+  // terrain signals
+  terrainCreated: new Phaser.Signal(),
+
   // game & player speed signals
   speedUp: new Phaser.Signal(),
   speedReset: new Phaser.Signal(),

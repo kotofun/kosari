@@ -4,6 +4,8 @@ import config from '../config'
 
 import { terrainTypes } from '../consts'
 
+import signals from '../signals'
+
 // Terrain objects
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
@@ -112,6 +114,8 @@ export default class {
 
     while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(terrainTypes[_current])
+
+      signals.terrainCreated.dispatch(last(_floor))
 
       _counters.terrainLength++
     }
