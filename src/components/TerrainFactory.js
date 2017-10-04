@@ -37,7 +37,7 @@ let _obstacles
 let _grass
 
 // Terrain types roll which is using on updates and terrain changes
-let _current = terrainTypes.relax
+let _current
 
 // Last terrain length after changing
 let _lastLength = 0
@@ -112,7 +112,7 @@ const addFloor = e => {
 }
 
 export default class {
-  constructor (context, _parent) {
+  constructor (context, _parent, starting = config.terrain.relax) {
     ctx = context
     parent = _parent
 
@@ -128,6 +128,8 @@ export default class {
     parent.floor = _floor
     parent.obstacles = _obstacles
     parent.grass = _grass
+
+    _current = starting
   }
 
   get current () {
