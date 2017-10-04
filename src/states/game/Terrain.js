@@ -34,9 +34,7 @@ export default class {
 
     game.physics.arcade.enable(this)
 
-    this.terrain = new TerrainFactory(ctx, this)
-
-    this.terrain.init()
+    this.terrain = new TerrainFactory(ctx, this, _roll[0].type)
   }
 
   get current () {

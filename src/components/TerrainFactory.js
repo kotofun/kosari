@@ -136,12 +136,6 @@ export default class {
     return _current
   }
 
-  init () {
-    do {
-      this[_current]()
-    } while (getLastFloor().right <= game.world.width)
-  }
-
   update () {
     const firstFloor = _floor.getAt(0)
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
