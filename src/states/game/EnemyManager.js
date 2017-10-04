@@ -23,7 +23,7 @@ let _terrain
 const _init = () => {
   for (const enemyType in enemyTypes) {
     _enemies[enemyType] = game.add.group()
-    _enemies[enemyType].add(new enemyTypes[enemyType](ctx))
+    _enemies[enemyType].add(new enemyTypes[enemyType](game))
   }
 }
 

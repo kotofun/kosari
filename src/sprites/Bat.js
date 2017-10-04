@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 import Enemy from '../components/Enemy'
 
 export default class extends Enemy {
-  constructor (ctx) {
-    super(ctx, 'enemy.bat', true)
+  constructor (game) {
+    super(game, 'enemy.bat', true)
 
     this.body.setSize(40, 20, 12, 24)
 

@@ -1,8 +1,8 @@
 import DisplayCharacter from './DisplayCharacter'
 
 export default class extends DisplayCharacter {
-  constructor (ctx, asset, body) {
-    super(ctx, 0, 0, asset, body)
+  constructor (game, asset, body) {
+    super(game, 0, 0, asset, body)
 
     this.exists = false
     this.alive = false
