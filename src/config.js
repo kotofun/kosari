@@ -47,6 +47,10 @@ export default {
       },
       obstacles: {
         grave: { p: 15, between: { min: 3 } }
+      },
+      enemies: {
+        Bat: { p: 10 },
+        Skeleton: { p: 5 }
       }
     },
     habitual: {

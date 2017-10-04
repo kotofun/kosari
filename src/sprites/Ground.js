@@ -10,5 +10,7 @@ export default class extends AbstractFloor {
     let _y = (y !== null) ? y : game.world.height - bmd.height
 
     super(game, _x, _y, bmd, 0)
+
+    this.standable = true
   }
 }

@@ -1,9 +1,12 @@
 import Phaser from 'phaser'
 
+import config from '../../config'
 import signals from '../../signals'
 
 import Skeleton from '../../sprites/Skeleton'
 import Bat from '../../sprites/Bat'
+
+const enemyTypes = { Bat, Skeleton }
 
 // controller context
 let ctx
@@ -12,27 +15,44 @@ let ctx
 let game
 
 // enemy swap
-let _enemies
+const _enemies = {}
+
+// terrain instance
+let _terrain
 
 const _init = () => {
-  _enemies.add(new Bat(ctx, game.width, game.height - 96))
-  _enemies.add(new Skeleton(ctx, game.width - 64, game.height - 96))
+  for (const enemyType in enemyTypes) {
+    _enemies[enemyType] = game.add.group()
+    _enemies[enemyType].add(new enemyTypes[enemyType](ctx, 0, 0))
+  }
 }
 
 const _updateAlive = (enemy) => {
   if (enemy.right < game.camera.view.x) enemy.kill()
 }
 
-const _updateDead = (enemy) => {
-  enemy.reset(game.camera.view.right + enemy.width + 32, game.world.height - 32 - enemy.height)
+const _updateDead = () => {
+  const enemiesConfig = config.terrain[_terrain.current.type].enemies
+  if (enemiesConfig === undefined) return
+
+  for (const enemyType in enemiesConfig) {
+    if (!_terrain.lastFloor.standable) continue
+    if (!Phaser.Utils.chanceRoll(enemiesConfig[enemyType].p)) continue
+
+    const enemy = _enemies[enemyType].getFirstDead()
+    if (enemy === null) continue
+
+    enemy.reset(_terrain.lastFloor.left, game.world.height - _terrain.lastFloor.height - enemy.height)
+    break
+  }
 }
 
 export default class {
-  constructor (context) {
+  constructor (context, terrain) {
     ctx = context
     game = ctx.game
 
-    _enemies = game.add.group()
+    _terrain = terrain
 
     signals.attack.add(this.attack, this)
 
@@ -44,13 +64,18 @@ export default class {
   }
 
   update () {
-    _enemies.forEachDead(_updateDead)
-    _enemies.forEachAlive(_updateAlive)
+    for (const enemyType in _enemies) {
+      _enemies[enemyType].forEachAlive(_updateAlive)
+    }
+
+    _updateDead()
   }
 
   attack () {
-    _enemies.forEachAlive(enemy => {
-      if (Phaser.Rectangle.intersects(ctx.player.getBounds(), enemy.getBounds())) enemy.kill()
-    })
+    for (const enemyType in _enemies) {
+      _enemies[enemyType].forEachAlive(enemy => {
+        if (Phaser.Rectangle.intersects(ctx.player.getBounds(), enemy.getBounds())) enemy.kill()
+      })
+    }
   }
 }

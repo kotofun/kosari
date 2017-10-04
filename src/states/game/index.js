@@ -19,7 +19,7 @@ export default class extends Phaser.State {
 
     this.terrain = new Terrain(this)
 
-    this.enemies = new EnemyManager(this)
+    this.enemies = new EnemyManager(this, this.terrain)
 
     this.player = new Player(this, this.terrain)
     this.chaser = new Chaser(this, this.terrain)

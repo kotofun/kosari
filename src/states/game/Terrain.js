@@ -41,6 +41,10 @@ export default class {
     return _roll[0]
   }
 
+  get lastFloor () {
+    return this.floor.getAt(this.floor.children.length - 1)
+  }
+
   update () {
     if (this.terrain.update() >= _roll[0].length) {
       _roll.shift()

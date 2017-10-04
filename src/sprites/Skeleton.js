@@ -6,6 +6,8 @@ export default class extends DisplayCharacter {
   constructor (ctx, x, y) {
     super(ctx, x, y, 'enemy.skeleton', true)
 
+    this.alive = false
+
     this.body.setSize(28, 50, 2, 16)
 
     this.animations.add('idle')
