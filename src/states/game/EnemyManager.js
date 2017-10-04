@@ -62,7 +62,9 @@ export default class {
   }
 
   collide (obj, ...args) {
-    game.physics.arcade.collide(obj, _enemies, ...args)
+    for (const enemyType in _enemies) {
+      game.physics.arcade.collide(obj, _enemies[enemyType], ...args)
+    }
   }
 
   update () {
