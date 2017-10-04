@@ -15,7 +15,7 @@ let game
 let _enemies
 
 const _init = () => {
-  _enemies.add(new Bat(ctx, game.width, game.height - 64))
+  _enemies.add(new Bat(ctx, game.width, game.height - 96))
   _enemies.add(new Skeleton(ctx, game.width - 64, game.height - 96))
 }
 

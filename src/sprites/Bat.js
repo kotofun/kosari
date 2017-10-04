@@ -9,7 +9,10 @@ export default class extends DisplayCharacter {
 
     game = ctx.game
 
-    this.body.setSize(40, 20, 12, 4)
+    this.body.setSize(40, 20, 12, 24)
+
+    this.animations.add('idle')
+    this.animations.play('idle', 24, true)
 
     this.body.allowGravity = false
     this.body.immovable = true

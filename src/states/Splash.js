@@ -21,8 +21,8 @@ export default class extends Phaser.State {
 
     this.load.atlas('bg', 'assets/images/bg.png', 'assets/images/bg.json')
 
-    this.load.image('character.skeleton', 'assets/images/characters/skeleton.png')
-    this.load.image('enemy.bat', 'assets/images/characters/bat.png')
+    this.load.atlas('enemy.skeleton', 'assets/images/enemies/skeleton.png', 'assets/images/enemies/skeleton.json')
+    this.load.atlas('enemy.bat', 'assets/images/enemies/bat.png', 'assets/images/enemies/bat.json')
 
     this.load.audio('sound.background', 'assets/audio/background.wav')
     this.load.audio('sound.jump', 'assets/audio/jump.wav')
