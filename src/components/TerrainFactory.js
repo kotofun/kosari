@@ -12,6 +12,10 @@ import Ground from '../sprites/Ground'
 import Grass from '../sprites/Grass'
 import Grave from '../sprites/Grave'
 
+const _floorTypes = { Ground, Swamp }
+let _lastRow = { 'Ground': 0 }
+const _lastBetween = { 'Ground': 0, 'Swamp': 0 }
+
 // Game state context reference
 let ctx
 
@@ -132,7 +136,7 @@ export default class {
 
   init () {
     do {
-      this.plateau()
+      this[_current]()
     } while (getLastFloor().right <= game.world.width)
   }
 
@@ -141,7 +145,7 @@ export default class {
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
     while (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
-      this[terrainTypes[_current]]()
+      this.generate(terrainTypes[_current])
 
       _lastLength++
     }
@@ -167,33 +171,39 @@ export default class {
     _lastLength = 0
   }
 
-  relax () {
-    addFloor(new Ground({ game, type: 'middle', x: getLastRight(), height: config.terrain.relax.height }))
-  }
-
-  // Terrain generators
-  plateau (height = getLastHeight(), type = 'middle') {
-    addFloor(new Ground({ game, type, x: getLastRight(), height }))
-  }
-
-  habitual () {
-    const swampsCount = _floor.children.reduce((sum, f) => {
-      return sum + (f instanceof Swamp ? 1 : 0)
-    }, 0)
-
-    if (swampsCount < 2) {
-      addFloor(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
-      addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
-      addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
-      addFloor(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
-    } else {
-      addFloor(new Ground({ game, type: 'middle', x: getLastRight(), height: 1 }))
+  generate (terrain) {
+    const floorConfig = config.terrain[_current].floor
+    let nextFloorName = floorConfig.default
+    let nextFloor = {
+      [nextFloorName]: floorConfig[floorConfig.default]
     }
-  }
 
-  swampy () {
-    addFloor(new Ground({ game, type: 'right', x: getLastRight(), height: 1 }))
-    addFloor(new Swamp({ game, type: 'middle', x: getLastRight() }))
-    addFloor(new Ground({ game, type: 'left', x: getLastRight(), height: 1 }))
+    for (const floorType in floorConfig) {
+      const probability = floorConfig[floorType].p
+      if (probability === undefined) continue
+      if (!Phaser.Utils.chanceRoll(probability)) continue
+
+      if (floorConfig[floorType].between !== undefined) {
+        if (_lastBetween[floorType] < floorConfig[floorType].between.min) continue
+        if (_lastBetween[floorType] >= floorConfig[floorType].between.max) {
+          nextFloor = { [floorType]: floorConfig[floorType] }
+          nextFloorName = floorType
+          break
+        }
+      }
+
+      nextFloor = { [floorType]: floorConfig[floorType] }
+      nextFloorName = floorType
+      break
+    }
+
+    if (_lastRow[nextFloorName] === undefined) _lastRow = { [nextFloorName]: 0 }
+
+    _lastRow[nextFloorName]++
+    for (const btwName in _lastBetween) {
+      _lastBetween[btwName] = btwName === nextFloorName ? 0 : _lastBetween[btwName] + 1
+    }
+
+    addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: getLastRight(), height: 1 }))
   }
 }

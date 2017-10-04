@@ -27,29 +27,45 @@ export default {
 
   terrain: {
     relax: {
-      width: 1,
-      height: 1
+      length: 1,
+      floor: {
+        default: 'Ground',
+        Ground: { height: 1 }
+      }
     },
     plateau: {
-      width: { min: 2, max: 5 }, // width in gameWidth's
-      height: { min: 1, max: 3, breakable: false }, // height in tiles ocunt
+      length: { min: 2, max: 5 }, // width in gameWidth's
+      floor: {
+        default: 'Ground',
+        Ground: {
+          height: { // height in tiles ocunt
+            min: 1,
+            max: 3,
+            breakable: false
+          }
+        }
+      },
       obstacles: {
         grave: { p: 15, between: { min: 3 } }
       }
     },
     habitual: {
-      width: { min: 2, max: 5 },
-      height: 1,
-      floor: { swamp: { p: 15 } },
+      length: { min: 2, max: 5 },
+      floor: {
+        default: 'Ground',
+        Ground: { height: 1 },
+        Swamp: { p: 15 }
+      },
       obstacles: {
         grave: { p: 15, between: { min: 5 } }
       }
     },
     swampy: {
-      width: { min: 2, max: 5 },
-      height: 1,
+      length: { min: 2, max: 5 },
       floor: {
-        swamp: {
+        default: 'Ground',
+        Ground: { height: 1 },
+        Swamp: {
           p: 30,
           inRow: { max: 2 }
         }

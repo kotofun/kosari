@@ -13,7 +13,7 @@ let ctx
 let game
 
 let _roll = [
-  { type: terrainTypes.relax, length: config.terrain.relax.width * config.gameWidth / config.tileSize },
+  { type: terrainTypes.relax, length: config.terrain.relax.length * config.gameWidth / config.tileSize },
   { type: terrainTypes.plateau, length: config.gameWidth / config.tileSize * 3 },
   { type: terrainTypes.habitual, length: config.gameWidth / config.tileSize }
 ]
