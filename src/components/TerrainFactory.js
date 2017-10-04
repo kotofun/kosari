@@ -42,47 +42,15 @@ let _current
 // Last terrain length after changing
 let _lastLength = 0
 
-const getLastFloor = () => { return _floor.getAt(_floor.children.length - 1) }
-
-const getLastRight = () => {
-  const floor = getLastFloor()
-
-  if (floor === -1) return 0
-
-  return floor.right
-}
-
-const getLastHeight = () => { return getLastFloor().height / config.tileSize || 1 }
-
-// Add ending terrain tile
-const _finish = (terrain) => {
-  if (terrain === terrainTypes.plateau) {
-    addFloor(new Ground({
-      game,
-      type: 'middle',
-      x: getLastRight(),
-      height: getLastFloor().height / config.tileSize
-    }))
-  }
-}
-
-// Add starting terrain tile
-const _start = (terrain) => {
-  if (terrain === terrainTypes.plateau) {
-    addFloor(new Ground({
-      game,
-      type: 'middle',
-      x: getLastRight(),
-      height: getLastFloor().height / config.tileSize
-    }))
-  }
-}
+const last = group => group.getAt(_floor.children.length - 1)
+const lastRight = group => last(group) === -1 ? 0 : last(group).right
+const lastHeight = group => last(group).height / config.tileSize || 1
 
 const _addSurface = (e) => {
   if (!(e instanceof Ground)) return
 
   // Grass exists always!
-  _grass.add(new Grass({ game, x: getLastFloor().left, y: getLastFloor().top - config.tileSize }))
+  _grass.add(new Grass({ game, x: last(_floor).left, y: last(_floor).top - config.tileSize }))
 
   _addObstacle()
 }
@@ -98,9 +66,9 @@ const _addObstacle = () => {
 
     const isHappened = Phaser.Utils.chanceRoll(config.terrain[_current].obstacles.grave.p)
     const isGrounded = _floor.getAt(_floor.children.length - 2) instanceof Ground
-    const isDistanced = _obstacles.children.length === 0 || (getLastFloor().left - lastObstacle.right) >= gapBetween
+    const isDistanced = _obstacles.children.length === 0 || (last(_floor).left - lastObstacle.right) >= gapBetween
     if (isHappened && isGrounded && isDistanced) {
-      const grave = new Grave({ game, x: getLastFloor().left - config.tileSize, y: getLastFloor().top - config.tileSize })
+      const grave = new Grave({ game, x: last(_floor).left - config.tileSize, y: last(_floor).top - config.tileSize })
       _obstacles.add(grave)
     }
   }
@@ -140,7 +108,7 @@ export default class {
     const firstFloor = _floor.getAt(0)
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
-    while (getLastRight() - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
+    while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(terrainTypes[_current])
 
       _lastLength++
@@ -159,9 +127,6 @@ export default class {
     if (terrainTypes[next] === undefined) {
       throw new Error('undefined terrain type')
     }
-
-    _finish(_current)
-    _start(next)
 
     _current = next
     _lastLength = 0
@@ -200,6 +165,6 @@ export default class {
       _lastBetween[btwName] = btwName === nextFloorName ? 0 : _lastBetween[btwName] + 1
     }
 
-    addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: getLastRight(), height: 1 }))
+    addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: lastRight(_floor), height: 1 }))
   }
 }
