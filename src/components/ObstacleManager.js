@@ -50,4 +50,13 @@ export default class {
       })
     }
   }
+
+  collide (obj, ...args) {
+    let collided = false
+    for (const obstacleType in _obstacles) {
+      collided |= this.game.physics.arcade.collide(obj, _obstacles[obstacleType], ...args)
+    }
+
+    return collided
+  }
 }

@@ -64,8 +64,10 @@ export default class extends Phaser.State {
     this.background.update()
 
     this.floor.collide(this.player, this.floorCollision)
-    this.enemies.collide(this.player)
-    if (!this.terrain.collideObstacles(this.player, this.obstacleCollision) && this.player.slowedDown) {
+    if (!this.enemies.collide(this.player, this.playerSlowdown) && this.player.slowedDown) {
+      signals.speedReset.dispatch()
+    }
+    if (!this.obstacles.collide(this.player, this.playerSlowdown) && this.player.slowedDown) {
       signals.speedReset.dispatch()
     }
 
@@ -88,9 +90,8 @@ export default class extends Phaser.State {
     if (floor instanceof Swamp) signals.gameOver.dispatch()
   }
 
-  obstacleCollision (player, obstacle) {
-    // Player bumbed into grave
-    if (obstacle instanceof Grave && player.body.touching.right) signals.speedDown.dispatch()
+  playerSlowdown (player, obstacle) {
+    if (player.body.touching.right) signals.speedDown.dispatch()
   }
 
   // TODO: Stop the game, show game over animation and show highscores
