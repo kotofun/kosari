@@ -9,6 +9,7 @@ import Terrain from './Terrain'
 import Background from './Background'
 import Controller from './Controller'
 import EnemyManager from './EnemyManager'
+import ObstacleManager from '../../components/ObstacleManager'
 
 import Swamp from '../../sprites/Swamp'
 import Grave from '../../sprites/Grave'
@@ -20,6 +21,7 @@ export default class extends Phaser.State {
     this.terrain = new Terrain(this)
 
     this.enemies = new EnemyManager(this, this.terrain)
+    this.obstacles = new ObstacleManager(this.game)
 
     this.player = new Player(this, this.terrain)
     this.chaser = new Chaser(this, this.terrain)
@@ -69,6 +71,7 @@ export default class extends Phaser.State {
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
 
     this.terrain.update()
+    this.obstacles.update()
     this.enemies.update()
   }
 

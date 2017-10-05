@@ -12,7 +12,6 @@ import Ground from '../sprites/Ground'
 
 // Surface objects
 import Grass from '../sprites/Grass'
-import Grave from '../sprites/Grave'
 
 const _floorTypes = { Ground, Swamp }
 
@@ -36,10 +35,6 @@ let parent
 // This layer always have body and enabled physics 
 let _floor
 
-// On-floor obstacles which consists of thombstones, thombs and etc.
-// Objects of this layer always have a physical body
-let _obstacles
-
 // Grass group
 let _grass
 
@@ -54,28 +49,7 @@ const _addSurface = (e) => {
   if (!(e instanceof Ground)) return
 
   // Grass exists always!
-  _grass.add(new Grass({ game, x: last(_floor).left, y: last(_floor).top - config.tileSize }))
-
-  _addObstacle()
-}
-
-const _addObstacle = () => {
-  // There is no surfaces in current terrain type
-  if (config.terrain[_current].obstacles === undefined) return
-
-  // There are graves in current terrain type
-  if (config.terrain[_current].obstacles.grave !== undefined) {
-    const gapBetween = config.terrain[_current].obstacles.grave.between.min * config.tileSize
-    const lastObstacle = _obstacles.getAt(_obstacles.children.length - 1)
-
-    const isHappened = Phaser.Utils.chanceRoll(config.terrain[_current].obstacles.grave.p)
-    const isGrounded = _floor.getAt(_floor.children.length - 2) instanceof Ground
-    const isDistanced = _obstacles.children.length === 0 || (last(_floor).left - lastObstacle.right) >= gapBetween
-    if (isHappened && isGrounded && isDistanced) {
-      const grave = new Grave({ game, x: last(_floor).left - config.tileSize, y: last(_floor).top - config.tileSize })
-      _obstacles.add(grave)
-    }
-  }
+  _grass.add(new Grass(game, last(_floor).left, last(_floor).top - config.tileSize))
 }
 
 const addFloor = e => {
@@ -94,11 +68,9 @@ export default class {
     // init terrain objects
     _floor = game.add.group()
     _grass = game.add.group()
-    _obstacles = game.add.group()
 
     // bind terrain objects to parent
     parent.floor = _floor
-    parent.obstacles = _obstacles
     parent.grass = _grass
 
     _current = starting
@@ -115,13 +87,10 @@ export default class {
     while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(terrainTypes[_current])
 
-      signals.terrainCreated.dispatch(last(_floor))
+      signals.terrainCreated.dispatch(last(_floor), _current)
 
       _counters.terrainLength++
     }
-
-    const firstObstacle = _obstacles.getAt(0)
-    if (firstObstacle.right < game.camera.x) _obstacles.remove(firstObstacle)
 
     const firstGrass = _grass.getAt(0)
     if (!firstGrass.inCamera) _grass.remove(firstGrass)

@@ -1,7 +1,7 @@
-import AbstractSurface from './AbstractSurface'
+import Phaser from 'phaser'
 
-export default class extends AbstractSurface {
-  constructor ({ game, x, y }) {
-    super(false, game, x, y, 'surface.grass', game.rnd.between(1, 2))
+export default class extends Phaser.Sprite {
+  constructor (game, x, y) {
+    super(game, x, y, 'surface.grass', game.rnd.between(1, 2))
   }
 }

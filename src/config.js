@@ -25,6 +25,10 @@ export default {
     height: { min: 1, max: 4 }
   },
 
+  obstacle: {
+    Grave: { max: 10 }
+  },
+
   terrain: {
     relax: {
       length: 1,
@@ -46,7 +50,7 @@ export default {
         }
       },
       obstacles: {
-        grave: { p: 15, between: { min: 3 } }
+        Grave: { p: 15, between: { min: 3 } }
       },
       enemies: {
         Bat: { p: 10 },
@@ -61,7 +65,7 @@ export default {
         Swamp: { p: 15 }
       },
       obstacles: {
-        grave: { p: 15, between: { min: 5 } }
+        Grave: { p: 15, between: { min: 5 } }
       }
     },
     swampy: {
@@ -75,7 +79,7 @@ export default {
         }
       },
       obstacles: {
-        grave: { p: 15, between: { min: 5 } }
+        Grave: { p: 15, between: { min: 5 } }
       }
     }
   }
