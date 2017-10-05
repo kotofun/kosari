@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
 
 import TerrainFactory from '../../components/TerrainFactory'
-import Grass from '../../sprites/Grass'
 
 import { terrainTypes } from '../../consts'
 import config from '../../config'
@@ -59,15 +58,5 @@ export default class {
 
   collideObstacles (obj, ...args) {
     return game.physics.arcade.collide(obj, this.obstacles, ...args)
-  }
-
-  mowGrass (mower) {
-    if (mower.isOnFloor()) {
-      this.grass.children.filter(elem => {
-        if (!(elem instanceof Grass)) return false
-
-        return Phaser.Rectangle.intersects(elem.getBounds(), mower.getBounds())
-      }).map(e => this.grass.remove(e))
-    }
   }
 }

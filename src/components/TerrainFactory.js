@@ -10,9 +10,6 @@ import signals from '../signals'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
-// Surface objects
-import Grass from '../sprites/Grass'
-
 const _floorTypes = { Ground, Swamp }
 
 const _counters = {
@@ -35,9 +32,6 @@ let parent
 // This layer always have body and enabled physics 
 let _floor
 
-// Grass group
-let _grass
-
 // Terrain types roll which is using on updates and terrain changes
 let _current
 
@@ -45,16 +39,8 @@ const last = group => group.getAt(_floor.children.length - 1)
 const lastRight = group => last(group) === -1 ? 0 : last(group).right
 const lastHeight = group => last(group).height / config.tileSize || 1
 
-const _addSurface = (e) => {
-  if (!(e instanceof Ground)) return
-
-  // Grass exists always!
-  _grass.add(new Grass(game, last(_floor).left, last(_floor).top - config.tileSize))
-}
-
 const addFloor = e => {
   _floor.add(e)
-  _addSurface(e)
 }
 
 export default class {
@@ -67,11 +53,9 @@ export default class {
 
     // init terrain objects
     _floor = game.add.group()
-    _grass = game.add.group()
 
     // bind terrain objects to parent
     parent.floor = _floor
-    parent.grass = _grass
 
     _current = starting
   }
@@ -91,9 +75,6 @@ export default class {
 
       _counters.terrainLength++
     }
-
-    const firstGrass = _grass.getAt(0)
-    if (!firstGrass.inCamera) _grass.remove(firstGrass)
 
     return _counters.terrainLength
   }
