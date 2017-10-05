@@ -7,6 +7,7 @@ export default {
   mow: new Phaser.Signal(),
 
   // terrain signals
+  terrainChanged: new Phaser.Signal(),
   terrainCreated: new Phaser.Signal(),
 
   // game & player speed signals

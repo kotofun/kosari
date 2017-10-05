@@ -11,6 +11,7 @@ import Controller from './Controller'
 import EnemyManager from './EnemyManager'
 import ObstacleManager from '../../components/ObstacleManager'
 import GrassManager from '../../components/GrassManager'
+import FloorManager from '../../components/FloorManager'
 
 import Swamp from '../../sprites/Swamp'
 import Grave from '../../sprites/Grave'
@@ -19,13 +20,14 @@ export default class extends Phaser.State {
   init () {
     this.background = new Background(this)
 
-    this.terrain = new Terrain(this)
+    this.terrain = new Terrain(this.game)
+    this.floor = new FloorManager(this.game)
     this.grass = new GrassManager(this.game)
     this.obstacles = new ObstacleManager(this.game)
     this.enemies = new EnemyManager(this, this.terrain)
 
     this.player = new Player(this.game)
-    this.chaser = new Chaser(this.game, this.terrain)
+    this.chaser = new Chaser(this.game, this.floor)
   }
 
   create () {
@@ -61,9 +63,7 @@ export default class extends Phaser.State {
   update () {
     this.background.update()
 
-    this.terrain.collideFloor(this.player, this.floorCollision)
-    this.terrain.collideFloor(this.chaser)
-    this.enemies.collide(this.terrain.floor)
+    this.floor.collide(this.player, this.floorCollision)
     this.enemies.collide(this.player)
     if (!this.terrain.collideObstacles(this.player, this.obstacleCollision) && this.player.slowedDown) {
       signals.speedReset.dispatch()
@@ -72,7 +72,7 @@ export default class extends Phaser.State {
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
     this.grass.mow(this.chaser)
 
-    this.terrain.update()
+    this.floor.update()
     this.grass.update()
     this.obstacles.update()
     this.enemies.update()

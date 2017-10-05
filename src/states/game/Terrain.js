@@ -1,21 +1,17 @@
-import Phaser from 'phaser'
-
-import TerrainFactory from '../../components/TerrainFactory'
-
 import { terrainTypes } from '../../consts'
 import config from '../../config'
 
+import signals from '../../signals'
+
 import { rnd } from '../../utils'
 
-let ctx
-
-let game
-
-let _roll = [
+const _roll = [
   { type: terrainTypes.relax, length: config.terrain.relax.length * config.gameWidth / config.tileSize },
   { type: terrainTypes.plateau, length: config.gameWidth / config.tileSize * 3 },
   { type: terrainTypes.habitual, length: config.gameWidth / config.tileSize }
 ]
+
+let _currentLength = 0
 
 const nextTerrain = () => {
   const terrainKeys = Object.keys(terrainTypes)
@@ -27,36 +23,24 @@ const nextTerrain = () => {
 }
 
 export default class {
-  constructor (context) {
-    ctx = context
-    game = ctx.game
+  constructor (game) {
+    this.game = game
 
-    game.physics.arcade.enable(this)
-
-    this.terrain = new TerrainFactory(ctx, this, _roll[0].type)
+    signals.terrainCreated.add(this.updateRoll, this)
   }
 
   get current () {
     return _roll[0]
   }
 
-  get lastFloor () {
-    return this.floor.getAt(this.floor.children.length - 1)
-  }
-
-  update () {
-    if (this.terrain.update() >= _roll[0].length) {
+  updateRoll (floor) {
+    _currentLength++
+    if (_currentLength >= _roll[0].length) {
       _roll.shift()
-      this.terrain.change(_roll[0].type)
+      signals.terrainChanged.dispatch(_roll[0])
       _roll.push(nextTerrain())
+
+      _currentLength = 0
     }
-  }
-
-  collideFloor (obj, ...args) {
-    return game.physics.arcade.collide(obj, this.floor, ...args)
-  }
-
-  collideObstacles (obj, ...args) {
-    return game.physics.arcade.collide(obj, this.obstacles, ...args)
   }
 }

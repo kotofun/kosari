@@ -6,14 +6,13 @@ import config from '../config'
 import Ground from './Ground'
 import Swamp from './Swamp'
 
-// game terrain instance
-let _terrain
+let _floor
 
 export default class extends Phaser.Sprite {
-  constructor (game, terrain) {
-    _terrain = terrain
-
+  constructor (game, floorManager) {
     super(game, 0, 0, 'player')
+
+    _floor = floorManager
 
     this.animations.add('run')
     this.animations.play('run', 30, true)
@@ -33,11 +32,13 @@ export default class extends Phaser.Sprite {
   }
 
   isTimeToJump () {
-    return (_terrain.floor.getAt(0) instanceof Ground) &&
-      (_terrain.floor.getAt(2) instanceof Swamp)
+    return (_floor.getAt(0) instanceof Ground) &&
+      (_floor.getAt(2) instanceof Swamp)
   }
 
   update () {
+    _floor.collide(this)
+
     if (this.isTimeToJump()) this.jump()
 
     if (this.left <= this.game.camera.x) {

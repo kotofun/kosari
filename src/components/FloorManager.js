@@ -19,15 +19,6 @@ const _counters = {
   terrainLength: 0
 }
 
-// Game state context reference
-let ctx
-
-// Game reference
-let game
-
-// Reference to a parent class for binding terrain group vars
-let parent
-
 // Bottom game layer which consists of grounds, swamps, waters and etc.
 // This layer always have body and enabled physics 
 let _floor
@@ -44,24 +35,20 @@ const addFloor = e => {
 }
 
 export default class {
-  constructor (context, _parent, starting = config.terrain.relax) {
-    ctx = context
-    parent = _parent
-
-    this.game = ctx.game
-    game = ctx.game
+  constructor (game, _parent, starting = terrainTypes.relax) {
+    this.game = game
 
     // init terrain objects
-    _floor = game.add.group()
-
-    // bind terrain objects to parent
-    parent.floor = _floor
+    _floor = this.game.add.group()
 
     _current = starting
+    signals.terrainChanged.add(terrain => {
+      _current = terrain.type
+    }, this)
   }
 
-  get current () {
-    return _current
+  getAt (index) {
+    return _floor.getAt(index)
   }
 
   update () {
@@ -118,13 +105,17 @@ export default class {
     }
 
     if (_counters.last === nextFloorName) {
-      addFloor(new _floorTypes[nextFloorName]({ game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      addFloor(new _floorTypes[nextFloorName]({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
     } else {
       _floor.remove(last(_floor))
-      addFloor(new _floorTypes[_counters.last]({ game, type: 'right', x: lastRight(_floor), height: 1 }))
-      addFloor(new _floorTypes[nextFloorName]({ game, type: 'left', x: lastRight(_floor), height: 1 }))
+      addFloor(new _floorTypes[_counters.last]({ game: this.game, type: 'right', x: lastRight(_floor), height: 1 }))
+      addFloor(new _floorTypes[nextFloorName]({ game: this.game, type: 'left', x: lastRight(_floor), height: 1 }))
     }
 
     _counters.last = nextFloorName
+  }
+
+  collide (obj, ...args) {
+    this.game.physics.arcade.collide(obj, _floor, ...args)
   }
 }
