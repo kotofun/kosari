@@ -10,15 +10,11 @@ const keys = {
 const _bindedKeys = {}
 
 const _initMobileControls = (game, { jump, attack }) => {
-  const jumpBtn = game.add.button(game.camera.view.x, 0, '__default', jump)
-  jumpBtn.fixedToCamera = true
-  jumpBtn.height = game.world.height
-  jumpBtn.width = game.world.width / 2
-
-  const attackBtn = game.add.button(jumpBtn.right, 0, '__default', attack)
-  attackBtn.fixedToCamera = true
-  attackBtn.height = game.world.height
-  attackBtn.width = game.world.width / 2
+  game.input.onTap.add((pointer, doubleTap) => {
+    const center = game.world.width / 2
+    if (pointer.x <= center) jump()
+    if (pointer.x > center) attack()
+  }, game)
 }
 
 const _initDesktopControls = (game, { jump, attack }) => {
