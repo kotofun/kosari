@@ -20,7 +20,7 @@ const _counters = {
 }
 
 // Bottom game layer which consists of grounds, swamps, waters and etc.
-// This layer always have body and enabled physics 
+// This layer always have body and enabled physics
 let _floor
 
 // Terrain types roll which is using on updates and terrain changes
@@ -88,7 +88,7 @@ export default class {
       if (!Phaser.Utils.chanceRoll(probability)) continue
 
       if (floorConfig[floorType].between !== undefined) {
-        if (_counters.between[floorType] < floorConfig[floorType].between.min) continue
+        if (_counters.between[floorType] <= floorConfig[floorType].between.min) continue
         if (_counters.between[floorType] >= floorConfig[floorType].between.max) continue
       }
 
