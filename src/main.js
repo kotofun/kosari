@@ -5,7 +5,7 @@ import FastClick from 'fastclick'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
-import GameState from './states/game'
+import GameState from './states/Game'
 
 import config from './config'
 
