@@ -35,4 +35,18 @@ class Game extends Phaser.Game {
   }
 }
 
-window.game = new Game()
+if (window.innerHeight > window.innerWidth) {
+  document.getElementById("rotate").style.display = 'block'
+  window.addEventListener("orientationchange", start)
+} else {
+  start()
+}
+
+function start () {
+  document.getElementById("rotate").style.display = 'none'
+  window.removeEventListener("orientationchange", start)
+
+  window.setTimeout(function () {
+    window.game = new Game()
+  }, 400)
+}
