@@ -1,28 +1,27 @@
 import Phaser from 'phaser'
 
-import signals from '../../signals'
+import signals from '../signals'
 
-import Player from '../../sprites/Player'
-import Chaser from '../../sprites/Chaser'
+import Player from '../sprites/Player'
+import Chaser from '../sprites/Chaser'
 
-import Terrain from './Terrain'
-import Background from './Background'
-import Controller from './Controller'
-import EnemyManager from './EnemyManager'
-import ObstacleManager from '../../components/ObstacleManager'
-import GrassManager from '../../components/GrassManager'
-import FloorManager from '../../components/FloorManager'
+import Terrain from '../components/Terrain'
+import Background from '../components/Background'
+import Controller from '../components/Controller'
+import EnemyManager from '../components/EnemyManager'
+import ObstacleManager from '../components/ObstacleManager'
+import SurfaceManager from '../components/SurfaceManager'
+import FloorFactory from '../components/FloorFactory'
 
-import Swamp from '../../sprites/Swamp'
-import Grave from '../../sprites/Grave'
+import Swamp from '../sprites/Swamp'
 
 export default class extends Phaser.State {
   init () {
     this.background = new Background(this)
 
     this.terrain = new Terrain(this.game)
-    this.floor = new FloorManager(this.game)
-    this.grass = new GrassManager(this.game)
+    this.floor = new FloorFactory(this.game)
+    this.surface = new SurfaceManager(this.game)
     this.obstacles = new ObstacleManager(this.game)
     this.enemies = new EnemyManager(this, this.terrain)
 
@@ -72,10 +71,10 @@ export default class extends Phaser.State {
     }
 
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
-    this.grass.mow(this.chaser)
+    this.surface.mow(this.chaser)
 
     this.floor.update()
-    this.grass.update()
+    this.surface.update()
     this.obstacles.update()
     this.enemies.update()
   }

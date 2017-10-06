@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 
-import config from '../../config'
-import signals from '../../signals'
+import config from '../config'
+import signals from '../signals'
 
-import Skeleton from '../../sprites/Skeleton'
-import Bat from '../../sprites/Bat'
+import Skeleton from '../sprites/Skeleton'
+import Bat from '../sprites/Bat'
 
 const enemyTypes = { Bat, Skeleton }
 

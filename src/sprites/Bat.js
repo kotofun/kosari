@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-import Enemy from '../components/Enemy'
+import AbstractEnemy from './AbstractEnemy'
 
-export default class extends Enemy {
+export default class extends AbstractEnemy {
   constructor (game) {
     super(game, 'enemy.bat', true)
 

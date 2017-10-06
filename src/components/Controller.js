@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-import signals from '../../signals'
+import signals from '../signals'
 
 const keys = {
   jump: Phaser.Keyboard.SPACEBAR,

@@ -1,4 +1,4 @@
-import signals from '../../signals'
+import signals from '../signals'
 
 // controller context
 let ctx

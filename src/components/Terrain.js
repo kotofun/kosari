@@ -1,9 +1,9 @@
-import { terrainTypes } from '../../consts'
-import config from '../../config'
+import { terrainTypes } from '../consts'
+import config from '../config'
 
-import signals from '../../signals'
+import signals from '../signals'
 
-import { rnd } from '../../utils'
+import { rnd } from '../utils'
 
 const _roll = [
   { type: terrainTypes.relax, length: config.terrain.relax.length * config.gameWidth / config.tileSize },

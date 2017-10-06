@@ -1,4 +1,4 @@
-import DisplayCharacter from '../components/DisplayCharacter'
+import DisplayCharacter from './DisplayCharacter'
 
 // TODO: create Satan sprite
 
