@@ -1,6 +1,7 @@
 import 'pixi'
 import 'p2'
 import Phaser from 'phaser'
+import FastClick from 'fastclick'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
@@ -11,6 +12,9 @@ import config from './config'
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
+
+    // Enable fastclick for mobile taps
+    FastClick.attach(document.body)
 
     // Desktop
     const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth

@@ -28,6 +28,7 @@
     "webpack": "^3.4.1"
   },
   "dependencies": {
+    "fastclick": "^1.0.6",
     "phaser-ce": "^2.8.7",
     "webfontloader": "^1.6.28"
   }
