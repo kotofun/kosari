@@ -11,8 +11,14 @@ import config from './config'
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
+
+    // Desktop
     const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth
     const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight
+
+    // Fullscreen for mobile
+    // const width =  window.innerWidth * window.devicePixelRatio
+    // const height = window.innerHeight * window.devicePixelRatio
 
     super(width, height, Phaser.CANVAS, 'content', null, false, false)
 
@@ -29,4 +35,18 @@ class Game extends Phaser.Game {
   }
 }
 
-window.game = new Game()
+if (window.innerHeight > window.innerWidth) {
+  document.getElementById("rotate").style.display = 'block'
+  window.addEventListener("orientationchange", start)
+} else {
+  start()
+}
+
+function start () {
+  document.getElementById("rotate").style.display = 'none'
+  window.removeEventListener("orientationchange", start)
+
+  window.setTimeout(function () {
+    window.game = new Game()
+  }, 400)
+}

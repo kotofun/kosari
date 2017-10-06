@@ -15,12 +15,30 @@
             margin: 0;
             padding: 0;
         }
+        #rotate {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #aaaaff;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+        }
+
+        #rotate > p{
+            color: #fff;
+            font-size: 40px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
     <div id="content"></div>
+    <div id="rotate">
+      <p>Rotate your device</p>
+    </div>
     <form action="#" onsubmit="return false">
         <button onclick="togglePause(this)">Пауза</button>
         <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>

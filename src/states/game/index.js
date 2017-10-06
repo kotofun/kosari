@@ -45,6 +45,8 @@ export default class extends Phaser.State {
     // enables fps
     this.game.time.advancedTiming = true
 
+    if (!this.game.device.desktop) this.addButtons()
+
     const bannerText = 'Game Over'
     this.gameOverBanner = this.add.text(this.world.centerX, this.world.height / 2 - 20, bannerText)
     this.gameOverBanner.visible = false
@@ -88,6 +90,27 @@ export default class extends Phaser.State {
 
   floorCollision (player, floor) {
     if (floor instanceof Swamp) signals.gameOver.dispatch()
+  }
+
+  addButtons () {
+    let jumpButton = this.game.add.button(this.game.camera.view.x, 0, '__default', this.jumpSignal)
+    jumpButton.fixedToCamera = true
+    jumpButton.height = this.game.world.height
+    jumpButton.width = this.game.world.width / 2
+
+    let attackX = this.game.camera.view.x + this.game.width / 2
+    let attackButton = this.game.add.button(attackX, 0, '__default', this.attackSignal)
+    attackButton.fixedToCamera = true
+    attackButton.height = this.game.world.height
+    attackButton.width = this.game.world.width / 2
+  }
+
+  jumpSignal () {
+    signals.jump.dispatch()
+  }
+
+  attackSignal () {
+    signals.attack.dispatch()
   }
 
   playerSlowdown (player, obstacle) {
