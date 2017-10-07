@@ -10,6 +10,9 @@ export default {
   terrainChanged: new Phaser.Signal(),
   terrainCreated: new Phaser.Signal(),
 
+  // floor signals
+  floorHold: new Phaser.Signal(),
+
   // game & player speed signals
   speedUp: new Phaser.Signal(),
   speedReset: new Phaser.Signal(),

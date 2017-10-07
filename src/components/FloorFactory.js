@@ -16,6 +16,8 @@ const _counters = {
   terrainLength: 0
 }
 
+let _hold = 0
+
 // Bottom game layer which consists of grounds, swamps, waters and etc.
 // This layer always have body and enabled physics
 let _floor
@@ -39,9 +41,9 @@ export default class {
     _floor = this.game.add.group()
 
     _current = starting
-    signals.terrainChanged.add(terrain => {
-      _current = terrain.type
-    }, this)
+
+    signals.terrainChanged.add(terrain => { _current = terrain.type }, this)
+    signals.floorHold.add(tilesCount => { _hold = tilesCount }, this)
   }
 
   getAt (index) {
@@ -72,12 +74,14 @@ export default class {
     _counters.terrainLength = 0
   }
 
-  generate (terrain) {
-    const floorConfig = config.terrain[_current].floor
-    let nextFloorName = floorConfig.default
-    let nextFloor = {
-      [nextFloorName]: floorConfig[floorConfig.default]
+  next () {
+    if (_hold > 0) {
+      _hold = 0
+      return _counters.last
     }
+
+    const floorConfig = config.terrain[_current].floor
+    let nextFloorType = floorConfig.default
 
     for (const floorType in floorConfig) {
       const probability = floorConfig[floorType].p
@@ -89,27 +93,32 @@ export default class {
         if (_counters.between[floorType] >= floorConfig[floorType].between.max) continue
       }
 
-      nextFloor = { [floorType]: floorConfig[floorType] }
-      nextFloorName = floorType
+      nextFloorType = floorType
       break
     }
 
-    if (_counters.row[nextFloorName] === undefined) _counters.row = { [nextFloorName]: 0 }
-    _counters.row[nextFloorName]++
+    return nextFloorType
+  }
+
+  generate (terrain) {
+    let nextFloorType = this.next()
+
+    if (_counters.row[nextFloorType] === undefined) _counters.row = { [nextFloorType]: 0 }
+    _counters.row[nextFloorType]++
 
     for (const btwName in _counters.between) {
-      _counters.between[btwName] = btwName === nextFloorName ? 0 : _counters.between[btwName] + 1
+      _counters.between[btwName] = btwName === nextFloorType ? 0 : _counters.between[btwName] + 1
     }
 
-    if (_counters.last === nextFloorName) {
-      addFloor(new _floorTypes[nextFloorName]({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+    if (_counters.last === nextFloorType) {
+      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
     } else {
       _floor.remove(last(_floor))
       addFloor(new _floorTypes[_counters.last]({ game: this.game, type: 'right', x: lastRight(_floor), height: 1 }))
-      addFloor(new _floorTypes[nextFloorName]({ game: this.game, type: 'left', x: lastRight(_floor), height: 1 }))
+      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'left', x: lastRight(_floor), height: 1 }))
     }
 
-    _counters.last = nextFloorName
+    _counters.last = nextFloorType
   }
 
   collide (obj, ...args) {

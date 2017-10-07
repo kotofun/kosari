@@ -39,6 +39,7 @@ export default class {
         if (obstacle === null) return
 
         obstacle.reset(floor.left, floor.top - config.tileSize)
+        if (obstacle.width > config.tileSize) signals.floorHold.dispatch(Math.ceil(obstacle.width / config.tileSize) - 1)
       }
     }
   }
