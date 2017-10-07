@@ -45,6 +45,7 @@ export default {
 
   terrain: {
     relax: {
+      p: 30,
       length: { min: gameScreensTiles(1), max: gameScreensTiles(1) },
       floor: {
         default: 'Ground',
@@ -52,6 +53,7 @@ export default {
       }
     },
     plateau: {
+      p: 30,
       length: { min: gameScreensTiles(2), max: gameScreensTiles(5) }, // width in gameWidth's
       floor: {
         default: 'Ground',
@@ -72,6 +74,7 @@ export default {
       }
     },
     habitual: {
+      p: 30,
       length: { min: gameScreensTiles(2), max: gameScreensTiles(5) },
       floor: {
         default: 'Ground',
@@ -83,6 +86,7 @@ export default {
       }
     },
     swampy: {
+      p: 30,
       length: { min: gameScreensTiles(2), max: gameScreensTiles(5) },
       floor: {
         default: 'Ground',
