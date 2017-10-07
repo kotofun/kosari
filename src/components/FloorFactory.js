@@ -122,6 +122,6 @@ export default class {
   }
 
   collide (obj, ...args) {
-    this.game.physics.arcade.collide(obj, _floor, ...args)
+    return this.game.physics.arcade.collide(obj, _floor, ...args)
   }
 }

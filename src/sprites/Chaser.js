@@ -37,8 +37,6 @@ export default class extends Phaser.Sprite {
   }
 
   update () {
-    _floor.collide(this)
-
     if (this.isTimeToJump()) this.jump()
 
     if (this.left <= this.game.camera.x) {

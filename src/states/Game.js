@@ -71,6 +71,8 @@ export default class extends Phaser.State {
     }
 
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
+
+    this.floor.collide(this.chaser)
     this.surface.mow(this.chaser)
 
     this.floor.update()
