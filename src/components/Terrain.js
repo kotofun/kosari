@@ -1,46 +1,37 @@
-import { terrainTypes } from '../consts'
-import config from '../config'
+import Phaser from 'phaser'
 
+import config from '../config'
 import signals from '../signals'
 
-import { rnd } from '../utils'
-
-const _roll = [
-  { type: terrainTypes.relax, length: config.terrain.relax.length * config.gameWidth / config.tileSize },
-  { type: terrainTypes.plateau, length: config.gameWidth / config.tileSize * 3 },
-  { type: terrainTypes.habitual, length: config.gameWidth / config.tileSize }
-]
-
-let _currentLength = 0
-
-const nextTerrain = () => {
-  const terrainKeys = Object.keys(terrainTypes)
-
-  return {
-    type: terrainTypes[terrainKeys[terrainKeys.length * Math.random() << 0]],
-    length: rnd(config.gameWidth / config.tileSize / 2, config.gameWidth / config.tileSize)
-  }
-}
+const _terrainsConfig = config.terrain
+const _terrainTypes = Object.keys(_terrainsConfig)
 
 export default class {
-  constructor (game) {
+  constructor (game, starting) {
+    if (starting === undefined) throw new TypeError('Starting terrain can\'t be undefined')
+
     this.game = game
+    this.current = this.next(starting)
 
-    signals.terrainCreated.add(this.updateRoll, this)
+    signals.terrainCreated.add(this.update, this)
   }
 
-  get current () {
-    return _roll[0]
+  next (terrain = Phaser.ArrayUtils.getRandomItem(_terrainTypes)) {
+    const minLength = _terrainsConfig[terrain].length.min
+    const maxLength = _terrainsConfig[terrain].length.max
+    const length = Phaser.Math.between(minLength, maxLength)
+
+    return {
+      type: terrain,
+      length,
+      left: length
+    }
   }
 
-  updateRoll (floor) {
-    _currentLength++
-    if (_currentLength >= _roll[0].length) {
-      _roll.shift()
-      signals.terrainChanged.dispatch(_roll[0])
-      _roll.push(nextTerrain())
-
-      _currentLength = 0
+  update (floor) {
+    if (this.current.left-- <= 0) {
+      this.current = this.next()
+      signals.terrainChanged.dispatch(this.current)
     }
   }
 }

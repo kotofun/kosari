@@ -1,17 +1,14 @@
 import Phaser from 'phaser'
 
 import config from '../config'
-
-import { terrainTypes } from '../consts'
-
 import signals from '../signals'
 
 // Terrain objects
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
+const _terrainTypes = Object.keys(config.terrain)
 const _floorTypes = { Ground, Swamp }
-
 const _counters = {
   row: { 'Ground': 0 },
   between: { 'Ground': 0, 'Swamp': 0 },
@@ -30,12 +27,12 @@ const last = group => group.getAt(_floor.children.length - 1)
 const lastRight = group => last(group) === -1 ? 0 : last(group).right
 const lastHeight = group => last(group).height / config.tileSize || 1
 
-const addFloor = e => {
-  _floor.add(e)
-}
+const addFloor = e => { _floor.add(e) }
 
 export default class {
-  constructor (game, _parent, starting = terrainTypes.relax) {
+  constructor (game, starting) {
+    if (starting === undefined) throw new TypeError('Starting terrain can\'t be undefined')
+
     this.game = game
 
     // init terrain objects
@@ -56,7 +53,7 @@ export default class {
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
     while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
-      this.generate(terrainTypes[_current])
+      this.generate(_terrainTypes[_current])
 
       signals.terrainCreated.dispatch(last(_floor), _current)
 
@@ -67,7 +64,7 @@ export default class {
   }
 
   change (next) {
-    if (terrainTypes[next] === undefined) {
+    if (_terrainTypes[next] === undefined) {
       throw new Error('undefined terrain type')
     }
 

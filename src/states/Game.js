@@ -19,8 +19,8 @@ export default class extends Phaser.State {
   init () {
     this.background = new Background(this)
 
-    this.terrain = new Terrain(this.game)
-    this.floor = new FloorFactory(this.game)
+    this.terrain = new Terrain(this.game, 'relax')
+    this.floor = new FloorFactory(this.game, this.terrain.current.type)
     this.surface = new SurfaceManager(this.game)
     this.obstacles = new ObstacleManager(this.game)
     this.enemies = new EnemyManager(this, this.terrain)
