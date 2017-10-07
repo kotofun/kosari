@@ -1,12 +1,26 @@
+const gameWidth = 768
+const gameHeight = 288
+const tileSize = 32
+
+const pxToTiles = px => Math.ceil(px / tileSize)
+const tilesToPx = tiles => tiles * tileSize
+
+const gameWidthInTiles = pxToTiles(gameWidth)
+const gameHeightInTiles = pxToTiles(gameHeight)
+
+const gameScreensPx = screensCount => gameWidth * screensCount
+const gameScreensTiles = screensCount => gameWidthInTiles * screensCount
+
 export default {
   godMode: true,
-  gameWidth: 768,
-  gameHeight: 288,
-  tileSize: 32,
 
-  bg: {
-    color: '#5d5b6a'
-  },
+  gameWidth,
+  gameHeight,
+  gameWidthInTiles,
+  gameHeightInTiles,
+  tileSize,
+
+  bg: { color: '#5d5b6a' },
 
   gravity: { y: 2900 },
 
@@ -31,14 +45,14 @@ export default {
 
   terrain: {
     relax: {
-      length: 1,
+      length: { min: gameScreensTiles(1), max: gameScreensTiles(1) },
       floor: {
         default: 'Ground',
         Ground: { height: 1 }
       }
     },
     plateau: {
-      length: { min: 2, max: 5 }, // width in gameWidth's
+      length: { min: gameScreensTiles(2), max: gameScreensTiles(5) }, // width in gameWidth's
       floor: {
         default: 'Ground',
         Ground: {
@@ -58,7 +72,7 @@ export default {
       }
     },
     habitual: {
-      length: { min: 2, max: 5 },
+      length: { min: gameScreensTiles(2), max: gameScreensTiles(5) },
       floor: {
         default: 'Ground',
         Ground: { height: 1 },
@@ -69,7 +83,7 @@ export default {
       }
     },
     swampy: {
-      length: { min: 2, max: 5 },
+      length: { min: gameScreensTiles(2), max: gameScreensTiles(5) },
       floor: {
         default: 'Ground',
         Ground: { height: 1 },
