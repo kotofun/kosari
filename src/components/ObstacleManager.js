@@ -8,6 +8,8 @@ import Grave from '../sprites/Grave'
 const _obstacleTypes = { Grave }
 const _obstacles = {}
 
+let _prevObstacle
+
 const _init = (game) => {
   for (const obstacleType in _obstacleTypes) {
     _obstacles[obstacleType] = game.add.group()
@@ -31,6 +33,7 @@ export default class {
     if (obstaclesConfig === undefined) return
 
     if (!floor.standable) return
+    if (_prevObstacle !== undefined && _prevObstacle.right > floor.left) return
 
     for (const obstacleType in obstaclesConfig) {
       if (Phaser.Utils.chanceRoll(obstaclesConfig[obstacleType].p)) {
@@ -38,7 +41,19 @@ export default class {
 
         if (obstacle === null) return
 
+        // check if this obstacle has a property between
+        if (obstaclesConfig[obstacleType].between !== undefined && _prevObstacle !== undefined) {
+          // gap between new obstacle and previous in tiles
+          const between = Math.ceil((floor.left - _prevObstacle.right) / config.tileSize)
+
+          if (between <= obstaclesConfig[obstacleType].between.min) continue
+        }
+
+        // positioning a new obstacle
         obstacle.reset(floor.left, floor.top - config.tileSize)
+
+        _prevObstacle = obstacle
+
         if (obstacle.width > config.tileSize) signals.floorHold.dispatch(Math.ceil(obstacle.width / config.tileSize) - 1)
       }
     }
