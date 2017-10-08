@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import AbstractEnemy from './AbstractEnemy'
+import config from '../config'
 
 export default class extends AbstractEnemy {
   constructor (game) {
@@ -15,7 +16,7 @@ export default class extends AbstractEnemy {
     super.reset(x, y, ...args)
 
     this.tween = this.game.add.tween(this)
-      .to({ y: y - 32 }, 500, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
+      .to({ y: y - config.tileSize * 1.25 }, 700, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true)
   }
 
   kill (...args) {
