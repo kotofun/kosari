@@ -24,11 +24,11 @@ export default {
 
   gravity: { y: 2900 },
 
-  initialSpeed: 200,
+  initialSpeed: 147.69230769230888715,
 
   player: {
     startPosition: { x: 360, y: 0 },
-    jumpSpeed: { x: 0, y: 600 }
+    jumpSpeed: { x: 0, y: 630 }
   },
 
   chaser: {
