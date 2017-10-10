@@ -83,20 +83,24 @@ export default class {
     const floorConfig = config.terrain[_current].floor
     let nextFloorType = floorConfig.default
 
-    for (const floorType in floorConfig) {
-      const probability = floorConfig[floorType].p
-      if (probability === undefined) continue
-      if (!Phaser.Utils.chanceRoll(probability)) continue
-      if (floorConfig[floorType].inRow !== undefined) {
-        if (_counters.row[floorType] >= floorConfig[floorType].inRow.max) continue
+    for (const possFloorType in floorConfig) {
+      const possFloorConfig = floorConfig[possFloorType]
+
+      // Check floor probability
+      if (possFloorConfig.p === undefined || !Phaser.Utils.chanceRoll(possFloorConfig.p)) continue
+
+      // Check floor inRow rule
+      if (possFloorConfig.inRow !== undefined) {
+        if (_counters.row[possFloorType] >= possFloorConfig.inRow.max) continue
       }
 
-      if (floorConfig[floorType].between !== undefined) {
-        if (_counters.between[floorType] <= floorConfig[floorType].between.min) continue
-        if (_counters.between[floorType] >= floorConfig[floorType].between.max) continue
+      // Check floor beetween rule
+      if (possFloorConfig.between !== undefined) {
+        if (_counters.between[possFloorType] <= possFloorConfig.between.min) continue
+        if (_counters.between[possFloorType] >= possFloorConfig.between.max) continue
       }
 
-      nextFloorType = floorType
+      nextFloorType = possFloorType
       break
     }
 
