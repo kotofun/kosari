@@ -79,7 +79,7 @@ export default {
       floor: {
         default: 'Ground',
         Ground: { height: 1 },
-        Swamp: { p: 15 }
+        Swamp: { p: 15, inRow: { max: 2 } }
       },
       obstacles: {
         Grave: { p: 15, between: { min: 5 } }
@@ -91,10 +91,7 @@ export default {
       floor: {
         default: 'Ground',
         Ground: { height: 1 },
-        Swamp: {
-          p: 30,
-          inRow: { max: 2 }
-        }
+        Swamp: { p: 30, inRow: { max: 2 } }
       },
       obstacles: {
         Grave: { p: 15, between: { min: 5 } }
