@@ -87,8 +87,8 @@ export default class {
       const probability = floorConfig[floorType].p
       if (probability === undefined) continue
       if (!Phaser.Utils.chanceRoll(probability)) continue
-      if (floorConfig[nextFloorType].inRow !== undefined) {
-        if (_counters.row[nextFloorType] >= floorConfig[nextFloorType].inRow.max) continue
+      if (floorConfig[floorType].inRow !== undefined) {
+        if (_counters.row[floorType] >= floorConfig[floorType].inRow.max) continue
       }
 
       if (floorConfig[floorType].between !== undefined) {
