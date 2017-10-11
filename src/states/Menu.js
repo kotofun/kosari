@@ -20,6 +20,9 @@ export default class extends Phaser.State {
     this.authorsBtn = this.game.add.button(this.menu.left + 12, this.menu.top + 112, '__default', this.authors, this)
     this.authorsBtn.width = 55
     this.authorsBtn.height = 17
+
+    // play background music
+    this.game.sounds.background.play()
   }
 
   play () {

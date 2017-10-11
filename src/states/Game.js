@@ -55,9 +55,6 @@ export default class extends Phaser.State {
     this.gameOverBanner.smoothed = false
     this.gameOverBanner.anchor.setTo(0.5)
     this.gameOverBanner.fixedToCamera = true
-
-    // play background music
-    this.game.sounds.background.play()
   }
 
   update () {
