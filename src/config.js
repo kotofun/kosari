@@ -1,9 +1,10 @@
-const gameWidth = 768
-const gameHeight = 288
 const tileSize = 32
 
 const pxToTiles = px => Math.ceil(px / tileSize)
 const tilesToPx = tiles => tiles * tileSize
+
+const gameWidth = tilesToPx(17)
+const gameHeight = tilesToPx(10)
 
 const gameWidthInTiles = pxToTiles(gameWidth)
 const gameHeightInTiles = pxToTiles(gameHeight)
