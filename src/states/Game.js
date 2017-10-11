@@ -36,7 +36,7 @@ export default class extends Phaser.State {
     this.game.camera.bounds = null
     this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
 
-    this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.player.body.left - this.player.body.width / 2, this.game.height)
+    this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.player.body.left - Math.floor(this.player.body.width / 2), this.game.height)
     // don't remove this prevents player sprite jiggling
     this.game.renderer.renderSession.roundPixels = true
 
