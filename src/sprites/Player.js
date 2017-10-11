@@ -1,11 +1,12 @@
 import Phaser from 'phaser'
 
-import config from '../config'
 import signals from '../signals'
 
 export default class extends Phaser.Sprite {
   constructor (game) {
-    super(game, config.player.startPosition.x, config.player.startPosition.y, 'player')
+    const x = game.width / 2 - 31 // (body offset + body width) / 2
+    const y = game.height - 96 // player height + starting floor height
+    super(game, x, y, 'player')
 
     this.animations.add('run')
     this.animations.play('run', 30, true)
