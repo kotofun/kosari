@@ -1,23 +1,17 @@
 import signals from '../signals'
 
-// controller context
-let ctx
-
-// global game reference
-let game
-
 export default class {
-  constructor (context) {
-    ctx = context
-    game = ctx.game
+  constructor (game) {
+    this.game = game
 
     this.layers = [
-      game.add.tileSprite(0, -192, game.width, 512, 'bg', 'sky'),
-      game.add.tileSprite(0, 0, game.width, 275, 'bg', 'clouds'),
-      game.add.tileSprite(0, game.height - 225, game.width, 225, 'bg', 'forest'),
-      game.add.tileSprite(0, game.height - 253, game.width, 253, 'bg', 'cemetery'),
-      game.add.tileSprite(0, game.height - 86, game.width, 86, 'bg', 'grass')
+      this.game.add.tileSprite(0, this.game.height - 192, this.game.width, 512, 'bg', 'sky'),
+      this.game.add.tileSprite(0, 0, this.game.width, 275, 'bg', 'clouds'),
+      this.game.add.tileSprite(0, this.game.height - 225, this.game.width, 225, 'bg', 'forest'),
+      this.game.add.tileSprite(0, this.game.height - 253, this.game.width, 253, 'bg', 'cemetery'),
+      this.game.add.tileSprite(0, this.game.height - 86, this.game.width, 86, 'bg', 'grass')
     ]
+
     // Bind bg layers to camera
     this.layers.map(l => { l.fixedToCamera = true })
 
@@ -32,7 +26,7 @@ export default class {
 
   update () {
     for (var i = 0; i < this.layers.length; i++) {
-      this.layers[i].autoScroll(-(game.vars.speed / 5) * (i + 1), 0)
+      this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)
     }
   }
 }

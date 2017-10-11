@@ -17,7 +17,7 @@ import Swamp from '../sprites/Swamp'
 
 export default class extends Phaser.State {
   init () {
-    this.background = new Background(this)
+    this.background = new Background(this.game)
 
     this.terrain = new Terrain(this.game, 'relax')
     this.floor = new FloorFactory(this.game, this.terrain.current.type)
