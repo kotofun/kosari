@@ -24,6 +24,8 @@ export default class extends Phaser.State {
     this.load.atlas('enemy.skeleton', 'assets/images/enemies/skeleton.png', 'assets/images/enemies/skeleton.json')
     this.load.atlas('enemy.bat', 'assets/images/enemies/bat.png', 'assets/images/enemies/bat.json')
 
+    this.load.atlas('menu', 'assets/images/menu.png', 'assets/images/menu.json')
+
     this.load.audio('sound.background', 'assets/audio/background.wav')
     this.load.audio('sound.jump', 'assets/audio/jump.wav')
     this.load.audio('sound.attack', 'assets/audio/mow.wav')
@@ -36,6 +38,6 @@ export default class extends Phaser.State {
     this.game.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
     this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
 
-    this.state.start('Game')
+    this.state.start('Menu')
   }
 }

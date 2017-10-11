@@ -5,6 +5,7 @@ import FastClick from 'fastclick'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
+import MenuState from './states/Menu'
 import GameState from './states/Game'
 
 import config from './config'
@@ -33,6 +34,7 @@ class Game extends Phaser.Game {
 
     this.state.add('Boot', BootState, false)
     this.state.add('Splash', SplashState, false)
+    this.state.add('Menu', MenuState, false)
     this.state.add('Game', GameState, false)
 
     this.state.start('Boot')
@@ -40,15 +42,15 @@ class Game extends Phaser.Game {
 }
 
 if (window.innerHeight > window.innerWidth) {
-  document.getElementById("rotate").style.display = 'block'
-  window.addEventListener("orientationchange", start)
+  document.getElementById('rotate').style.display = 'block'
+  window.addEventListener('orientationchange', start)
 } else {
   start()
 }
 
 function start () {
-  document.getElementById("rotate").style.display = 'none'
-  window.removeEventListener("orientationchange", start)
+  document.getElementById('rotate').style.display = 'none'
+  window.removeEventListener('orientationchange', start)
 
   window.setTimeout(function () {
     window.game = new Game()
