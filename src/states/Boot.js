@@ -32,7 +32,6 @@ export default class extends Phaser.State {
       }
     }
 
-    this.stage.backgroundColor = config.bg.color
     this.fontsReady = false
     this.fontsLoaded = this.fontsLoaded.bind(this)
   }

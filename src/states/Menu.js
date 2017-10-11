@@ -1,8 +1,10 @@
 import Phaser from 'phaser'
 import Background from '../components/Background'
+import config from '../config'
 
 export default class extends Phaser.State {
   init () {
+    this.stage.backgroundColor = config.bg.color
     this.background = new Background(this.game)
 
     this.game.add.tileSprite(0, this.game.height - 96, this.game.width, 96, 'menu', 'floor')

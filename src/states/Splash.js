@@ -5,6 +5,7 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
+    this.stage.backgroundColor = '#191820'
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
     this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
     centerGameObjects([this.loaderBg, this.loaderBar])
@@ -26,6 +27,8 @@ export default class extends Phaser.State {
 
     this.load.atlas('menu', 'assets/images/menu.png', 'assets/images/menu.json')
 
+    this.load.spritesheet('splash', 'assets/images/splash.png', 512, 256)
+
     this.load.audio('sound.background', 'assets/audio/background.wav')
     this.load.audio('sound.jump', 'assets/audio/jump.wav')
     this.load.audio('sound.attack', 'assets/audio/mow.wav')
@@ -38,6 +41,15 @@ export default class extends Phaser.State {
     this.game.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
     this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
 
-    this.state.start('Menu')
+    const splash = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'splash')
+    centerGameObjects([splash])
+
+    splash.animations.add('play')
+
+    splash.events.onAnimationComplete.add(() => {
+      this.state.start('Menu')
+    }, this)
+
+    splash.animations.play('play', 7)
   }
 }
