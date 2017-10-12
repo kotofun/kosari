@@ -34,6 +34,17 @@ export default class {
     } else {
       _initMobileControls(this.game, keySignals)
     }
+
+    this.pauseBtn = this.game.add.button(this.game.width - 42, 10, 'pauseBtn', () => {
+      this.game.paused = true
+    }, this)
+    this.pauseBtn.fixedToCamera = true
+
+    this.resumeBtn = this.game.add.button(this.game.width - 42, this.game.height - 42, 'resumeBtn', () => {
+      this.game.paused = false
+    })
+    this.resumeBtn.fixedToCamera = true
+    this.resumeBtn.visible = false
   }
 
   jump () {
