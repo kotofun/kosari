@@ -14,24 +14,49 @@ export default class extends Phaser.State {
     this.playBtn = this.game.add.button(this.menu.left, this.menu.top + 18, '__default', this.play, this)
     this.playBtn.width = 87
     this.playBtn.height = 41
-    this.preferencesBtn = this.game.add.button(this.menu.left + 4, this.menu.top + 63, '__default', this.preferences, this)
-    this.preferencesBtn.width = 68
-    this.preferencesBtn.height = 18
-    this.authorsBtn = this.game.add.button(this.menu.left + 12, this.menu.top + 112, '__default', this.authors, this)
-    this.authorsBtn.width = 55
-    this.authorsBtn.height = 17
+    // !!!: Additional buttons are transferred to next releases
+    //
+    // this.preferencesBtn = this.game.add.button(this.menu.left + 4, this.menu.top + 63, '__default', this.preferences, this)
+    // this.preferencesBtn.width = 68
+    // this.preferencesBtn.height = 18
+    // this.authorsBtn = this.game.add.button(this.menu.left + 12, this.menu.top + 112, '__default', this.authors, this)
+    // this.authorsBtn.width = 55
+    // this.authorsBtn.height = 17
 
     // play background music
     this.game.sounds.background.play()
+
+    // create menu section overlay
+    this.overlay = this.game.add.graphics(0, 0)
+    this.overlay.visible = false
+    this.overlay.beginFill(0x1f1e26)
+    this.overlay.fillAlpha = 0.8
+    this.overlay.drawRect(0, 0, this.game.width, this.game.height)
+    this.overlay.endFill()
+
+    // create headers
+    this.preferencesTitle = this.add.text(this.world.centerX, 32, 'Настройки')
+    this.authorsTitle = this.add.text(this.world.centerX, 32, 'Авторы'); // this semicolon placed here due to webpack :(
+
+    [this.preferencesTitle, this.authorsTitle].map(title => {
+      title.visible = false
+      title.font = 'Bangers'
+      title.fontSize = 32
+      title.fill = '#73727B'
+      title.smoothed = false
+      title.anchor.setTo(0.5)
+    })
   }
 
   play () {
     this.state.start('Game')
   }
   preferences () {
-    // preferences screen
+    this.playBtn.inputEnabled = false
+    this.overlay.visible = true
+    this.preferencesTitle.visible = true
   }
   authors () {
-    // uathors screen
+    // authors screen
   }
 }
