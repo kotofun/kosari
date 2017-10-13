@@ -2,11 +2,28 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 import config from '../config'
 
+const handleCorrect = game => {
+  if (game.state.current !== 'Game') game.paused = false
+  document.getElementById('rotate').style.display = 'none'
+}
+
+const handleIncorrect = game => {
+  if (game.state.current === 'Game') game.paused = true
+  document.getElementById('rotate').style.display = 'block'
+}
+
 export default class extends Phaser.State {
   init () {
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
+
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE
     this.game.scale.setUserScale(this.game.scaleFactor, this.game.scaleFactor)
+
+    if (!this.game.device.desktop) {
+      this.game.scale.forceLandscape = true
+      this.game.scale.enterIncorrectOrientation.add(handleIncorrect, this, 0, this.game)
+      this.game.scale.leaveIncorrectOrientation.add(handleCorrect, this, 0, this.game)
+    }
 
     this.game.vars = {
       godMode: config.godMode,
