@@ -14,12 +14,13 @@
         body {
             margin: 0;
             padding: 0;
+            background: #191820;
         }
         #rotate {
             position: absolute;
             top: 0;
             left: 0;
-            background: #aaaaff;
+            background: #191820;
             width: 100vw;
             height: 100vh;
             display: none;
@@ -30,6 +31,10 @@
             font-size: 40px;
             text-align: center;
         }
+
+        #content > canvas{
+            margin: 0 auto;
+        }
     </style>
 </head>
 
@@ -37,7 +42,7 @@
 
     <div id="content"></div>
     <div id="rotate">
-      <p>Rotate your device</p>
+      <p>Поверни мобилку, бро!</p>
     </div>
     <form action="#" onsubmit="return false">
         <button onclick="togglePause(this)">Пауза</button>
