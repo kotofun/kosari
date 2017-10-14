@@ -4,7 +4,7 @@ import signals from '../signals'
 
 const keys = {
   jump: Phaser.Keyboard.SPACEBAR,
-  attack: Phaser.Keyboard.ENTER
+  attack: Phaser.Keyboard.CONTROL
 }
 
 const _bindedKeys = {}
