@@ -8,7 +8,8 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
-
+    <link rel="stylesheet" href="/fonts.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet" type="text/css">
     <style>
         html,
         body {
@@ -29,6 +30,7 @@
             display: none;
         }
         #rotate > p{
+            font-family: 'HaxrCorp';
             color: #fff;
             font-size: 40px;
             text-align: center;
@@ -46,6 +48,12 @@
             display: table-cell;
             vertical-align: middle;
         }
+
+        #font-preloader {
+            font-family: 'HaxrCorp';
+            opacity: 0;
+            position: fixed;
+        }
     </style>
 </head>
 
@@ -58,6 +66,7 @@
     <div id="rotate">
       <p>Поверни мобилку, бро!</p>
     </div>
+    <div id="font-preloader">.</div>
     <script src="dist/vendor.bundle.js"></script>
     <script src="dist/bundle.js"></script>
 </body>
