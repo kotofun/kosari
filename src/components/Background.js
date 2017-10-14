@@ -5,7 +5,7 @@ export default class {
     this.game = game
 
     this.layers = [
-      this.game.add.tileSprite(0, this.game.height - 192, this.game.width, 512, 'bg', 'sky'),
+      this.game.add.tileSprite(0, -128, this.game.width, 512, 'bg', 'sky'),
       this.game.add.tileSprite(0, 0, this.game.width, 275, 'bg', 'clouds'),
       this.game.add.tileSprite(0, this.game.height - 225, this.game.width, 225, 'bg', 'forest'),
       this.game.add.tileSprite(0, this.game.height - 253, this.game.width, 253, 'bg', 'cemetery'),
