@@ -155,6 +155,7 @@ export default class extends Phaser.State {
 
   pause () {
     this.overlay.visible = true
+    this.controller.pauseBtn.visible = false
 
     if (!this.gameOver) {
       this.pauseBanner.visible = true
@@ -164,6 +165,7 @@ export default class extends Phaser.State {
 
   resume () {
     this.overlay.visible = false
+    this.controller.pauseBtn.visible = true
 
     if (!this.gameOver) {
       this.pauseBanner.visible = false
