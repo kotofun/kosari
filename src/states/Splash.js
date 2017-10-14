@@ -27,7 +27,7 @@ export default class extends Phaser.State {
 
     this.load.atlas('menu', 'assets/images/menu.png', 'assets/images/menu.json')
 
-    this.load.spritesheet('splash', 'assets/images/splash.png', 512, 256)
+    this.load.spritesheet('splash', 'assets/images/splash.png', 256, 128)
 
     this.load.audio('sound.background', 'assets/audio/background.wav')
     this.load.audio('sound.jump', 'assets/audio/jump.wav')
@@ -46,10 +46,14 @@ export default class extends Phaser.State {
 
     splash.animations.add('play')
 
+    splash.events.onAnimationStart.add(() => {
+      this.loaderBar.destroy()
+      this.loaderBg.destroy()
+    }, this)
     splash.events.onAnimationComplete.add(() => {
       this.state.start('Menu')
     }, this)
 
-    splash.animations.play('play', 7)
+    splash.animations.play('play', 20)
   }
 }
