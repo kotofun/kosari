@@ -42,6 +42,8 @@ export default {
     Grave: { max: 10 }
   },
 
+  enemies: { max: 10 },
+
   terrain: {
     relax: {
       p: 30,

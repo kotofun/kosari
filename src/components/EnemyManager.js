@@ -21,9 +21,13 @@ const _enemies = {}
 let _terrain
 
 const _init = () => {
+  const defaultMaxEnemiesCount = config.enemies.max ? config.enemies.max : 10
+
   for (const enemyType in enemyTypes) {
+    const maxEnemiesCount = config.enemies[enemyType] ? config.enemies[enemyType] : defaultMaxEnemiesCount
+
     _enemies[enemyType] = game.add.group()
-    _enemies[enemyType].add(new enemyTypes[enemyType](game))
+    for (let i = 0; i < maxEnemiesCount; i++) _enemies[enemyType].add(new enemyTypes[enemyType](game))
   }
 }
 
