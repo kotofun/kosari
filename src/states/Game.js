@@ -1,3 +1,4 @@
+/* globals __DEV__ */
 import Phaser from 'phaser'
 
 import signals from '../signals'
@@ -73,6 +74,10 @@ export default class extends Phaser.State {
 
     this.overlay = _createOverlay(this.game)
 
+    this.distance = this.game.add.text(this.game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
+    this.distance.anchor.setTo(0.5)
+    this.distance.fixedToCamera = true
+
     this.gameOver = false
   }
 
@@ -127,6 +132,8 @@ export default class extends Phaser.State {
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
     }
+
+    this.distance.text = Math.floor(this.camera.x / 32) + 'м'
   }
 
   floorCollision (player, floor) {
