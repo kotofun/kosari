@@ -68,6 +68,9 @@ export default class extends Phaser.State {
     this.player = new Player(this.game)
     this.chaser = new Chaser(this.game, this.floor)
 
+    const info = this.game.add.sprite(32, 32, 'controlsInfo')
+    info.fixedToCamera = true
+
     this.overlay = _createOverlay(this.game)
 
     this.gameOver = false

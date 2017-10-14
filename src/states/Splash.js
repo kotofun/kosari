@@ -27,6 +27,10 @@ export default class extends Phaser.State {
 
     this.load.atlas('menu', 'assets/images/menu.png', 'assets/images/menu.json')
 
+    this.load.image('pauseBtn', 'assets/images/pauseBtn.png')
+    this.load.image('resumeBtn', 'assets/images/resumeBtn.png')
+    this.load.image('controlsInfo', 'assets/images/controlsInfo.png')
+
     this.load.spritesheet('splash', 'assets/images/splash.png', 256, 128)
 
     this.load.audio('sound.background', 'assets/audio/background.wav')
