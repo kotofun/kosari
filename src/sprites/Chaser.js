@@ -32,7 +32,10 @@ export default class extends Phaser.Sprite {
   }
 
   isTimeToJump () {
-    const currentTile = Math.floor(Math.max(0, this.x - this.game.camera.x + this.body.offset.x - this.body.width / 2) / config.tileSize)
+    const cameraOffset = Math.max(0, this.x - this.game.camera.x)
+    const bodyOffset = this.body.offset.x - this.body.width / 2
+    const currentTile = Math.floor((cameraOffset + bodyOffset) / config.tileSize)
+
     return ((_floor.getAt(currentTile) instanceof Ground) &&
       (_floor.getAt(currentTile + 1) instanceof Swamp)) ||
       (_floor.getAt(currentTile) instanceof Swamp)
