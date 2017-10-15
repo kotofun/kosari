@@ -4,6 +4,8 @@ import config from '../config'
 import signals from '../signals'
 
 import Grass from '../sprites/Grass'
+import Player from '../sprites/Player'
+import Chaser from '../sprites/Chaser'
 
 let _grass
 
@@ -45,7 +47,11 @@ export default class {
   mow (mower) {
     if (mower.isOnFloor()) {
       _grass.forEachAlive(grass => {
-        if (Phaser.Rectangle.intersects(grass.getBounds(), mower.getBounds())) grass.kill()
+        if (Phaser.Rectangle.intersects(grass.getBounds(), mower.getBounds())) {
+          if (mower instanceof Player) this.game.mowedGrass.Player++
+          if (mower instanceof Chaser) this.game.mowedGrass.Chaser++
+          grass.kill()
+        }
       })
     }
   }

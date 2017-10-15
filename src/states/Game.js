@@ -78,6 +78,8 @@ export default class extends Phaser.State {
     this.distance.anchor.setTo(0.5)
     this.distance.fixedToCamera = true
 
+    this.game.mowedGrass = {Player: 0, Chaser: 0}
+
     this.gameOver = false
   }
 
@@ -151,6 +153,13 @@ export default class extends Phaser.State {
 
     if (!this.game.vars.godMode) {
       this.game.paused = true
+
+      // send distance to api
+      const data = { distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.mowedGrass }
+      const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+      xhr.open('POST', '/api/score', true)
+      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+      xhr.send(JSON.stringify(data))
     } else {
       this.game.time.events.add(Phaser.Timer.SECOND, this.hideGameOverBanner, this).autoDestroy = true
     }
