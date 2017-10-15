@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
@@ -22,8 +23,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
-    filename: 'bundle.js'
+    publicPath: '/dist/',
+    filename: 'dist/bundle.js'
   },
   plugins: [
     definePlugin,
@@ -35,7 +36,16 @@ module.exports = {
         comments: false
       }
     }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */})
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'/* chunkName= */,
+      filename: 'dist/vendor.bundle.js'/* filename= */
+    }),
+    new CopyWebpackPlugin([
+      {from: 'index.html'},
+      {from: 'fonts.css'},
+      {from: 'robots.txt'},
+      {from: 'assets', to: './assets'}
+    ])
   ],
   module: {
     rules: [
