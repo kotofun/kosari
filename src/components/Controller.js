@@ -48,6 +48,14 @@ export default class {
     this.resumeBtn.anchor.setTo(0.5)
     this.resumeBtn.fixedToCamera = true
     this.resumeBtn.visible = false
+
+    this.replayBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'replayBtn', () => {
+      this.game.state.restart(false)
+      this.game.paused = false
+    })
+    this.replayBtn.anchor.setTo(0.5)
+    this.replayBtn.fixedToCamera = true
+    this.replayBtn.visible = false
   }
 
   jump () {

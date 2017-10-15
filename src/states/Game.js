@@ -169,7 +169,9 @@ export default class extends Phaser.State {
     this.overlay.visible = true
     this.game.controller.pauseBtn.visible = false
 
-    if (!this.gameOver) {
+    if (this.gameOver) {
+      this.game.controller.replayBtn.visible = true
+    } else {
       this.pauseBanner.visible = true
       this.game.controller.resumeBtn.visible = true
     }
@@ -179,7 +181,9 @@ export default class extends Phaser.State {
     this.overlay.visible = false
     this.game.controller.pauseBtn.visible = true
 
-    if (!this.gameOver) {
+    if (this.gameOver) {
+      this.game.controller.replayBtn.visible = false
+    } else {
       this.pauseBanner.visible = false
       this.game.controller.resumeBtn.visible = false
     }

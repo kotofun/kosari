@@ -30,6 +30,7 @@ export default class extends Phaser.State {
 
     this.load.image('pauseBtn', 'assets/images/pauseBtn.png')
     this.load.image('resumeBtn', 'assets/images/resumeBtn.png')
+    this.load.image('replayBtn', 'assets/images/replayBtn.png')
     this.load.image('controlsInfo', 'assets/images/controlsInfo.png')
 
     this.load.spritesheet('splash', 'assets/images/splash.png', 256, 128)
