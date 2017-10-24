@@ -5,8 +5,9 @@
   "author": "leandro cabrera <leandcabrera@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
+    "watch": "webpack",
+    "dev": "webpack --config webpack.develop.config.js",
+    "prod": "webpack --config webpack.production.config.js",
     "test": "eslint ./src/**/**.js"
   },
   "license": "MIT",

@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/')
@@ -20,28 +20,25 @@ module.exports = {
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
   },
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'dist'),
     publicPath: './dist/',
-    filename: 'bundle.js'
+    filename: 'dist/bundle.js'
   },
-  watch: true,
   plugins: [
     definePlugin,
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'/* chunkName= */,
-      filename: 'vendor.bundle.js'/* filename= */
+      filename: 'dist/vendor.bundle.js'/* filename= */
     }),
-    new BrowserSyncPlugin({
-      host: process.env.IP || 'localhost',
-      port: process.env.PORT || 3000,
-      server: {
-        baseDir: ['./', './build'],
-        index: 'index.dev.html'
-      }
-    })
+    new CopyWebpackPlugin([
+      {from: 'index.dev.html', to: './index.html'},
+      {from: 'fonts.css'},
+      {from: 'robots.txt'},
+      {from: 'assets', to: './assets'}
+    ])
   ],
   module: {
     rules: [
