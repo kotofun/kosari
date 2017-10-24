@@ -1,3 +1,4 @@
+/* globals __DEV__ */
 const tileSize = 32
 
 const pxToTiles = px => Math.ceil(px / tileSize)
@@ -13,7 +14,7 @@ const gameScreensPx = screensCount => gameWidth * screensCount
 const gameScreensTiles = screensCount => gameWidthInTiles * screensCount
 
 export default {
-  godMode: true,
+  godMode: __DEV__,
 
   gameWidth,
   gameHeight,
