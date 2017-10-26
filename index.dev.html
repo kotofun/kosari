@@ -8,13 +8,16 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
-
+    <link rel="stylesheet" href="/fonts.css" type="text/css">
     <style>
         html,
         body {
             margin: 0;
             padding: 0;
             background: #191820;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
         #rotate {
             position: absolute;
@@ -25,8 +28,8 @@
             height: 100vh;
             display: none;
         }
-
         #rotate > p{
+            font-family: 'HaxrCorp';
             color: #fff;
             font-size: 40px;
             text-align: center;
@@ -35,15 +38,36 @@
         #content > canvas{
             margin: 0 auto;
         }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+            display: table;
+        }
+        #v-align {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #font-preloader {
+            font-family: 'HaxrCorp';
+            opacity: 0;
+            position: fixed;
+        }
     </style>
 </head>
 
 <body>
-
-    <div id="content"></div>
+    <div id="wrapper">
+        <div id="v-align">
+            <div id="content"></div>
+        </div>
+    </div>
     <div id="rotate">
       <p>Поверни мобилку, бро!</p>
     </div>
+    <div id="font-preloader">.</div>
+    <script src="dist/vendor.bundle.js"></script>
+    <script src="dist/bundle.js"></script>
     <form action="#" onsubmit="return false">
         <button onclick="togglePause(this)">Пауза</button>
         <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
@@ -66,9 +90,6 @@
             <input name="player_position" type="number" min="0" max="512" value="150" oninput="changePlayerPosition(this)">
         </label>
     </form>
-    <script src="dist/vendor.bundle.js"></script>
-    <script src="dist/bundle.js"></script>
-
     <script>
         var game = window.game
 
