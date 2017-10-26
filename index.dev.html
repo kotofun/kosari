@@ -60,36 +60,38 @@
     <div id="wrapper">
         <div id="v-align">
             <div id="content"></div>
+            <form action="#" onsubmit="return false">
+                <button onclick="togglePause(this)">Пауза</button>
+                <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
+                <button onclick="toggleBgMusic(this)">Отключить фоновую музыку</button>
+                <br>
+                <label for="speed">
+                    Скорость игрового мира
+                    <input name="speed" type="number" min="0" max="500" value="200" oninput="changeSpeed(this)">
+                    <span>100</span>
+                </label>
+                <br>
+                <label for="gravity">
+                    Гравитация
+                    <input name="gravity" type="number" min="100" max="5000" value="2900" oninput="changeGravity(this)">
+                </label>
+                <br>
+                <label for="">Скорость прыжка: <input type="number" min="0" max="1000" value="600" oninput="changePlayerJumpSpeed(this)"></label>
+                <br>
+                <label for="player_position">Позиция игрока:
+                    <input name="player_position" type="number" min="0" max="512" value="150" oninput="changePlayerPosition(this)">
+                </label>
+            </form>
         </div>
     </div>
     <div id="rotate">
       <p>Поверни мобилку, бро!</p>
     </div>
+
     <div id="font-preloader">.</div>
     <script src="dist/vendor.bundle.js"></script>
     <script src="dist/bundle.js"></script>
-    <form action="#" onsubmit="return false">
-        <button onclick="togglePause(this)">Пауза</button>
-        <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
-        <button onclick="toggleBgMusic(this)">Отключить фоновую музыку</button>
-        <br>
-        <label for="speed">
-            Скорость игрового мира
-            <input name="speed" type="number" min="0" max="500" value="200" oninput="changeSpeed(this)">
-            <span>100</span>
-        </label>
-        <br>
-        <label for="gravity">
-            Гравитация
-            <input name="gravity" type="number" min="100" max="5000" value="2900" oninput="changeGravity(this)">
-        </label>
-        <br>
-        <label for="">Скорость прыжка: <input type="number" min="0" max="1000" value="600" oninput="changePlayerJumpSpeed(this)"></label>
-        <br>
-        <label for="player_position">Позиция игрока:
-            <input name="player_position" type="number" min="0" max="512" value="150" oninput="changePlayerPosition(this)">
-        </label>
-    </form>
+
     <script>
         var game = window.game
 
