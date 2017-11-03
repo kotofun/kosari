@@ -8,8 +8,11 @@ export default class extends Phaser.Sprite {
     const y = game.height - 96 // player height + starting floor height
     super(game, x, y, 'player')
 
-    this.animations.add('run')
-    this.animations.play('run', 30, true)
+    this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    this.animations.add('mow', [15, 16, 17])
+
+    this.animation_run()
+    this.attack_ready = true
 
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
@@ -23,10 +26,18 @@ export default class extends Phaser.Sprite {
 
     signals.speedDown.add(this.slowDown, this)
     signals.speedReset.add(this.resetSpeed, this)
+
+    this.events.onAnimationComplete.add(() => {
+      this.animation_run()
+    })
   }
 
   update () {
     this.run()
+  }
+
+  animation_run () {
+    this.animations.play('run', 30, true)
   }
 
   run () {
@@ -44,10 +55,14 @@ export default class extends Phaser.Sprite {
   }
 
   attack () {
-    this.game.sounds.attack.play()
-    signals.mow.dispatch(this)
+    if (this.attack_ready) {
+      this.attack_ready = false
+      this.game.time.events.add(Phaser.Timer.HALF, ()=>{this.attack_ready = true}, this).autoDestroy = true
 
-    // attack animation
+      this.game.sounds.attack.play()
+      signals.mow.dispatch(this)
+      this.animations.play('mow', 30, false)
+    }
   }
 
   slowDown () {
