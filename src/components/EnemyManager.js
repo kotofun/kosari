@@ -58,7 +58,7 @@ export default class {
 
     _terrain = terrain
 
-    signals.attack.add(this.attack, this)
+    signals.mow.add(this.attack, this)
 
     signals.terrainCreated.add(_revive, this)
 
