@@ -5,15 +5,16 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
+    // Полоса загрузки
     this.stage.backgroundColor = '#191820'
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
     this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
     centerGameObjects([this.loaderBg, this.loaderBar])
 
     this.load.setPreloadSprite(this.loaderBar)
-    //
-    // load your assets
-    //
+
+    // Загрузка ассетов и атласов и именование
+    // (анимации прописываются каждому объекту в его файле в папке sprites)
     this.load.atlas('player', 'assets/images/player.png', 'assets/images/player.json')
     this.load.image('surface', 'assets/images/surface.png')
 
@@ -39,21 +40,26 @@ export default class extends Phaser.State {
   }
 
   create () {
+    // Загрузка музыки
     const { background, jump, attack } = this.game.vars.sounds
     this.game.sounds = {}
     this.game.sounds.background = this.game.sound.add('sound.background', background.volume, background.loop)
     this.game.sounds.jump = this.game.sound.add('sound.jump', jump.volume, jump.loop)
     this.game.sounds.attack = this.game.sound.add('sound.attack', attack.volume, attack.loop)
 
+    // Создание основной заставки в центре экрана
     const splash = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'splash')
     centerGameObjects([splash])
 
+    // Загрузка основной заставки
     splash.animations.add('play')
 
+    // Когда заставка начнется -- убрать полосы загрузки
     splash.events.onAnimationStart.add(() => {
       this.loaderBar.destroy()
       this.loaderBg.destroy()
     }, this)
+    // А когда закончится перейти в стейт Меню
     splash.events.onAnimationComplete.add(() => {
       this.state.start('Menu')
     }, this)
