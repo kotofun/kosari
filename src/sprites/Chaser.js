@@ -14,7 +14,9 @@ export default class extends Phaser.Sprite {
 
     _floor = floorManager
 
-    this.animations.add('run')
+    this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    this.animations.add('mow', [15, 16, 17])
+
     this.animations.play('run', 30, true)
 
     this.game.physics.enable(this)
