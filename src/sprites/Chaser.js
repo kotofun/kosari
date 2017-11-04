@@ -103,6 +103,8 @@ export default class extends Phaser.Sprite {
       y = this.startPosition.y
     }
 
+    this.attackReady = true
+
     super.reset(x, y)
   }
 }
