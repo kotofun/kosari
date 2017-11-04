@@ -55,4 +55,8 @@ export default class {
       })
     }
   }
+
+  reset() {
+    _grass.forEachAlive(grass => { grass.kill() })
+  }
 }

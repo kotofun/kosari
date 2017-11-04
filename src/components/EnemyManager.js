@@ -87,4 +87,10 @@ export default class {
       })
     }
   }
+
+  reset () {
+    for (const enemyType in _enemies) {
+      _enemies[enemyType].forEachAlive(enemy => { enemy.kill() })
+    }
+  }
 }

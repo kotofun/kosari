@@ -22,18 +22,26 @@ import api from '../components/api'
 
 export default class extends Phaser.State {
   init () {
-    this.background = new Background(this.game)
+    // Проверяем были ли уже созданы необходимые
+    // объекты, если нет, то создаем
+    if (!this.isBooted) {
+      this.background = new Background(this.game)
 
-    this.terrain = new Terrain(this.game, 'relax')
-    this.floor = new FloorFactory(this.game, this.terrain.current.type)
-    this.surface = new SurfaceManager(this.game)
-    this.obstacles = new ObstacleManager(this.game)
-    this.enemies = new EnemyManager(this, this.terrain)
+      this.terrain = new Terrain(this.game, 'relax')
+      this.floor = new FloorFactory(this.game, this.terrain.current.type)
+      this.surface = new SurfaceManager(this.game)
+      this.obstacles = new ObstacleManager(this.game)
+      this.enemies = new EnemyManager(this, this.terrain)
 
-    this.player = new Player(this.game)
-    this.chaser = new Chaser(this.game, this.floor)
+      this.player = new Player(this.game)
+      this.chaser = new Chaser(this.game, this.floor)
 
-    this.ui = new UI(this.game)
+      this.ui = new UI(this.game)
+
+      // Ставим флаг, чтобы при перезапуске объекты
+      // не создавались заново
+      this.isBooted = true
+    }
 
     this.game.stats = Stats
 
@@ -47,7 +55,7 @@ export default class extends Phaser.State {
     this.game.camera.bounds = null
     this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
 
-    this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.player.body.left - Math.floor(this.player.body.width / 2), this.game.height)
+    this.game.camera.deadzone = new Phaser.Rectangle(0, 0, this.player.startPosition.x, this.game.height)
     // don't remove this prevents player sprite jiggling
     this.game.renderer.renderSession.roundPixels = true
 
@@ -140,5 +148,22 @@ export default class extends Phaser.State {
       this.ui.pauseBanner.visible = false
       this.game.controller.resumeBtn.visible = false
     }
+  }
+
+  // Функция вызывается при закрытии стейта.
+  // Закрытие стейта происходит при смене стейта,
+  // в том числе и при рестарте
+  shutdown () {
+    this.background.reset()
+
+    this.enemies.reset()
+    this.obstacles.reset()
+    this.surface.reset()
+    this.floor.reset()
+    this.terrain.reset()
+
+    this.player.reset()
+    this.chaser.reset()
+    this.ui.reset()
   }
 }

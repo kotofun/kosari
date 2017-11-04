@@ -29,4 +29,8 @@ export default class {
       this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)
     }
   }
+
+  reset () {
+    this.layers.map(l => { l.reset() })
+  }
 }

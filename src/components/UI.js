@@ -54,4 +54,8 @@ export default class {
     this.gameOverBanner = _createGameOverBanner(this.game)
     this.pauseBanner = _createPauseBanner(this.game)
   }
+
+  reset () {
+    this.gameOverBanner.visible = false
+  }
 }

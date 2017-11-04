@@ -4,9 +4,7 @@ import signals from '../signals'
 
 export default class extends Phaser.Sprite {
   constructor (game) {
-    const x = game.width / 2 - 31 // (body offset + body width) / 2
-    const y = game.height - 96 // player height + starting floor height
-    super(game, x, y, 'player')
+    super(game, 0, 0, 'player')
 
     // Деление спрайта на именованные анимации и списком кадров в них
     this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -34,6 +32,13 @@ export default class extends Phaser.Sprite {
     this.events.onAnimationComplete.add(() => {
       this.animationRun()
     })
+
+    this.startPosition = {
+      x: this.game.width / 2 - this.body.offset.x - this.body.width,
+      y: this.game.height - 96
+    }
+
+    this.reset(this.startPosition.x, this.startPosition.y)
   }
 
   update () {
@@ -76,5 +81,14 @@ export default class extends Phaser.Sprite {
 
   resetSpeed () {
     this.slowedDown = false
+  }
+
+  reset (x, y) {
+    if (!(x || y)) {
+      x = this.startPosition.x
+      y = this.startPosition.y
+    }
+
+    super.reset(x, y)
   }
 }

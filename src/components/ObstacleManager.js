@@ -75,4 +75,10 @@ export default class {
 
     return collided
   }
+
+  reset () {
+    for (const obstacleType in _obstacles) {
+      _obstacles[obstacleType].forEachAlive(obstacle => { obstacle.kill() })
+    }
+  }
 }

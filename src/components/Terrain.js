@@ -12,6 +12,7 @@ export default class {
 
     this.game = game
     this.current = this.next(starting)
+    this.startTerrainType = starting
 
     signals.terrainCreated.add(this.update, this)
   }
@@ -49,5 +50,9 @@ export default class {
       this.current = this.next()
       signals.terrainChanged.dispatch(this.current)
     }
+  }
+
+  reset () {
+    this.current = this.next(this.startTerrainType)
   }
 }

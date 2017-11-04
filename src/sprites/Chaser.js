@@ -32,6 +32,13 @@ export default class extends Phaser.Sprite {
     this.events.onAnimationComplete.add(() => {
       this.animationRun()
     })
+
+    this.startPosition = {
+      x: 0,
+      y: this.game.height - 96
+    }
+
+    this.reset()
   }
 
   catch (obj, ...args) {
@@ -79,7 +86,7 @@ export default class extends Phaser.Sprite {
   mow () {
     if (this.attackReady) {
       this.attackReady = false
-      this.game.time.events.add(Phaser.Timer.SECOND, ()=>{this.attackReady = true}, this).autoDestroy = true
+      this.game.time.events.add(Phaser.Timer.SECOND, () => { this.attackReady = true }, this).autoDestroy = true
 
       signals.mow.dispatch(this)
       this.animations.play('mow', 30, false)
@@ -88,5 +95,14 @@ export default class extends Phaser.Sprite {
 
   slowDown () {
     this.backlogRate = config.chaser.backlogRate
+  }
+
+  reset (x, y) {
+    if (!(x || y)) {
+      x = this.startPosition.x
+      y = this.startPosition.y
+    }
+
+    super.reset(x, y)
   }
 }
