@@ -13,8 +13,8 @@ export default class extends Phaser.Sprite {
     this.animations.add('mow', [15, 16, 17])
 
     // Анимация бега это стандартная анимация
-    this.animation_run()
-    this.attack_ready = true
+    this.animationRun()
+    this.attackReady = true
 
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
@@ -32,7 +32,7 @@ export default class extends Phaser.Sprite {
     // И как только заканчивается другая анимация,
     // снова воспроизводится анимация бега
     this.events.onAnimationComplete.add(() => {
-      this.animation_run()
+      this.animationRun()
     })
   }
 
@@ -40,7 +40,7 @@ export default class extends Phaser.Sprite {
     this.run()
   }
 
-  animation_run () {
+  animationRun () {
     this.animations.play('run', 30, true)
   }
 
@@ -59,9 +59,9 @@ export default class extends Phaser.Sprite {
   }
 
   attack () {
-    if (this.attack_ready) {
-      this.attack_ready = false
-      this.game.time.events.add(Phaser.Timer.HALF, ()=>{this.attack_ready = true}, this).autoDestroy = true
+    if (this.attackReady) {
+      this.attackReady = false
+      this.game.time.events.add(Phaser.Timer.HALF, ()=>{this.attackReady = true}, this).autoDestroy = true
 
       // Анимация и звук атаки
       this.game.sounds.attack.play()
