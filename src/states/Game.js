@@ -15,6 +15,8 @@ import FloorFactory from '../components/FloorFactory'
 
 import Swamp from '../sprites/Swamp'
 
+import api from '../components/api'
+
 const _createOverlay = game => {
   const overlay = game.add.graphics(0, 0)
   overlay.visible = false
@@ -153,12 +155,7 @@ export default class extends Phaser.State {
     if (!this.game.vars.godMode) {
       this.game.paused = true
 
-      // send distance to api
-      const data = { distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.mowedGrass }
-      const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
-      xhr.open('POST', '/api/score', true)
-      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
-      xhr.send(JSON.stringify(data))
+      api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.mowedGrass })
     } else {
       this.game.time.events.add(Phaser.Timer.SECOND, this.hideGameOverBanner, this).autoDestroy = true
     }
