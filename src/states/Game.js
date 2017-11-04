@@ -118,12 +118,10 @@ export default class extends Phaser.State {
 
       api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
     } else {
-      this.game.time.events.add(Phaser.Timer.SECOND, this.hideGameOverBanner, this).autoDestroy = true
+      this.game.time.events.add(Phaser.Timer.SECOND, () => {
+        this.ui.gameOverBanner.visible = false
+      }, this).autoDestroy = true
     }
-  }
-
-  hideGameOverBanner () {
-    this.ui.gameOverBanner.visible = false
   }
 
   pause () {
