@@ -12,50 +12,11 @@ import EnemyManager from '../components/EnemyManager'
 import ObstacleManager from '../components/ObstacleManager'
 import SurfaceManager from '../components/SurfaceManager'
 import FloorFactory from '../components/FloorFactory'
+import UI from '../components/UI'
 
 import Swamp from '../sprites/Swamp'
 
 import api from '../components/api'
-
-const _createOverlay = game => {
-  const overlay = game.add.graphics(0, 0)
-  overlay.visible = false
-  overlay.beginFill(0x1f1e26)
-  overlay.fillAlpha = 0.8
-  overlay.drawRect(0, 0, game.width, game.height)
-  overlay.endFill()
-  overlay.fixedToCamera = true
-
-  return overlay
-}
-
-const _createGameOverBanner = state => {
-  const gameOverBanner = state.add.text(state.world.centerX, state.world.height / 2 - 20, 'Game Over')
-  gameOverBanner.visible = false
-  gameOverBanner.font = 'HaxrCorp'
-  gameOverBanner.padding.set(10, 16)
-  gameOverBanner.fontSize = 40
-  gameOverBanner.fill = '#8A0707'
-  gameOverBanner.smoothed = false
-  gameOverBanner.anchor.setTo(0.5)
-  gameOverBanner.fixedToCamera = true
-
-  return gameOverBanner
-}
-
-const _createPauseBanner = state => {
-  const banner = state.add.text(state.world.centerX, 20, 'Продолжить')
-  banner.visible = false
-  banner.font = 'HaxrCorp'
-  banner.padding.set(10, 16)
-  banner.fontSize = 40
-  banner.fill = '#cccccc'
-  banner.smoothed = false
-  banner.anchor.setTo(0.5)
-  banner.fixedToCamera = true
-
-  return banner
-}
 
 export default class extends Phaser.State {
   init () {
@@ -70,14 +31,7 @@ export default class extends Phaser.State {
     this.player = new Player(this.game)
     this.chaser = new Chaser(this.game, this.floor)
 
-    const info = this.game.add.sprite(32, 32, 'controlsInfo')
-    info.fixedToCamera = true
-
-    this.overlay = _createOverlay(this.game)
-
-    this.distance = this.game.add.text(this.game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
-    this.distance.anchor.setTo(0.5)
-    this.distance.fixedToCamera = true
+    this.ui = new UI(this.game)
 
     this.game.mowedGrass = {Player: 0, Chaser: 0}
 
@@ -99,9 +53,6 @@ export default class extends Phaser.State {
 
     // enables fps
     this.game.time.advancedTiming = true
-
-    this.gameOverBanner = _createGameOverBanner(this.game)
-    this.pauseBanner = _createPauseBanner(this.game)
 
     this.game.onPause.add(this.pause, this)
     this.game.onResume.add(this.resume, this)
@@ -136,7 +87,7 @@ export default class extends Phaser.State {
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
     }
 
-    this.distance.text = Math.floor(this.camera.x / 32) + 'м'
+    this.ui.distance.text = Math.floor(this.camera.x / 32) + 'м'
   }
 
   floorCollision (player, floor) {
@@ -150,7 +101,7 @@ export default class extends Phaser.State {
   // TODO: Stop the game, show game over animation and show highscores
   onGameOver () {
     this.gameOver = true
-    this.gameOverBanner.visible = true
+    this.ui.gameOverBanner.visible = true
 
     if (!this.game.vars.godMode) {
       this.game.paused = true
@@ -162,29 +113,29 @@ export default class extends Phaser.State {
   }
 
   hideGameOverBanner () {
-    this.gameOverBanner.visible = false
+    this.ui.gameOverBanner.visible = false
   }
 
   pause () {
-    this.overlay.visible = true
+    this.ui.overlay.visible = true
     this.game.controller.pauseBtn.visible = false
 
     if (this.gameOver) {
       this.game.controller.replayBtn.visible = true
     } else {
-      this.pauseBanner.visible = true
+      this.ui.pauseBanner.visible = true
       this.game.controller.resumeBtn.visible = true
     }
   }
 
   resume () {
-    this.overlay.visible = false
+    this.ui.overlay.visible = false
     this.game.controller.pauseBtn.visible = true
 
     if (this.gameOver) {
       this.game.controller.replayBtn.visible = false
     } else {
-      this.pauseBanner.visible = false
+      this.ui.pauseBanner.visible = false
       this.game.controller.resumeBtn.visible = false
     }
   }
