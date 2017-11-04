@@ -17,20 +17,29 @@ export default class extends Phaser.Sprite {
     this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     this.animations.add('mow', [15, 16, 17])
 
-    this.animations.play('run', 30, true)
+    this.animationRun()
 
     this.game.physics.enable(this)
     this.body.setSize(19, 54, 43, 10)
+    this.attackReady = true
 
     this.game.add.existing(this)
 
     this.backlogRate = 1
 
     signals.speedReset.add(this.slowDown, this)
+
+    this.events.onAnimationComplete.add(() => {
+      this.animationRun()
+    })
   }
 
   catch (obj, ...args) {
     return this.game.physics.arcade.collide(obj, this, ...args)
+  }
+
+  animationRun () {
+    this.animations.play('run', 30, true)
   }
 
   isTimeToJump () {
@@ -67,8 +76,14 @@ export default class extends Phaser.Sprite {
     }
   }
 
-  attack () {
-    // attack animation
+  mow () {
+    if (this.attackReady) {
+      this.attackReady = false
+      this.game.time.events.add(Phaser.Timer.SECOND, ()=>{this.attackReady = true}, this).autoDestroy = true
+
+      signals.mow.dispatch(this)
+      this.animations.play('mow', 30, false)
+    }
   }
 
   slowDown () {
