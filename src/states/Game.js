@@ -163,5 +163,7 @@ export default class extends Phaser.State {
     this.player.reset()
     this.chaser.reset()
     this.ui.reset()
+
+    this.game.stats.mowedGrass = { Player: 0, Chaser: 0 }
   }
 }
