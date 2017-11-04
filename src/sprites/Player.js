@@ -66,7 +66,7 @@ export default class extends Phaser.Sprite {
   attack () {
     if (this.attackReady) {
       this.attackReady = false
-      this.game.time.events.add(Phaser.Timer.HALF, ()=>{this.attackReady = true}, this).autoDestroy = true
+      this.game.time.events.add(Phaser.Timer.HALF, () => { this.attackReady = true }, this).autoDestroy = true
 
       // Анимация и звук атаки
       this.game.sounds.attack.play()
