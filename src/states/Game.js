@@ -14,6 +14,8 @@ import SurfaceManager from '../components/SurfaceManager'
 import FloorFactory from '../components/FloorFactory'
 import UI from '../components/UI'
 
+import Stats from '../components/Stats'
+
 import Swamp from '../sprites/Swamp'
 
 import api from '../components/api'
@@ -33,7 +35,7 @@ export default class extends Phaser.State {
 
     this.ui = new UI(this.game)
 
-    this.game.mowedGrass = {Player: 0, Chaser: 0}
+    this.game.stats = Stats
 
     this.gameOver = false
   }
@@ -106,7 +108,7 @@ export default class extends Phaser.State {
     if (!this.game.vars.godMode) {
       this.game.paused = true
 
-      api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.mowedGrass })
+      api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
     } else {
       this.game.time.events.add(Phaser.Timer.SECOND, this.hideGameOverBanner, this).autoDestroy = true
     }

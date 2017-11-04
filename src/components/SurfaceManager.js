@@ -48,8 +48,8 @@ export default class {
     if (mower.isOnFloor()) {
       _grass.forEachAlive(grass => {
         if (Phaser.Rectangle.intersects(grass.getBounds(), mower.getBounds())) {
-          if (mower instanceof Player) this.game.mowedGrass.Player++
-          if (mower instanceof Chaser) this.game.mowedGrass.Chaser++
+          if (mower instanceof Player) this.game.stats.mowedGrass.Player++
+          if (mower instanceof Chaser) this.game.stats.mowedGrass.Chaser++
           grass.kill()
         }
       })
