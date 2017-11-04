@@ -35,7 +35,7 @@ export default class extends Phaser.Sprite {
 
     this.startPosition = {
       x: this.game.width / 2 - this.body.offset.x - this.body.width,
-      y: this.game.height - 96
+      y: this.game.height - this.body.height - 1
     }
 
     this.reset(this.startPosition.x, this.startPosition.y)
