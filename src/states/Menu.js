@@ -7,10 +7,12 @@ export default class extends Phaser.State {
     this.stage.backgroundColor = config.bg.color
     this.background = new Background(this.game)
 
+    // Добавление на экран земли, косарей и указателя соответственно
     this.game.add.tileSprite(0, this.game.height - 96, this.game.width, 96, 'menu', 'floor')
     this.game.add.sprite(50, this.game.height - 186, 'menu', 'kosari')
     this.menu = this.game.add.sprite(this.game.width - 137, this.game.height - 202, 'menu', 'sign')
 
+    // Создание кнопки начала (__default значит что она прозрачная, так как сама она нарисована на фоне)
     this.playBtn = this.game.add.button(this.menu.left, this.menu.top + 18, '__default', this.play, this)
     this.playBtn.width = 87
     this.playBtn.height = 41
@@ -34,7 +36,7 @@ export default class extends Phaser.State {
     this.overlay.drawRect(0, 0, this.game.width, this.game.height)
     this.overlay.endFill()
 
-    // create headers
+    // Заголовки для будущих кнопок
     this.preferencesTitle = this.add.text(this.world.centerX, 32, 'Настройки')
     this.authorsTitle = this.add.text(this.world.centerX, 32, 'Авторы'); // this semicolon placed here due to webpack :(
 
@@ -49,6 +51,7 @@ export default class extends Phaser.State {
   }
 
   play () {
+    // Перейти в стейт Игры
     this.state.start('Game')
   }
   preferences () {
