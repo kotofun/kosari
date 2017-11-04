@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import signals from '../signals'
+import config from '../config'
 
 export default class extends Phaser.Sprite {
   constructor (game) {
@@ -35,7 +36,7 @@ export default class extends Phaser.Sprite {
 
     this.startPosition = {
       x: this.game.width / 2 - this.body.offset.x - this.body.width,
-      y: this.game.height - this.body.height - 1
+      y: this.game.height - config.tile - this.body.offset.y - this.body.height - 1
     }
 
     this.reset(this.startPosition.x, this.startPosition.y)
