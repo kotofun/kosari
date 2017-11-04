@@ -49,8 +49,6 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.game.controller.createUIButtons()
-
     // set camera
     this.game.camera.bounds = null
     this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_PLATFORMER, 1, 0)
@@ -126,25 +124,25 @@ export default class extends Phaser.State {
 
   pause () {
     this.ui.overlay.visible = true
-    this.game.controller.pauseBtn.visible = false
+    this.ui.pauseBtn.visible = false
 
     if (this.gameOver) {
-      this.game.controller.replayBtn.visible = true
+      this.ui.replayBtn.visible = true
     } else {
       this.ui.pauseBanner.visible = true
-      this.game.controller.resumeBtn.visible = true
+      this.ui.resumeBtn.visible = true
     }
   }
 
   resume () {
     this.ui.overlay.visible = false
-    this.game.controller.pauseBtn.visible = true
+    this.ui.pauseBtn.visible = true
 
     if (this.gameOver) {
-      this.game.controller.replayBtn.visible = false
+      this.ui.replayBtn.visible = false
     } else {
       this.ui.pauseBanner.visible = false
-      this.game.controller.resumeBtn.visible = false
+      this.ui.resumeBtn.visible = false
     }
   }
 

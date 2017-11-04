@@ -53,6 +53,30 @@ export default class {
 
     this.gameOverBanner = _createGameOverBanner(this.game)
     this.pauseBanner = _createPauseBanner(this.game)
+
+    this._initButtons()
+  }
+
+  _initButtons () {
+    this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
+      this.game.paused = true
+    }, this)
+    this.pauseBtn.fixedToCamera = true
+
+    this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', () => {
+      this.game.paused = false
+    })
+    this.resumeBtn.anchor.setTo(0.5)
+    this.resumeBtn.fixedToCamera = true
+    this.resumeBtn.visible = false
+
+    this.replayBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'replayBtn', () => {
+      this.game.state.restart(false)
+      this.game.paused = false
+    })
+    this.replayBtn.anchor.setTo(0.5)
+    this.replayBtn.fixedToCamera = true
+    this.replayBtn.visible = false
   }
 
   reset () {
