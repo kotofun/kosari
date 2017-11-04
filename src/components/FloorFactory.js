@@ -45,9 +45,8 @@ export default class {
   }
 
   init () {
-    while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
+    while (lastRight(_floor) - this.game.world.width < config.tileSize * 2) {
       addFloor(new Ground({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
-      signals.terrainCreated.dispatch(last(_floor), _current)
     }
   }
 
@@ -59,7 +58,7 @@ export default class {
     const firstFloor = _floor.getAt(0)
     if (!firstFloor.inCamera) _floor.remove(firstFloor)
 
-    while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
+    while (lastRight(_floor) - (this.game.camera.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(_terrainTypes[_current])
 
       signals.terrainCreated.dispatch(last(_floor), _current)
