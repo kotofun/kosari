@@ -1,3 +1,5 @@
+import signals from '../signals'
+
 const _createOverlay = game => {
   const overlay = game.add.graphics(0, 0)
   overlay.visible = false
@@ -54,7 +56,38 @@ export default class {
     this.gameOverBanner = _createGameOverBanner(this.game)
     this.pauseBanner = _createPauseBanner(this.game)
 
+    this._initMenu()
     this._initButtons()
+  }
+
+  _initMenu () {
+    this.menu = this.game.add.sprite(this.game.width - 137, this.game.height - 170, 'menu', 'sign')
+
+    this.playBtn = this.game.add.button(this.menu.left, this.menu.top + 18, '__default', this.startGame, this)
+    this.playBtn.width = 87
+    this.playBtn.height = 41
+
+    // !!!: Additional buttons are transferred to next releases
+    //
+    // this.preferencesBtn = this.game.add.button(this.menu.left + 4, this.menu.top + 63, '__default', this.preferences, this)
+    // this.preferencesBtn.width = 68
+    // this.preferencesBtn.height = 18
+    // this.authorsBtn = this.game.add.button(this.menu.left + 12, this.menu.top + 112, '__default', this.authors, this)
+    // this.authorsBtn.width = 55
+    // this.authorsBtn.height = 17
+
+    // create headers
+    this.preferencesTitle = this.game.add.text(this.game.world.centerX, 32, 'Настройки')
+    this.authorsTitle = this.game.add.text(this.game.world.centerX, 32, 'Авторы'); // this semicolon placed here due to webpack :(
+
+    [this.preferencesTitle, this.authorsTitle].map(title => {
+      title.visible = false
+      title.font = 'HaxrCorp'
+      title.fontSize = 32
+      title.fill = '#8A0707'
+      title.smoothed = false
+      title.anchor.setTo(0.5)
+    })
   }
 
   _initButtons () {
@@ -77,6 +110,20 @@ export default class {
     this.replayBtn.anchor.setTo(0.5)
     this.replayBtn.fixedToCamera = true
     this.replayBtn.visible = false
+  }
+
+  showPreferences () {
+    this.playBtn.inputEnabled = false
+    this.overlay.visible = true
+    this.preferencesTitle.visible = true
+  }
+
+  showAuthors () {
+    //
+  }
+
+  startGame () {
+    signals.gameStart.dispatch()
   }
 
   reset () {

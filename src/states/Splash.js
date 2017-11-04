@@ -75,6 +75,6 @@ export default class extends Phaser.State {
     this.game.input.keyboard.onDownCallback = null
 
     // Меняем стейт
-    this.state.start('Menu')
+    this.state.start('Game')
   }
 }

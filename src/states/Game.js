@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 
 import signals from '../signals'
+import config from '../config'
 
 import Player from '../sprites/Player'
 import Chaser from '../sprites/Chaser'
@@ -46,6 +47,8 @@ export default class extends Phaser.State {
     this.game.stats = Stats
 
     this.gameOver = false
+
+    this.game.vars.speed = 0
   }
 
   create () {
@@ -58,12 +61,18 @@ export default class extends Phaser.State {
     this.game.renderer.renderSession.roundPixels = true
 
     signals.gameOver.add(this.onGameOver, this)
+    signals.gameStart.add(this.onGameStart, this)
 
     // enables fps
     this.game.time.advancedTiming = true
 
     this.game.onPause.add(this.pause, this)
     this.game.onResume.add(this.resume, this)
+
+    this.showMenu()
+  }
+
+  showMenu () {
   }
 
   update () {
@@ -120,6 +129,10 @@ export default class extends Phaser.State {
         this.ui.gameOverBanner.visible = false
       }, this).autoDestroy = true
     }
+  }
+
+  onGameStart () {
+    this.game.vars.speed = config.initialSpeed
   }
 
   pause () {
