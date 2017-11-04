@@ -26,6 +26,15 @@ export default class {
 
     signals.terrainCreated.add(this.revive, this)
     signals.mow.add(this.mow, this)
+
+    this.init()
+  }
+
+  init () {
+    for (let i = 0; i * config.tileSize - this.game.world.width < config.tileSize * 2; i++) {
+      let grass = _grass.getFirstDead()
+      grass.reset(i * config.tileSize, this.game.world.height - config.tileSize - grass.height)
+    }
   }
 
   update () {
