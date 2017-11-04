@@ -33,18 +33,22 @@ const addFloor = e => { _floor.add(e) }
 
 export default class {
   constructor (game, starting) {
-    if (starting === undefined) throw new TypeError('Starting terrain can\'t be undefined')
-
     this.game = game
-    this.startTerrainType = starting
 
     // init terrain objects
     _floor = this.game.add.group()
-
     _current = starting
+    this.init()
 
     signals.terrainChanged.add(terrain => { _current = terrain.type }, this)
     signals.floorHold.add(tilesCount => { _hold = tilesCount }, this)
+  }
+
+  init () {
+    while (lastRight(_floor) - (this.game.camera.view.x + this.game.camera.view.width) < config.tileSize * 2) {
+      addFloor(new Ground({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      signals.terrainCreated.dispatch(last(_floor), _current)
+    }
   }
 
   getAt (index) {
@@ -134,7 +138,6 @@ export default class {
   }
 
   reset () {
-    _current = this.startTerrainType
     _floor.removeChildren()
 
     _hold = 0
@@ -143,5 +146,7 @@ export default class {
     _counters.between = { 'Ground': 0, 'Swamp': 0 }
     _counters.last = 'Ground'
     _counters.terrainLength = 0
+
+    this.init()
   }
 }

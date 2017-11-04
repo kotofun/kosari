@@ -28,10 +28,10 @@ export default class extends Phaser.State {
     if (!this.isBooted) {
       this.background = new Background(this.game)
 
-      this.terrain = new Terrain(this.game, 'relax')
-      this.floor = new FloorFactory(this.game, this.terrain.current.type)
+      this.terrain = new Terrain(this.game)
       this.surface = new SurfaceManager(this.game)
       this.obstacles = new ObstacleManager(this.game)
+      this.floor = new FloorFactory(this.game, this.terrain.current.type)
       this.enemies = new EnemyManager(this, this.terrain)
 
       this.player = new Player(this.game)
@@ -68,11 +68,6 @@ export default class extends Phaser.State {
 
     this.game.onPause.add(this.pause, this)
     this.game.onResume.add(this.resume, this)
-
-    this.showMenu()
-  }
-
-  showMenu () {
   }
 
   update () {

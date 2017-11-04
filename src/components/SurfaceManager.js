@@ -9,7 +9,7 @@ import Chaser from '../sprites/Chaser'
 
 let _grass
 
-const _init = game => {
+const _createSwap = game => {
   const maxGrass = config.gameWidth / config.tileSize + 5
   for (let i = 0; i < maxGrass; i++) {
     _grass.add(new Grass(game))
@@ -22,7 +22,7 @@ export default class {
 
     _grass = this.game.add.group()
 
-    _init(game)
+    _createSwap(game)
 
     signals.terrainCreated.add(this.revive, this)
     signals.mow.add(this.mow, this)
@@ -56,7 +56,7 @@ export default class {
     }
   }
 
-  reset() {
+  reset () {
     _grass.forEachAlive(grass => { grass.kill() })
   }
 }

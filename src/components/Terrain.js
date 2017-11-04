@@ -7,14 +7,16 @@ const _terrainsConfig = config.terrain
 const _terrainTypes = Object.keys(_terrainsConfig)
 
 export default class {
-  constructor (game, starting) {
-    if (starting === undefined) throw new TypeError('Starting terrain can\'t be undefined')
-
+  constructor (game) {
     this.game = game
-    this.current = this.next(starting)
-    this.startTerrainType = starting
 
     signals.terrainCreated.add(this.update, this)
+
+    this.init()
+  }
+
+  init () {
+    this.current = this.next()
   }
 
   next (terrain) {
@@ -53,6 +55,6 @@ export default class {
   }
 
   reset () {
-    this.current = this.next(this.startTerrainType)
+    this.init()
   }
 }
