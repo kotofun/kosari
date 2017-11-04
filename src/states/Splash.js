@@ -59,11 +59,21 @@ export default class extends Phaser.State {
       this.loaderBar.destroy()
       this.loaderBg.destroy()
     }, this)
-    // А когда закончится перейти в стейт Меню
-    splash.events.onAnimationComplete.add(() => {
-      this.state.start('Menu')
-    }, this)
+
+    // А когда закончится перейти в следующий стейт
+    splash.events.onAnimationComplete.add(this.nextState, this)
+
+    // Добавляем пропуск заставки при нажатии на любую кнопку
+    this.game.input.keyboard.onDownCallback = (e) => { this.nextState() }
 
     splash.animations.play('play', 20)
+  }
+
+  nextState () {
+    // Удаляем реакцию на нажатие любой кнопки
+    this.game.input.keyboard.onDownCallback = null
+
+    // Меняем стейт
+    this.state.start('Menu')
   }
 }
