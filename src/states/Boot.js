@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 import config from '../config'
 
+import Controller from '../components/Controller'
+
 const handleCorrect = game => {
   if (game.state.current !== 'Game') game.paused = false
   document.getElementById('rotate').style.display = 'none'
@@ -69,6 +71,12 @@ export default class extends Phaser.State {
   }
 
   create () {
+    this.game.controller = new Controller(this.game)
+
+    // Отключаем сброс ввода для того, чтобы он
+    // не ломался при переходе между стейтами
+    this.game.input.resetLocked = true
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE)
     this.game.physics.arcade.gravity.y = config.gravity.y
   }

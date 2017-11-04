@@ -8,7 +8,6 @@ import Chaser from '../sprites/Chaser'
 
 import Terrain from '../components/Terrain'
 import Background from '../components/Background'
-import Controller from '../components/Controller'
 import EnemyManager from '../components/EnemyManager'
 import ObstacleManager from '../components/ObstacleManager'
 import SurfaceManager from '../components/SurfaceManager'
@@ -84,7 +83,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.controller = new Controller(this.game)
+    this.game.controller.createUIButtons()
 
     // set camera
     this.game.camera.bounds = null
@@ -171,21 +170,21 @@ export default class extends Phaser.State {
 
   pause () {
     this.overlay.visible = true
-    this.controller.pauseBtn.visible = false
+    this.game.controller.pauseBtn.visible = false
 
     if (!this.gameOver) {
       this.pauseBanner.visible = true
-      this.controller.resumeBtn.visible = true
+      this.game.controller.resumeBtn.visible = true
     }
   }
 
   resume () {
     this.overlay.visible = false
-    this.controller.pauseBtn.visible = true
+    this.game.controller.pauseBtn.visible = true
 
     if (!this.gameOver) {
       this.pauseBanner.visible = false
-      this.controller.resumeBtn.visible = false
+      this.game.controller.resumeBtn.visible = false
     }
   }
 }

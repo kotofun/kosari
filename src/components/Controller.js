@@ -34,7 +34,9 @@ export default class {
     } else {
       _initMobileControls(this.game, keySignals)
     }
+  }
 
+  createUIButtons () {
     this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
       this.game.paused = true
     }, this)
