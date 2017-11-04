@@ -80,10 +80,10 @@ export default class {
     }
   }
 
-  attack () {
+  attack (attacker) {
     for (const enemyType in _enemies) {
       _enemies[enemyType].forEachAlive(enemy => {
-        if (Phaser.Rectangle.intersects(ctx.player.getBounds(), enemy.getBounds())) enemy.kill()
+        if (Phaser.Rectangle.intersects(attacker.getBounds(), enemy.getBounds())) enemy.kill()
       })
     }
   }
