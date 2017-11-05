@@ -36,6 +36,7 @@ export default class {
   }
 
   reset () {
+    this.stopAnimation()
     this.layers.map(l => { l.reset() })
   }
 }
