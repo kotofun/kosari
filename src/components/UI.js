@@ -123,7 +123,7 @@ export default class {
   }
 
   startGame () {
-    signals.gameStart.dispatch()
+    signals.onGameStart.dispatch()
   }
 
   reset () {

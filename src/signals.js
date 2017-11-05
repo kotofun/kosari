@@ -14,7 +14,8 @@ export default {
   floorHold: new Phaser.Signal(),
 
   // game & player speed signals
-  gameStart: new Phaser.Signal(),
+  onGameStart: new Phaser.Signal(),
+
   speedUp: new Phaser.Signal(),
   speedReset: new Phaser.Signal(),
   speedDown: new Phaser.Signal(),

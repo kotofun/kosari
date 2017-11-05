@@ -48,7 +48,7 @@ export default class extends Phaser.State {
 
     this.gameOver = false
 
-    this.game.vars.speed = 0
+    this.game.isStarted = false
   }
 
   create () {
@@ -61,7 +61,7 @@ export default class extends Phaser.State {
     this.game.renderer.renderSession.roundPixels = true
 
     signals.gameOver.add(this.onGameOver, this)
-    signals.gameStart.add(this.onGameStart, this)
+    signals.onGameStart.add(this.gameStart, this)
 
     // enables fps
     this.game.time.advancedTiming = true
@@ -74,12 +74,11 @@ export default class extends Phaser.State {
     this.background.update()
 
     this.floor.collide(this.player, this.floorCollision)
-    if (!this.enemies.collide(this.player, this.playerSlowdown) && this.player.slowedDown) {
-      signals.speedReset.dispatch()
-    }
-    if (!this.obstacles.collide(this.player, this.playerSlowdown) && this.player.slowedDown) {
-      signals.speedReset.dispatch()
-    }
+
+    let collided = this.enemies.collide(this.player, this.playerSlowdown)
+    collided |= this.obstacles.collide(this.player, this.playerSlowdown)
+
+    if (!collided && this.player.slowedDown) { signals.speedReset.dispatch() }
 
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
 
@@ -126,8 +125,9 @@ export default class extends Phaser.State {
     }
   }
 
-  onGameStart () {
+  gameStart () {
     this.game.vars.speed = config.initialSpeed
+    this.game.isStarted = true
   }
 
   pause () {
