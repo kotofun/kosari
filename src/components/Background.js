@@ -27,8 +27,6 @@ export default class {
     }
   }
 
-  update () {}
-
   startAnimation () {
     for (var i = 0; i < this.layers.length; i++) {
       this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)

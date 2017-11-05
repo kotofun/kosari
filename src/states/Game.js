@@ -71,8 +71,6 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.background.update()
-
     this.floor.collide(this.player, this.floorCollision)
 
     let collided = this.enemies.collide(this.player, this.playerSlowdown)
