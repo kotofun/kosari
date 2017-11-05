@@ -8,16 +8,19 @@ export default class extends Phaser.Sprite {
     super(game, 0, 0, 'player')
 
     // Деление спрайта на именованные анимации и списком кадров в них
+    this.animations.add('stand', [0])
     this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     this.animations.add('mow', [15, 16, 17])
 
     // Анимация бега это стандартная анимация
-    this.animationRun()
     this.attackReady = true
 
+    // Включаем физику
     this.game.physics.enable(this)
+    // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
+    // Добавляем спрайт в игровой мир
     this.game.add.existing(this)
 
     this.slowedDown = false
@@ -27,34 +30,42 @@ export default class extends Phaser.Sprite {
 
     signals.speedDown.add(this.slowDown, this)
     signals.speedReset.add(this.resetSpeed, this)
-
-    // И как только заканчивается другая анимация,
-    // снова воспроизводится анимация бега
-    this.events.onAnimationComplete.add(() => {
-      this.animationRun()
-    })
+    signals.onGameStart.add(this.start, this)
 
     this.startPosition = {
       x: this.game.width / 2 - this.body.offset.x - this.body.width,
-      y: this.game.height - config.tile - this.body.offset.y - this.body.height - 1
+      y: this.game.height - config.tileSize - this.body.offset.y - this.body.height - 1
     }
 
     this.reset(this.startPosition.x, this.startPosition.y)
   }
 
+  start () {
+    // Устанавливаем анимацию по-умолчанию
+    this.events.onAnimationComplete.add(() => { this.animateRun() })
+
+    // Сразу запускаем анимацию бега
+    this.animateRun()
+  }
+
+  // Анимация стояния
+  animateStand () { this.animations.play('stand', 30) }
+  // Анимация бега
+  animateRun () { this.animations.play('run', 30) }
+  // Анимация кошения
+  animateMow () { this.animations.play('mow', 30) }
+
   update () {
     this.run()
   }
 
-  animationRun () {
-    this.animations.play('run', 30, true)
-  }
-
   run () {
-    this.body.velocity.x = this.game.vars.speed
+    if (this.game.isStarted) {
+      this.body.velocity.x = this.game.vars.speed
+    }
   }
 
-  // Check if player is on surface
+  // Игрок стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down }
 
   jump () {
@@ -72,7 +83,7 @@ export default class extends Phaser.Sprite {
       // Анимация и звук атаки
       this.game.sounds.attack.play()
       signals.mow.dispatch(this)
-      this.animations.play('mow', 30, false)
+      this.animateMow()
     }
   }
 
@@ -91,5 +102,10 @@ export default class extends Phaser.Sprite {
     }
 
     super.reset(x, y)
+
+    this.body.velocity.x = 0
+
+    this.events.onAnimationComplete.removeAll()
+    this.animateStand()
   }
 }
