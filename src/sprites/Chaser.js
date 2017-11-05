@@ -14,39 +14,39 @@ export default class extends Phaser.Sprite {
 
     _floor = floorManager
 
+    // Подгружаем все анимации
+    this.animations.add('stand', [0])
     this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     this.animations.add('mow', [15, 16, 17])
 
-    this.animationRun()
-
+    // Включаем физику
     this.game.physics.enable(this)
+    // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
-    this.attackReady = true
 
+    // Добавляем спрайт в игровой мир
     this.game.add.existing(this)
 
+    // Флаг готовности атаки
+    this.attackReady = true
+    // Скорость отставания относительно игрока. (Подробнее смотреть slowDown)
     this.backlogRate = 1
 
     signals.speedReset.add(this.slowDown, this)
+    signals.onGameStart.add(this.start, this)
 
-    this.events.onAnimationComplete.add(() => {
-      this.animationRun()
-    })
-
-    this.startPosition = {
-      x: 0,
-      y: this.game.height - 96
-    }
+    this.startPosition = { x: 0, y: this.game.height - 96 }
 
     this.reset()
   }
 
-  catch (obj, ...args) {
-    return this.game.physics.arcade.collide(obj, this, ...args)
+  // Метод, вызываемый при старте игры
+  start () {
+    this.events.onAnimationComplete.add(() => { this.animateRun() })
   }
 
-  animationRun () {
-    this.animations.play('run', 30, true)
+  catch (obj, ...args) {
+    return this.game.physics.arcade.collide(obj, this, ...args)
   }
 
   isTimeToJump () {
@@ -70,12 +70,22 @@ export default class extends Phaser.Sprite {
   }
 
   run () {
-    this.body.velocity.x = this.game.vars.speed * this.backlogRate
+    if (this.game.isStarted) {
+      this.body.velocity.x = this.game.vars.speed * this.backlogRate
+    }
   }
 
-  isOnFloor () {
-    return this.body.touching.down
-  }
+  // Анимация бега
+  animateRun () { this.animations.play('run', 30) }
+
+  // Анимация стояния
+  animateStand () { this.animations.play('stand') }
+
+  // Анимация кошения
+  animateMow () { this.animations.play('mow', 30) }
+
+  // Косарь стоит на твердой поверхности ?
+  isOnFloor () { return this.body.touching.down }
 
   jump () {
     if (this.isOnFloor()) {
@@ -84,7 +94,7 @@ export default class extends Phaser.Sprite {
   }
 
   mow () {
-    if (this.attackReady) {
+    if (this.attackReady && this.game.isStarted) {
       this.attackReady = false
       this.game.time.events.add(Phaser.Timer.SECOND, () => { this.attackReady = true }, this).autoDestroy = true
 
@@ -93,10 +103,20 @@ export default class extends Phaser.Sprite {
     }
   }
 
+  // Замедление косаря.
+  //
+  // Если косарь будет всегда бежать со скоростью игрока, то после 
+  // остановок игрока косарь не будет отставать. Для того, чтобы
+  // косарь отставал после преодаления игроком препятствия вводится
+  // данный параметр. Варьируется в диапазоне [0, 1],
+  // при значении 1 скорость косаря идентична скорости игрока и игры,
+  // при значении 0 косарь стоит на месте.
   slowDown () {
     this.backlogRate = config.chaser.backlogRate
   }
 
+  // Сброс параметров косаря.
+  // Вызывается при рестарте игры.
   reset (x, y) {
     if (!(x || y)) {
       x = this.startPosition.x
@@ -105,6 +125,11 @@ export default class extends Phaser.Sprite {
 
     this.attackReady = true
 
+    this.body.velocity.x = 0
+
     super.reset(x, y)
+
+    this.events.onAnimationComplete.removeAll()
+    this.animateStand()
   }
 }
