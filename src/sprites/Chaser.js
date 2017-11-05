@@ -80,10 +80,8 @@ export default class extends Phaser.Sprite {
 
   // Анимация бега
   animateRun () { this.animations.play('run', 30) }
-
   // Анимация стояния
   animateStand () { this.animations.play('stand') }
-
   // Анимация кошения
   animateMow () { this.animations.play('mow', 30) }
 
