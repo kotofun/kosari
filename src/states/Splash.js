@@ -16,6 +16,7 @@ export default class extends Phaser.State {
     // Загрузка ассетов и атласов и именование
     // (анимации прописываются каждому объекту в его файле в папке sprites)
     this.load.atlas('player', 'assets/images/player.png', 'assets/images/player.json')
+    this.load.atlas('chaser', 'assets/images/chaser.png', 'assets/images/chaser.json')
     this.load.image('surface', 'assets/images/surface.png')
 
     this.load.atlas('surface.grass', 'assets/images/grass.png', 'assets/images/grass.json')

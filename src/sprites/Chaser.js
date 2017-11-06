@@ -10,14 +10,14 @@ let _floor
 
 export default class extends Phaser.Sprite {
   constructor (game, floorManager) {
-    super(game, 0, 0, 'player')
+    super(game, 0, 0, 'chaser')
 
     _floor = floorManager
 
     // Подгружаем все анимации
     this.animations.add('stand', [0])
-    this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    this.animations.add('mow', [15, 16, 17])
+    this.animations.add('run', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21])
+    this.animations.add('mow', [1, 2, 3, 4, 5, 6])
 
     // Включаем физику
     this.game.physics.enable(this)
@@ -79,11 +79,11 @@ export default class extends Phaser.Sprite {
   }
 
   // Анимация бега
-  animateRun () { this.animations.play('run', 30) }
+  animateRun () { this.animations.play('run', 15) }
   // Анимация стояния
   animateStand () { this.animations.play('stand') }
   // Анимация кошения
-  animateMow () { this.animations.play('mow', 30) }
+  animateMow () { this.animations.play('mow', 15) }
 
   // Косарь стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down }
