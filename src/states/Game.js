@@ -76,7 +76,9 @@ export default class extends Phaser.State {
     let collided = this.enemies.collide(this.player, this.playerSlowdown)
     collided |= this.obstacles.collide(this.player, this.playerSlowdown)
 
-    if (!collided && this.player.slowedDown) { signals.speedReset.dispatch() }
+    if (!collided && this.player.slowedDown && this.game.isStarted) {
+      signals.speedReset.dispatch()
+    }
 
     this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
 
