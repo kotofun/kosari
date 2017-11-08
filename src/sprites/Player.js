@@ -107,5 +107,7 @@ export default class extends Phaser.Sprite {
 
     this.events.onAnimationComplete.removeAll()
     this.animateStand()
+
+    this.attackReady = true
   }
 }
