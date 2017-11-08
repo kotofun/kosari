@@ -3,8 +3,16 @@ import Phaser from 'phaser'
 import signals from '../signals'
 
 const keys = {
-  jump: Phaser.Keyboard.SPACEBAR,
-  attack: Phaser.Keyboard.CONTROL
+  jump: [
+    Phaser.Keyboard.SPACEBAR,
+    Phaser.Keyboard.W
+  ],
+  attack: [
+    Phaser.Keyboard.CONTROL,
+    Phaser.Keyboard.SHIFT,
+    Phaser.Keyboard.ENTER,
+    Phaser.Keyboard.D
+  ]
 }
 
 const _bindedKeys = {}
@@ -18,10 +26,10 @@ const _initMobileControls = (game, { jump, attack }) => {
 }
 
 const _initDesktopControls = (game, { jump, attack }) => {
-  _bindedKeys.jumpKey = game.input.keyboard.addKey(keys.jump)
-  _bindedKeys.jumpKey.onDown.add(jump)
-  _bindedKeys.attackKey = game.input.keyboard.addKey(keys.attack)
-  _bindedKeys.attackKey.onDown.add(attack)
+  _bindedKeys.jumpKey = keys.jump.map(k => game.input.keyboard.addKey(k))
+  _bindedKeys.jumpKey.map(k => { k.onDown.add(jump) })
+  _bindedKeys.attackKey = keys.attack.map(k => game.input.keyboard.addKey(k))
+  _bindedKeys.attackKey.map(k => { k.onDown.add(attack) })
 }
 
 export default class {
