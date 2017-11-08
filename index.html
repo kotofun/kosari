@@ -66,8 +66,9 @@
       <p>Поверни мобилку, бро!</p>
     </div>
     <div id="font-preloader">.</div>
-    <script src="dist/vendor.bundle.js"></script>
-    <script src="dist/bundle.js"></script>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+        <script src="<%=htmlWebpackPlugin.files.chunks[chunk].entry%>"></script>
+    <% } %>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function (d, w, c) {
