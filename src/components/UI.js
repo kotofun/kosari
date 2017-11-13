@@ -103,10 +103,7 @@ export default class {
     this.resumeBtn.fixedToCamera = true
     this.resumeBtn.visible = false
 
-    this.replayBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'replayBtn', () => {
-      this.game.state.restart(false)
-      this.game.paused = false
-    })
+    this.replayBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'replayBtn', this.replayGame, this)
     this.replayBtn.anchor.setTo(0.5)
     this.replayBtn.fixedToCamera = true
     this.replayBtn.visible = false
@@ -124,6 +121,10 @@ export default class {
 
   startGame () {
     signals.onGameStart.dispatch()
+  }
+
+  replayGame () {
+    signals.onGameReplay.dispatch()
   }
 
   reset () {

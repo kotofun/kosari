@@ -62,6 +62,7 @@ export default class extends Phaser.State {
 
     signals.gameOver.add(this.onGameOver, this)
     signals.onGameStart.add(this.gameStart, this)
+    signals.onGameReplay.add(this.replay, this)
 
     // enables fps
     this.game.time.advancedTiming = true
@@ -152,6 +153,11 @@ export default class extends Phaser.State {
       this.ui.pauseBanner.visible = false
       this.ui.resumeBtn.visible = false
     }
+  }
+
+  replay () {
+    this.game.state.restart(false)
+    this.game.paused = false
   }
 
   // Функция вызывается при закрытии стейта.

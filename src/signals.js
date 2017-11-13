@@ -15,6 +15,7 @@ export default {
 
   // game & player speed signals
   onGameStart: new Phaser.Signal(),
+  onGameReplay: new Phaser.Signal(),
 
   speedUp: new Phaser.Signal(),
   speedReset: new Phaser.Signal(),
