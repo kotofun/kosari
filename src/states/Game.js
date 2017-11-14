@@ -74,7 +74,9 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.floor.collide(this.player, this.floorCollision)
+    this.floor.collide(this.player, (player, floor) => {
+      if (floor instanceof Swamp && !this.game.vars.godMode) signals.onGameOver.dispatch()
+    })
 
     let collided = this.enemies.collide(this.player, this.playerSlowdown)
     collided |= this.obstacles.collide(this.player, this.playerSlowdown)
@@ -83,7 +85,9 @@ export default class extends Phaser.State {
       signals.speedReset.dispatch()
     }
 
-    this.chaser.catch(this.player, () => { signals.onGameOver.dispatch() })
+    this.chaser.catch(this.player, () => {
+      if (!this.game.vars.godMode) signals.onGameOver.dispatch()
+    })
 
     this.floor.collide(this.chaser)
     this.chaser.mow()
@@ -104,10 +108,6 @@ export default class extends Phaser.State {
     this.ui.distance.text = Math.floor(this.camera.x / 32) + 'м'
   }
 
-  floorCollision (player, floor) {
-    if (floor instanceof Swamp) signals.onGameOver.dispatch()
-  }
-
   playerSlowdown (player, obstacle) {
     if (player.body.touching.right) signals.speedDown.dispatch()
   }
@@ -116,16 +116,9 @@ export default class extends Phaser.State {
   gameOver () {
     this.isGameOver = true
     this.ui.gameOverBanner.visible = true
+    this.game.paused = true
 
-    if (!this.game.vars.godMode) {
-      this.game.paused = true
-
-      api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
-    } else {
-      this.game.time.events.add(Phaser.Timer.SECOND, () => {
-        this.ui.gameOverBanner.visible = false
-      }, this).autoDestroy = true
-    }
+    api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
   }
 
   gameStart () {
