@@ -46,7 +46,7 @@ export default class extends Phaser.State {
 
     this.game.stats = Stats
 
-    this.gameOver = false
+    this.isGameOver = false
 
     this.game.isStarted = false
   }
@@ -60,8 +60,8 @@ export default class extends Phaser.State {
     // don't remove this prevents player sprite jiggling
     this.game.renderer.renderSession.roundPixels = true
 
-    signals.gameOver.add(this.onGameOver, this)
     signals.onGameStart.add(this.gameStart, this)
+    signals.onGameOver.add(this.gameOver, this)
     signals.onGameReplay.add(this.replay, this)
 
     // enables fps
@@ -83,7 +83,7 @@ export default class extends Phaser.State {
       signals.speedReset.dispatch()
     }
 
-    this.chaser.catch(this.player, () => { signals.gameOver.dispatch() })
+    this.chaser.catch(this.player, () => { signals.onGameOver.dispatch() })
 
     this.floor.collide(this.chaser)
     this.chaser.mow()
@@ -105,7 +105,7 @@ export default class extends Phaser.State {
   }
 
   floorCollision (player, floor) {
-    if (floor instanceof Swamp) signals.gameOver.dispatch()
+    if (floor instanceof Swamp) signals.onGameOver.dispatch()
   }
 
   playerSlowdown (player, obstacle) {
@@ -113,8 +113,8 @@ export default class extends Phaser.State {
   }
 
   // TODO: Stop the game, show game over animation and show highscores
-  onGameOver () {
-    this.gameOver = true
+  gameOver () {
+    this.isGameOver = true
     this.ui.gameOverBanner.visible = true
 
     if (!this.game.vars.godMode) {
@@ -137,7 +137,7 @@ export default class extends Phaser.State {
     this.ui.overlay.visible = true
     this.ui.pauseBtn.visible = false
 
-    if (this.gameOver) {
+    if (this.isGameOver) {
       this.ui.replayBtn.visible = true
     } else {
       this.ui.pauseBanner.visible = true
@@ -149,7 +149,7 @@ export default class extends Phaser.State {
     this.ui.overlay.visible = false
     this.ui.pauseBtn.visible = true
 
-    if (this.gameOver) {
+    if (this.isGameOver) {
       this.ui.replayBtn.visible = false
     } else {
       this.ui.pauseBanner.visible = false

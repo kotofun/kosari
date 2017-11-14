@@ -22,7 +22,7 @@ export default class {
     // На событие старта игры включаем игровое управление
     signals.onGameStart.add(this.enablePlayControls, this)
     // На событие геймовера игры включаем управление геймовера
-    signals.gameOver.add(this.enableGameOverControls, this)
+    signals.onGameOver.add(this.enableGameOverControls, this)
     // На событие реплея игры включаем управление меню
     signals.onGameReplay.add(this.enableMenuControls, this)
   }
