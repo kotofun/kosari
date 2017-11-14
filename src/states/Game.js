@@ -69,6 +69,8 @@ export default class extends Phaser.State {
 
     this.game.onPause.add(this.pause, this)
     this.game.onResume.add(this.resume, this)
+
+    this.game.controller.enableMenuControls()
   }
 
   update () {

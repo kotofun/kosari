@@ -15,40 +15,93 @@ const keys = {
   ]
 }
 
-const _bindedKeys = {}
-
-const _initMobileControls = (game, { jump, attack }) => {
-  game.input.onTap.add((pointer, doubleTap) => {
-    const center = game.world.width / 2
-    if (pointer.x <= center) jump()
-    if (pointer.x > center) attack()
-  }, game)
-}
-
-const _initDesktopControls = (game, { jump, attack }) => {
-  _bindedKeys.jumpKey = keys.jump.map(k => game.input.keyboard.addKey(k))
-  _bindedKeys.jumpKey.map(k => { k.onDown.add(jump) })
-  _bindedKeys.attackKey = keys.attack.map(k => game.input.keyboard.addKey(k))
-  _bindedKeys.attackKey.map(k => { k.onDown.add(attack) })
-}
-
 export default class {
   constructor (game) {
     this.game = game
 
-    const keySignals = { jump: this.jump, attack: this.attack }
+    // На событие старта игры включаем игровое управление
+    signals.onGameStart.add(this.enablePlayControls, this)
+    // На событие геймовера игры включаем управление геймовера
+    signals.gameOver.add(this.enableGameOverControls, this)
+    // На событие реплея игры включаем управление меню
+    signals.onGameReplay.add(this.enableMenuControls, this)
+  }
+
+  // Включить игровое управление, в котором есть
+  // прыжок и атака
+  enablePlayControls () {
+    // Сбрасываем всё управление
+    this.disable()
+
+    // Привязываем управление для десктопов
     if (this.game.device.desktop) {
-      _initDesktopControls(this.game, keySignals)
+      // Прыжок
+      keys.jump
+        .map(k => this.game.input.keyboard.addKey(k))
+        .map(k => {
+          k.onDown.add(() => {
+            signals.jump.dispatch()
+          }, this)
+        })
+
+      // Атака
+      keys.attack
+        .map(k => this.game.input.keyboard.addKey(k))
+        .map(k => {
+          k.onDown.add(() => {
+            signals.attack.dispatch()
+          }, this)
+        })
+
+    // Привязываем управление для мобилок (тапы)
     } else {
-      _initMobileControls(this.game, keySignals)
+      // Прыжок
+      this.game.input.onTap.add((pointer, doubleTap) => {
+        if (pointer.x <= this.game.world.width / 2) signals.jump.dispatch()
+      }, this)
+
+      // Атака
+      this.game.input.onTap.add((pointer, doubleTap) => {
+        if (pointer.x > this.game.world.width / 2) signals.attack.dispatch()
+      }, this)
     }
   }
 
-  jump () {
-    signals.jump.dispatch()
+  // Включить управление для последнего экрана с геймовером
+  enableGameOverControls () {
+    // Сбрасываем всё управление
+    this.disable()
+
+    // Привязываем управление для десктопов
+    if (this.game.device.desktop) {
+      // Делать рестарт при нажатии на любую кнопку
+      this.game.input.keyboard.onDownCallback = () => {
+        signals.onGameReplay.dispatch()
+      }
+    }
   }
 
-  attack () {
-    signals.attack.dispatch()
+  // Включить управление в меню
+  enableMenuControls () {
+    // Сбрасываем всё управление
+    this.disable()
+
+    // Привязываем управление для десктопов
+    if (this.game.device.desktop) {
+      // Стартуем при нажатии на любую кнопку
+      this.game.input.keyboard.onDownCallback = () => {
+        signals.onGameStart.dispatch()
+      }
+    }
+  }
+
+  // Отключение контроллера
+  disable () {
+    // Сбрасываем колбэк для нажатия на любую кнопку
+    this.game.input.keyboard.onDownCallback = null
+    // Сбрасываем все кнопки на клавиатуре
+    this.game.input.keyboard.reset(true)
+    // Сбрасываем все тапы
+    this.game.input.onTap.removeAll()
   }
 }
