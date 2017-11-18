@@ -49,6 +49,8 @@ export default class extends Phaser.State {
     this.isGameOver = false
 
     this.game.isStarted = false
+
+    this.game.sounds.background.play()
   }
 
   create () {
