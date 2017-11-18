@@ -1,5 +1,5 @@
 import { generateSurfacePiceBitmap } from '../utils'
-import groundTileSet from '../../assets/images/ground.json'
+import groundTileSet from '../../assets/tilesets/ground.json'
 import AbstractFloor from './AbstractFloor'
 
 export default class extends AbstractFloor {

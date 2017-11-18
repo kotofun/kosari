@@ -4,7 +4,7 @@ import config from '../config'
 
 export default class extends AbstractEnemy {
   constructor (game) {
-    super(game, 'enemy.bat', true)
+    super(game, 'enemies/bat', true)
 
     this.body.setSize(40, 20, 12, 24)
 

@@ -2,7 +2,7 @@ import AbstractEnemy from './AbstractEnemy'
 
 export default class extends AbstractEnemy {
   constructor (game) {
-    super(game, 'enemy.skeleton', true)
+    super(game, 'enemies/skeleton', true)
 
     this.body.setSize(28, 50, 2, 16)
 

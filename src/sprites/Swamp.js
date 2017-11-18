@@ -1,5 +1,5 @@
 import { generateSurfacePiceBitmap } from '../utils'
-import swampTileSet from '../../assets/images/swamp.json'
+import swampTileSet from '../../assets/tilesets/swamp.json'
 import AbstractFloor from './AbstractFloor'
 
 export default class extends AbstractFloor {

@@ -50,7 +50,9 @@ module.exports = {
       {from: 'index.html'},
       {from: 'fonts.css'},
       {from: 'robots.txt'},
-      {from: 'assets', to: './assets'}
+      {from: 'assets/fonts', to: './assets/fonts'},
+      {from: 'assets/images/loader-bar.png', to: './assets/images/loader-bar.png'},
+      {from: 'assets/images/loader-bg.png', to: './assets/images/loader-bg.png'}
     ])
   ],
   module: {
@@ -58,7 +60,16 @@ module.exports = {
       { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
-      { test: /p2\.js/, use: ['expose-loader?p2'] }
+      { test: /p2\.js/, use: ['expose-loader?p2'] },
+      {
+        test: /\.png|\.woff|\.woff2|\.svg|.eot|\.ttf|\.mp3$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: { outputPath: 'assets/' }
+          }
+        ]
+      }
     ]
   },
   node: {
@@ -70,7 +81,8 @@ module.exports = {
     alias: {
       'phaser': phaser,
       'pixi': pixi,
-      'p2': p2
+      'p2': p2,
+      'assets': path.join(__dirname, './assets')
     }
   }
 }
