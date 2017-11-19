@@ -137,7 +137,7 @@ export default class {
   }
 
   reset () {
-    _floor.removeChildren()
+    _floor.removeAll(true, true)
 
     _hold = 0
 
