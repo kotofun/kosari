@@ -7,7 +7,8 @@
   "scripts": {
     "watch": "webpack",
     "dev": "webpack --config webpack.develop.config.js",
-    "prod": "webpack --config webpack.production.config.js",
+    "pre": "webpack --config webpack.prerelease.config.js",
+    "release": "webpack --config webpack.release.config.js",
     "test": "eslint ./src/**/**.js"
   },
   "license": "MIT",
