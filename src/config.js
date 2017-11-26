@@ -114,7 +114,7 @@ export default {
         Swamp: { p: 10, inRow: { max: 2 } }
       },
       obstacles: {
-        Grave: { p: 40, between: { min: 1 } }
+        Grave: { p: 70, between: { min: 1 } }
       }
     },
     drakula: {
