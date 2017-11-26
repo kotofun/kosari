@@ -104,6 +104,30 @@ export default {
       obstacles: {
         Grave: { p: 15, between: { min: 5 } }
       }
+    },
+    graveyard: {
+      p: 15,
+      length: { min: gameScreensTiles(2), max: gameScreensTiles(2) },
+      floor: {
+        default: 'Ground',
+        Ground: { height: 1 },
+        Swamp: { p: 10, inRow: { max: 2 } }
+      },
+      obstacles: {
+        Grave: { p: 40, between: { min: 1 } }
+      }
+    },
+    drakula: {
+      p: 15,
+      length: { min: gameScreensTiles(2), max: gameScreensTiles(2) },
+      floor: {
+        default: 'Ground',
+        Ground: { height: 1 },
+        Swamp: { p: 30, inRow: { max: 2 } }
+      },
+      enemies: {
+        Bat: { p: 15 }
+      }
     }
   }
 }
