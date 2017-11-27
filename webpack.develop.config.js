@@ -35,6 +35,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {from: 'index.dev.html', to: './index.html'},
+      {from: 'nerds.html'},
       {from: 'fonts.css'},
       {from: 'robots.txt'},
       {from: 'assets/fonts', to: './assets/fonts'},

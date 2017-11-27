@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Задроты</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.min.js"></script>
+  <style>
+    html, body {
+      background: #212529;
+    }
+    h1 {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-center">Лучшие результаты</h1>
+  <div id="nerds-app">
+    <table class="table table-bordered table-dark tble-sm text-center">
+      <thead>
+        <tr>
+          <th scope="col">Дистация</th>
+          <th scope="col">Трава, скошеная игроком</th>
+          <th scope="col">Трава, скошеная преследователем</th>
+        </tr>
+      </thead>
+      <tbody class="table-stripped">
+        <tr v-for="nerd in nerds">
+          <td>{{ nerd.Distance }}</td>
+          <td>{{ nerd.PlayerMowedGrass }}</td>
+          <td>{{ nerd.ChaserMowedGrass }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    var app = new Vue({
+      el: '#nerds-app',
+      data: {
+        nerds: []
+      },
+      beforeMount: function () {
+        var self = this;
+        return axios.get('/api/nerds')
+          .then(function (response) {
+            self.nerds = response.data
+          })
+      }
+    })
+  </script>
+</body>
+</html>
