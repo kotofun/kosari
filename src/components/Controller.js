@@ -32,6 +32,8 @@ export default class {
   enablePlayControls () {
     // Сбрасываем всё управление
     this.disable()
+    // Блочим нажатия на alt и tab, чтобы не появлялось меню паузы
+    this.preventKeys()
 
     // Привязываем управление для десктопов
     if (this.game.device.desktop) {
@@ -103,5 +105,13 @@ export default class {
     this.game.input.keyboard.reset(true)
     // Сбрасываем все тапы
     this.game.input.onTap.removeAll()
+  }
+
+  preventKeys () {
+    document.onkeydown = function (e) {
+      if (e.altKey || e.keyCode == 9) {
+        e.preventDefault()
+      }
+    }
   }
 }
