@@ -92,12 +92,14 @@ export default class {
 
   _initButtons () {
     this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
-      this.game.paused = true
+      signals.onGamePause.dispatch()
+      this.game.isPaused = true
     }, this)
     this.pauseBtn.fixedToCamera = true
 
     this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', () => {
-      this.game.paused = false
+      signals.onGameResume.dispatch()
+      this.game.isPaused = false
     })
     this.resumeBtn.anchor.setTo(0.5)
     this.resumeBtn.fixedToCamera = true
