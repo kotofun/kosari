@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import signals from '../signals'
 
 const keys = {
+  pause: Phaser.Keyboard.ESC,
   jump: [
     Phaser.Keyboard.SPACEBAR,
     Phaser.Keyboard.W
@@ -25,6 +26,8 @@ export default class {
     signals.onGameOver.add(this.enableGameOverControls, this)
     // На событие реплея игры включаем управление меню
     signals.onGameReplay.add(this.enableMenuControls, this)
+    signals.onGamePause.add(this.enablePauseControls, this)
+    signals.onGameResume.add(this.setupControls, this)
   }
 
   // Включить игровое управление, в котором есть
@@ -35,6 +38,11 @@ export default class {
     // Блочим нажатия на alt и tab, чтобы не появлялось меню паузы
     this.preventKeys()
 
+    this.setupControls()
+    this.pauseAndResumeGame()
+  }
+
+  setupControls () {
     // Привязываем управление для десктопов
     if (this.game.device.desktop) {
       // Прыжок
@@ -66,6 +74,30 @@ export default class {
       this.game.input.onTap.add((pointer, doubleTap) => {
         if (pointer.x > this.game.world.width / 2) signals.attack.dispatch()
       }, this)
+    }
+  }
+  
+  // Ставим игру на паузу или продолжаем при нажатии на ESC
+  pauseAndResumeGame () {   
+    this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
+      this.game.isPaused = !this.game.isPaused
+
+      if (this.game.isPaused) {
+        signals.onGamePause.dispatch()
+      } else {
+        signals.onGameResume.dispatch()
+      }
+    })
+  }
+
+  enablePauseControls () {
+    // Сбрасываем всё управление
+    this.disable()
+
+    // Привязываем управление для десктопов
+    if (this.game.device.desktop) {
+      // Привязываем клавишу ESC
+      this.game.input.keyboard.addKey(keys.pause).onDown.add(this.pauseAndResumeGame, this)
     }
   }
 
