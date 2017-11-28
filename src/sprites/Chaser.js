@@ -35,6 +35,9 @@ export default class extends Phaser.Sprite {
     signals.speedReset.add(this.slowDown, this)
     signals.onGameStart.add(this.start, this)
 
+    signals.onGamePause.add(() => { this.animations.paused = true })
+    signals.onGameResume.add(() => { this.animations.paused = false })
+
     this.startPosition = {
       x: 0,
       y: this.game.height - config.tileSize - this.body.offset.y - this.body.height - 1

@@ -19,6 +19,8 @@ export default class {
     // signals.speedUp.add(this.startAnimation, this)
     signals.speedReset.add(this.startAnimation, this)
     signals.onGameStart.add(this.startAnimation, this)
+    signals.onGamePause.add(this.stopAnimation, this)
+    signals.onGameResume.add(this.startAnimation, this)
   }
 
   stopAnimation () {
