@@ -78,27 +78,28 @@ export default class {
   }
   
   // Ставим игру на паузу или продолжаем при нажатии на ESC
-  pauseAndResumeGame () {   
-    this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
-      this.game.isPaused = !this.game.isPaused
-
-      if (this.game.isPaused) {
-        signals.onGamePause.dispatch()
-      } else {
-        signals.onGameResume.dispatch()
-      }
-    })
-  }
-
-  enablePauseControls () {
+  pauseAndResumeGame () {
     // Сбрасываем всё управление
     this.disable()
 
     // Привязываем управление для десктопов
     if (this.game.device.desktop) {
-      // Привязываем клавишу ESC
-      this.game.input.keyboard.addKey(keys.pause).onDown.add(this.pauseAndResumeGame, this)
+      this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
+        this.game.isPaused = !this.game.isPaused
+
+        if (this.game.isPaused) {
+          signals.onGamePause.dispatch()
+        } else {
+          signals.onGameResume.dispatch()
+        }
+      })
     }
+  }
+
+  // Включить управление для меню паузы
+  enablePauseControls () {
+    // Привязываем клавишу ESC
+    this.game.input.keyboard.addKey(keys.pause).onDown.add(this.pauseAndResumeGame, this)
   }
 
   // Включить управление для последнего экрана с геймовером
