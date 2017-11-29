@@ -46,6 +46,71 @@ export default {
 
   terrain: {
     relax: {
+      p: 5,
+      length: { min: gameScreensTiles(0 ), max: gameScreensTiles(1) },
+      floor: {
+        default: 'Ground',
+        Ground: { height: 1 }
+      },
+      enemies: {
+        Bat: { p: 10 }
+      }
+    },
+
+  graveyard: {
+    p: 20,
+    length: { min: gameScreensTiles(0), max: gameScreensTiles(2) },
+    floor: {
+      default: 'Ground',
+      Ground: { height: 1 },
+      Swamp: { p: 10, inRow: { max: 2 } }
+    },
+    obstacles: {
+      Grave: { p: 70, between: { min: 0 } }
+    },
+    enemies: {
+      Skeleton: {p: 20, between: { min: 0} }
+    }
+  },
+
+  swampy: {
+    p: 20,
+    length: { min: gameScreensTiles(0), max: gameScreensTiles(2) },
+    floor: {
+      default: 'Ground',
+      Ground: { height: 1 },
+      Swamp: { p: 40, inRow: { max: 2 } }
+    },
+    obstacles: {
+      Grave: { p: 15, between: { min: 5 } }
+    }
+  },
+
+  habitual: {
+    p: 30,
+    length: { min: gameScreensTiles(1), max: gameScreensTiles(2) },
+    floor: {
+      default: 'Ground',
+      Ground: { height: 1 },
+      Swamp: { p: 15, inRow: { max: 2 } }
+    },
+    obstacles: {
+      Grave: { p: 15, between: { min: 5 } }
+    },
+    enemies: {
+      Skeleton: { p: 5 },
+      Bat: { p: 5 }
+    }
+  }
+
+
+  }
+}
+
+
+/*
+  terrain: {
+    relax: {
       p: 30,
       length: { min: gameScreensTiles(1), max: gameScreensTiles(1) },
       floor: {
@@ -131,3 +196,4 @@ export default {
     }
   }
 }
+*/
