@@ -50,6 +50,8 @@ export default class extends Phaser.State {
 
     this.game.isStarted = false
 
+    this.game.isPaused = false
+
     this.game.sounds.background.play()
   }
 
@@ -69,8 +71,8 @@ export default class extends Phaser.State {
     // enables fps
     this.game.time.advancedTiming = true
 
-    this.game.onPause.add(this.pause, this)
-    this.game.onResume.add(this.resume, this)
+    signals.onGamePause.add(this.pause, this)
+    signals.onGameResume.add(this.resume, this)
 
     this.game.controller.enableMenuControls()
   }
@@ -118,7 +120,7 @@ export default class extends Phaser.State {
   gameOver () {
     this.isGameOver = true
     this.ui.gameOverBanner.visible = true
-    this.game.paused = true
+    this.game.isPaused = true
 
     api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
   }
@@ -129,6 +131,9 @@ export default class extends Phaser.State {
   }
 
   pause () {
+    this.game.physics.arcade.isPaused = true
+
+    this.game.vars.speed = 0
     this.ui.overlay.visible = true
     this.ui.pauseBtn.visible = false
 
@@ -141,6 +146,9 @@ export default class extends Phaser.State {
   }
 
   resume () {
+    this.game.physics.arcade.isPaused = false
+
+    this.game.vars.speed = config.initialSpeed
     this.ui.overlay.visible = false
     this.ui.pauseBtn.visible = true
 
@@ -154,7 +162,7 @@ export default class extends Phaser.State {
 
   replay () {
     this.game.state.restart(false)
-    this.game.paused = false
+    this.game.isPaused = false
   }
 
   // Функция вызывается при закрытии стейта.

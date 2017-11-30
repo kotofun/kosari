@@ -16,8 +16,8 @@ export default class extends Phaser.Sprite {
 
     // Подгружаем все анимации
     this.animations.add('stand', [0])
-    this.animations.add('run', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21])
-    this.animations.add('mow', [1, 2, 3, 4, 5, 6])
+    this.animations.add('run', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+    this.animations.add('mow', [2, 3, 4, 5, 6, 7, 8, 9])
 
     // Включаем физику
     this.game.physics.enable(this)
@@ -35,6 +35,9 @@ export default class extends Phaser.Sprite {
     signals.speedReset.add(this.slowDown, this)
     signals.onGameStart.add(this.start, this)
 
+    signals.onGamePause.add(() => { this.animations.paused = true })
+    signals.onGameResume.add(() => { this.animations.paused = false })
+
     this.startPosition = {
       x: 0,
       y: this.game.height - config.tileSize - this.body.offset.y - this.body.height - 1
@@ -45,7 +48,7 @@ export default class extends Phaser.Sprite {
 
   // Метод, вызываемый при старте игры
   start () {
-    this.events.onAnimationComplete.add(() => { this.animateRun() })
+    this.animateRun()
   }
 
   catch (obj, ...args) {
@@ -79,11 +82,11 @@ export default class extends Phaser.Sprite {
   }
 
   // Анимация бега
-  animateRun () { this.animations.play('run', 15) }
+  animateRun () { return this.animations.play('run', 15, true) }
   // Анимация стояния
-  animateStand () { this.animations.play('stand') }
+  animateStand () { return this.animations.play('stand') }
   // Анимация кошения
-  animateMow () { this.animations.play('mow', 15) }
+  animateMow () { return this.animations.play('mow', 30, false) }
 
   // Косарь стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down }
@@ -95,12 +98,14 @@ export default class extends Phaser.Sprite {
   }
 
   mow () {
-    if (this.attackReady && this.game.isStarted) {
+    if (this.attackReady && this.game.isStarted && !this.animations.paused) {
       this.attackReady = false
       this.game.time.events.add(Phaser.Timer.SECOND, () => { this.attackReady = true }, this).autoDestroy = true
 
       signals.mow.dispatch(this)
-      this.animations.play('mow', 30, false)
+      this.animateMow()
+        .onComplete
+        .add(() => { this.animateRun() })
     }
   }
 
