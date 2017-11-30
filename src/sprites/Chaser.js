@@ -34,9 +34,10 @@ export default class extends Phaser.Sprite {
 
     signals.speedReset.add(this.slowDown, this)
     signals.onGameStart.add(this.start, this)
+    signals.onGameOver.add(this.stopAnimations, this)
 
-    signals.onGamePause.add(() => { this.animations.paused = true })
-    signals.onGameResume.add(() => { this.animations.paused = false })
+    signals.onGamePause.add(this.stopAnimations, this)
+    signals.onGameResume.add(this.playAnimations, this)
 
     this.startPosition = {
       x: 0,
@@ -48,6 +49,7 @@ export default class extends Phaser.Sprite {
 
   // Метод, вызываемый при старте игры
   start () {
+    this.game.isPaused = false
     this.animateRun()
   }
 
@@ -66,7 +68,7 @@ export default class extends Phaser.Sprite {
   }
 
   update () {
-    if (this.isTimeToJump()) this.jump()
+    if (this.isTimeToJump() && !this.game.isPaused) this.jump()
 
     if (this.left <= this.game.camera.x) {
       this.backlogRate = 1
@@ -79,6 +81,16 @@ export default class extends Phaser.Sprite {
     if (this.game.isStarted) {
       this.body.velocity.x = this.game.vars.speed * this.backlogRate
     }
+  }
+
+  stopAnimations () {
+    this.animations.paused = true
+    this.game.isPaused = true
+  }
+
+  playAnimations () {
+    this.animations.paused = false
+    this.game.isPaused = false
   }
 
   // Анимация бега

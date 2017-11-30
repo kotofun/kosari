@@ -13,8 +13,10 @@ export default class extends Phaser.Sprite {
 
     this.tween = null
 
-    signals.onGamePause.add(this.stopAnimation, this)
     signals.onGameResume.add(this.playAnimation, this)
+    signals.onGamePause.add(this.stopAnimation, this)
+    signals.onGameStart.add(this.playAnimation, this)
+    signals.onGameOver.add(this.stopAnimation, this)
   }
 
   stopAnimation () {

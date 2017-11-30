@@ -31,9 +31,10 @@ export default class extends Phaser.Sprite {
     signals.speedDown.add(this.slowDown, this)
     signals.speedReset.add(this.resetSpeed, this)
     signals.onGameStart.add(this.start, this)
+    signals.onGameOver.add(this.stopAnimations, this)
 
-    signals.onGamePause.add(() => { this.animations.paused = true })
-    signals.onGameResume.add(() => { this.animations.paused = false })
+    signals.onGamePause.add(this.stopAnimations, this)
+    signals.onGameResume.add(this.playAnimations, this)
 
     this.startPosition = {
       x: this.game.width / 2 - this.body.offset.x - this.body.width,
@@ -57,6 +58,14 @@ export default class extends Phaser.Sprite {
   animateRun () { this.animations.play('run', 30) }
   // Анимация кошения
   animateMow () { this.animations.play('mow', 30) }
+
+  stopAnimations () {
+    this.animations.paused = true
+  }
+
+  playAnimations () {
+    this.animations.paused = false
+  }
 
   update () {
     this.run()

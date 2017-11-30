@@ -18,9 +18,12 @@ export default class {
     signals.speedDown.add(this.stopAnimation, this)
     // signals.speedUp.add(this.startAnimation, this)
     signals.speedReset.add(this.startAnimation, this)
+
     signals.onGameStart.add(this.startAnimation, this)
-    signals.onGamePause.add(this.stopAnimation, this)
+    signals.onGameOver.add(this.stopAnimation, this)
+    
     signals.onGameResume.add(this.startAnimation, this)
+    signals.onGamePause.add(this.stopAnimation, this)
   }
 
   stopAnimation () {
