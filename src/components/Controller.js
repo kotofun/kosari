@@ -27,7 +27,7 @@ export default class {
     // На событие реплея игры включаем управление меню
     signals.onGameReplay.add(this.enableMenuControls, this)
     signals.onGamePause.add(this.enablePauseControls, this)
-    signals.onGameResume.add(this.setupControls, this)
+    signals.onGameResume.add(this.enablePlayControls, this)
   }
 
   // Включить игровое управление, в котором есть
@@ -35,14 +35,10 @@ export default class {
   enablePlayControls () {
     // Сбрасываем всё управление
     this.disable()
+
     // Блочим нажатия на alt и tab, чтобы не появлялось меню паузы
     this.preventKeys()
 
-    this.setupControls()
-    this.pauseAndResumeGame()
-  }
-
-  setupControls () {
     // Привязываем управление для десктопов
     if (this.game.device.desktop) {
       // Прыжок
@@ -63,6 +59,10 @@ export default class {
           }, this)
         })
 
+      this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
+        signals.onGamePause.dispatch()
+      })
+
     // Привязываем управление для мобилок (тапы)
     } else {
       // Прыжок
@@ -76,30 +76,15 @@ export default class {
       }, this)
     }
   }
-  
-  // Ставим игру на паузу или продолжаем при нажатии на ESC
-  pauseAndResumeGame () {
-    // Сбрасываем всё управление
-    this.disable()
-
-    // Привязываем управление для десктопов
-    if (this.game.device.desktop) {
-      this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
-        this.game.isPaused = !this.game.isPaused
-
-        if (this.game.isPaused) {
-          signals.onGamePause.dispatch()
-        } else {
-          signals.onGameResume.dispatch()
-        }
-      })
-    }
-  }
 
   // Включить управление для меню паузы
   enablePauseControls () {
+    this.disable()
+
     // Привязываем клавишу ESC
-    this.game.input.keyboard.addKey(keys.pause).onDown.add(this.pauseAndResumeGame, this)
+    this.game.input.keyboard.addKey(keys.pause).onDown.add(() => {
+      signals.onGameResume.dispatch()
+    }, this)
   }
 
   // Включить управление для последнего экрана с геймовером
