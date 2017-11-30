@@ -121,6 +121,7 @@ export default class extends Phaser.State {
     this.isGameOver = true
     this.ui.gameOverBanner.visible = true
     this.game.isPaused = true
+    this.pause()
 
     api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
   }
@@ -161,8 +162,10 @@ export default class extends Phaser.State {
   }
 
   replay () {
+    if (this.game.isPaused) this.resume()
     this.game.state.restart(false)
     this.game.isPaused = false
+    this.isGameOver = false
   }
 
   // Функция вызывается при закрытии стейта.
