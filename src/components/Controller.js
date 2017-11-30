@@ -4,6 +4,7 @@ import signals from '../signals'
 
 const keys = {
   pause: Phaser.Keyboard.ESC,
+  replay: Phaser.Keyboard.R,
   jump: [
     Phaser.Keyboard.SPACEBAR,
     Phaser.Keyboard.W
@@ -95,9 +96,9 @@ export default class {
     // Привязываем управление для десктопов
     if (this.game.device.desktop) {
       // Делать рестарт при нажатии на любую кнопку
-      this.game.input.keyboard.onDownCallback = () => {
+      this.game.input.keyboard.addKey(keys.replay).onDown.add(() => {
         signals.onGameReplay.dispatch()
-      }
+      })
     }
   }
 
