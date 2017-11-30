@@ -127,7 +127,8 @@ export default class {
 
   preventKeys () {
     document.onkeydown = function (e) {
-      if (e.altKey || e.keyCode == 9) {
+      if (e.keyCode === Phaser.KeyCode.TAB ||
+          e.keyCode === Phaser.KeyCode.ALT) {
         e.preventDefault()
       }
     }
