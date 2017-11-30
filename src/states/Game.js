@@ -131,6 +131,8 @@ export default class extends Phaser.State {
   }
 
   pause () {
+    this.game.physics.arcade.isPaused = true
+
     this.game.vars.speed = 0
     this.ui.overlay.visible = true
     this.ui.pauseBtn.visible = false
@@ -144,6 +146,8 @@ export default class extends Phaser.State {
   }
 
   resume () {
+    this.game.physics.arcade.isPaused = false
+
     this.game.vars.speed = config.initialSpeed
     this.ui.overlay.visible = false
     this.ui.pauseBtn.visible = true
