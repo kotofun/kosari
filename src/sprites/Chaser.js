@@ -6,11 +6,13 @@ import config from '../config'
 import Ground from './Ground'
 import Swamp from './Swamp'
 
+import DisplayCharacter from './DisplayCharacter'
+
 let _floor
 
-export default class extends Phaser.Sprite {
+export default class extends DisplayCharacter {
   constructor (game, floorManager) {
-    super(game, 0, 0, 'chaser')
+    super(game, 0, 0, 'chaser', true)
 
     _floor = floorManager
 
@@ -19,8 +21,6 @@ export default class extends Phaser.Sprite {
     this.animations.add('run', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
     this.animations.add('mow', [2, 3, 4, 5, 6, 7, 8, 9])
 
-    // Включаем физику
-    this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
@@ -34,10 +34,6 @@ export default class extends Phaser.Sprite {
 
     signals.speedReset.add(this.slowDown, this)
     signals.onGameStart.add(this.start, this)
-    signals.onGameOver.add(this.stopAnimations, this)
-
-    signals.onGamePause.add(this.stopAnimations, this)
-    signals.onGameResume.add(this.playAnimations, this)
 
     this.startPosition = {
       x: 0,
@@ -81,16 +77,6 @@ export default class extends Phaser.Sprite {
     if (this.game.isStarted) {
       this.body.velocity.x = this.game.vars.speed * this.backlogRate
     }
-  }
-
-  stopAnimations () {
-    this.animations.paused = true
-    this.game.isPaused = true
-  }
-
-  playAnimations () {
-    this.animations.paused = false
-    this.game.isPaused = false
   }
 
   // Анимация бега

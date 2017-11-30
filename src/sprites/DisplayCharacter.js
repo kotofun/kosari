@@ -5,8 +5,9 @@ export default class extends Phaser.Sprite {
   constructor (game, x, y, asset, body = false) {
     super(game, x, y, asset)
 
+    // Если объект имеет тело, то включаем физику
     if (body) {
-      this.game.physics.arcade.enable(this)
+      this.game.physics.enable(this)
     }
 
     this.game.add.existing(this)
