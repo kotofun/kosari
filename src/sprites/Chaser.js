@@ -33,7 +33,7 @@ export default class extends DisplayCharacter {
     this.backlogRate = 1
 
     signals.speedReset.add(this.slowDown, this)
-    signals.onGameStart.add(this.start, this)
+    signals.onGameStart.add(this.animateRun, this)
 
     this.startPosition = {
       x: 0,
@@ -41,12 +41,6 @@ export default class extends DisplayCharacter {
     }
 
     this.reset()
-  }
-
-  // Метод, вызываемый при старте игры
-  start () {
-    this.game.isPaused = false
-    this.animateRun()
   }
 
   catch (obj, ...args) {
