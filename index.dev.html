@@ -61,7 +61,6 @@
         <div id="v-align">
             <div id="content"></div>
             <form action="#" onsubmit="return false">
-                <button onclick="togglePause(this)">Пауза</button>
                 <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
                 <button onclick="toggleBgMusic(this)">Отключить фоновую музыку</button>
                 <br>
@@ -95,10 +94,6 @@
     <script>
         var game = window.game
 
-        function togglePause (obj) {
-            game.paused = !game.paused
-            obj.innerText = game.paused ? 'Продолжить' : 'Пауза'
-        }
         function changeSpeed (obj) {
             game.vars.speed = +obj.value
             obj.nextElementSibling.innerText = obj.value
