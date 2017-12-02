@@ -47,8 +47,6 @@ export default class {
     this.controlsInfo = this.game.add.sprite(32, 32, 'controlsInfo')
     this.controlsInfo.fixedToCamera = true
 
-    this.overlay = _createOverlay(this.game)
-
     this.distance = this.game.add.text(this.game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
     this.distance.anchor.setTo(0.5)
     this.distance.fixedToCamera = true
@@ -57,6 +55,7 @@ export default class {
     this.pauseBanner = _createPauseBanner(this.game)
 
     this._initMenu()
+    this.overlay = _createOverlay(this.game)
     this._initButtons()
   }
 
@@ -146,7 +145,7 @@ export default class {
   }
 
   startGame () {
-    signals.onGameStart.dispatch()
+    if (!this.game.isPaused) signals.onGameStart.dispatch()
   }
 
   replayGame () {
