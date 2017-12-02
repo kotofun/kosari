@@ -46,7 +46,7 @@ export default class extends Phaser.State {
 
     this.game.stats = Stats
 
-    this.isGameOver = false
+    this.game.isGameOver = false
 
     this.game.isStarted = false
 
@@ -118,9 +118,7 @@ export default class extends Phaser.State {
 
   // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
-    this.isGameOver = true
-    this.ui.gameOverBanner.visible = true
-    this.game.isPaused = true
+    this.game.isGameOver = true    
     this.pause()
 
     api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
@@ -132,40 +130,25 @@ export default class extends Phaser.State {
   }
 
   pause () {
-    this.game.physics.arcade.isPaused = true
-
     this.game.vars.speed = 0
-    this.ui.overlay.visible = true
-    this.ui.pauseBtn.visible = false
+    this.game.physics.arcade.isPaused = true
+    this.game.isPaused = true
 
-    if (this.isGameOver) {
-      this.ui.replayBtn.visible = true
-    } else {
-      this.ui.pauseBanner.visible = true
-      this.ui.resumeBtn.visible = true
-    }
+    this.ui.togglePauseOverlay()
   }
 
   resume () {
+    this.game.vars.speed = config.initialSpeed    
     this.game.physics.arcade.isPaused = false
+    this.game.isPaused = false
 
-    this.game.vars.speed = config.initialSpeed
-    this.ui.overlay.visible = false
-    this.ui.pauseBtn.visible = true
-
-    if (this.isGameOver) {
-      this.ui.replayBtn.visible = false
-    } else {
-      this.ui.pauseBanner.visible = false
-      this.ui.resumeBtn.visible = false
-    }
+    this.ui.togglePauseOverlay()
   }
 
   replay () {
     if (this.game.isPaused) this.resume()
     this.game.state.restart(false)
-    this.game.isPaused = false
-    this.isGameOver = false
+    this.game.isGameOver = false
   }
 
   // Функция вызывается при закрытии стейта.

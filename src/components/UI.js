@@ -93,13 +93,11 @@ export default class {
   _initButtons () {
     this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
       signals.onGamePause.dispatch()
-      this.game.isPaused = true
     }, this)
     this.pauseBtn.fixedToCamera = true
 
     this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', () => {
       signals.onGameResume.dispatch()
-      this.game.isPaused = false
     })
     this.resumeBtn.anchor.setTo(0.5)
     this.resumeBtn.fixedToCamera = true
@@ -115,6 +113,32 @@ export default class {
     this.playBtn.inputEnabled = false
     this.overlay.visible = true
     this.preferencesTitle.visible = true
+  }
+
+  togglePauseOverlay () {
+    if (this.game.isPaused) {
+      this.overlay.visible = true
+      this.pauseBtn.visible = false
+
+      if (this.game.isGameOver) {
+        this.replayBtn.visible = true
+        this.gameOverBanner.visible = true
+      } else {
+        this.pauseBanner.visible = true
+        this.resumeBtn.visible = true
+      }
+    } else {
+      this.overlay.visible = false
+      this.pauseBtn.visible = true
+
+      if (this.game.isGameOver) {
+        this.replayBtn.visible = false
+        this.gameOverBanner.visible = false
+      } else {
+        this.pauseBanner.visible = false
+        this.resumeBtn.visible = false
+      }
+    }
   }
 
   showAuthors () {
