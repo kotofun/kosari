@@ -40,6 +40,14 @@ const _createPauseBanner = state => {
   return banner
 }
 
+const _createDistance = game => {
+  let distance = game.add.text(game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
+  distance.anchor.setTo(0.5)
+  distance.fixedToCamera = true
+
+  return distance
+}
+
 export default class {
   constructor (game) {
     this.game = game
@@ -47,15 +55,11 @@ export default class {
     this.controlsInfo = this.game.add.sprite(32, 32, 'controlsInfo')
     this.controlsInfo.fixedToCamera = true
 
-    this.distance = this.game.add.text(this.game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
-    this.distance.anchor.setTo(0.5)
-    this.distance.fixedToCamera = true
-
-    this.gameOverBanner = _createGameOverBanner(this.game)
-    this.pauseBanner = _createPauseBanner(this.game)
-
     this._initMenu()
     this.overlay = _createOverlay(this.game)
+    this.distance = _createDistance(this.game)
+    this.gameOverBanner = _createGameOverBanner(this.game)
+    this.pauseBanner = _createPauseBanner(this.game)
     this._initButtons()
   }
 
