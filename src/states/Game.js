@@ -118,7 +118,7 @@ export default class extends Phaser.State {
 
   // TODO: Stop the game, show game over animation and show highscores
   gameOver () {
-    this.game.isGameOver = true    
+    this.game.isGameOver = true
     this.pause()
 
     api.send({ distance: Math.floor(this.camera.x / 32), mowedGrass: this.game.stats.mowedGrass })
@@ -138,7 +138,7 @@ export default class extends Phaser.State {
   }
 
   resume () {
-    this.game.vars.speed = config.initialSpeed    
+    this.game.vars.speed = config.initialSpeed
     this.game.physics.arcade.isPaused = false
     this.game.isPaused = false
 

@@ -21,7 +21,7 @@ export default class {
 
     signals.onGameStart.add(this.startAnimation, this)
     signals.onGameOver.add(this.stopAnimation, this)
-    
+
     signals.onGameResume.add(this.startAnimation, this)
     signals.onGamePause.add(this.stopAnimation, this)
   }
