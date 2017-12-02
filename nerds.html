@@ -21,6 +21,7 @@
     <table class="table table-bordered table-dark tble-sm text-center">
       <thead>
         <tr>
+          <th scope="col">Время результата</th>
           <th scope="col">Дистация</th>
           <th scope="col">Трава, скошеная игроком</th>
           <th scope="col">Трава, скошеная преследователем</th>
@@ -28,6 +29,7 @@
       </thead>
       <tbody class="table-stripped">
         <tr v-for="nerd in nerds">
+          <td>{{ (new Date(nerd.CreatedAt)).toLocaleString() }}</td>
           <td>{{ nerd.Distance }}</td>
           <td>{{ nerd.PlayerMowedGrass }}</td>
           <td>{{ nerd.ChaserMowedGrass }}</td>
