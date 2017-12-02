@@ -41,7 +41,7 @@ const _createPauseBanner = state => {
 }
 
 const _createDistance = game => {
-  let distance = game.add.text(game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
+  let distance = game.add.text(game.width / 2, 40, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
   distance.anchor.setTo(0.5)
   distance.fixedToCamera = true
 
