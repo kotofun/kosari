@@ -13,7 +13,7 @@ const _createOverlay = game => {
 }
 
 const _createGameOverBanner = state => {
-  const gameOverBanner = state.add.text(state.world.centerX, state.world.height / 2 - 20, 'Game Over')
+  const gameOverBanner = state.add.text(state.world.centerX, state.world.height / 2 - 30, 'Game Over')
   gameOverBanner.visible = false
   gameOverBanner.font = 'HaxrCorp'
   gameOverBanner.padding.set(10, 16)
