@@ -54,14 +54,6 @@ export default class extends DisplayCharacter {
   // Анимация кошения
   animateMow () { this.animations.play('mow', 30) }
 
-  stopAnimations () {
-    this.animations.paused = true
-  }
-
-  playAnimations () {
-    this.animations.paused = false
-  }
-
   update () {
     this.run()
   }
