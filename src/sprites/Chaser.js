@@ -6,11 +6,13 @@ import config from '../config'
 import Ground from './Ground'
 import Swamp from './Swamp'
 
+import DisplayCharacter from './DisplayCharacter'
+
 let _floor
 
-export default class extends Phaser.Sprite {
+export default class extends DisplayCharacter {
   constructor (game, floorManager) {
-    super(game, 0, 0, 'chaser')
+    super(game, 0, 0, 'chaser', true)
 
     _floor = floorManager
 
@@ -19,8 +21,6 @@ export default class extends Phaser.Sprite {
     this.animations.add('run', [10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
     this.animations.add('mow', [2, 3, 4, 5, 6, 7, 8, 9])
 
-    // Включаем физику
-    this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
@@ -33,10 +33,7 @@ export default class extends Phaser.Sprite {
     this.backlogRate = 1
 
     signals.speedReset.add(this.slowDown, this)
-    signals.onGameStart.add(this.start, this)
-
-    signals.onGamePause.add(() => { this.animations.paused = true })
-    signals.onGameResume.add(() => { this.animations.paused = false })
+    signals.onGameStart.add(this.animateRun, this)
 
     this.startPosition = {
       x: 0,
@@ -44,11 +41,6 @@ export default class extends Phaser.Sprite {
     }
 
     this.reset()
-  }
-
-  // Метод, вызываемый при старте игры
-  start () {
-    this.animateRun()
   }
 
   catch (obj, ...args) {
@@ -66,7 +58,7 @@ export default class extends Phaser.Sprite {
   }
 
   update () {
-    if (this.isTimeToJump()) this.jump()
+    if (this.isTimeToJump() && !this.game.isPaused) this.jump()
 
     if (this.left <= this.game.camera.x) {
       this.backlogRate = 1

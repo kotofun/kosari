@@ -13,7 +13,7 @@ const _createOverlay = game => {
 }
 
 const _createGameOverBanner = state => {
-  const gameOverBanner = state.add.text(state.world.centerX, state.world.height / 2 - 20, 'Game Over')
+  const gameOverBanner = state.add.text(state.world.centerX, state.world.height / 2 - 30, 'Game Over')
   gameOverBanner.visible = false
   gameOverBanner.font = 'HaxrCorp'
   gameOverBanner.padding.set(10, 16)
@@ -40,6 +40,14 @@ const _createPauseBanner = state => {
   return banner
 }
 
+const _createDistance = game => {
+  let distance = game.add.text(game.width / 2, 40, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
+  distance.anchor.setTo(0.5)
+  distance.fixedToCamera = true
+
+  return distance
+}
+
 export default class {
   constructor (game) {
     this.game = game
@@ -47,16 +55,11 @@ export default class {
     this.controlsInfo = this.game.add.sprite(32, 32, 'controlsInfo')
     this.controlsInfo.fixedToCamera = true
 
+    this._initMenu()
     this.overlay = _createOverlay(this.game)
-
-    this.distance = this.game.add.text(this.game.width / 2, 32, '0м', { font: '40px HaxrCorp', align: 'center', fill: '#cccccc' })
-    this.distance.anchor.setTo(0.5)
-    this.distance.fixedToCamera = true
-
+    this.distance = _createDistance(this.game)
     this.gameOverBanner = _createGameOverBanner(this.game)
     this.pauseBanner = _createPauseBanner(this.game)
-
-    this._initMenu()
     this._initButtons()
   }
 
@@ -91,16 +94,10 @@ export default class {
   }
 
   _initButtons () {
-    this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
-      signals.onGamePause.dispatch()
-      this.game.isPaused = true
-    }, this)
+    this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', this.pauseGame, this)
     this.pauseBtn.fixedToCamera = true
 
-    this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', () => {
-      signals.onGameResume.dispatch()
-      this.game.isPaused = false
-    })
+    this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', this.resumeGame, this)
     this.resumeBtn.anchor.setTo(0.5)
     this.resumeBtn.fixedToCamera = true
     this.resumeBtn.visible = false
@@ -117,12 +114,46 @@ export default class {
     this.preferencesTitle.visible = true
   }
 
+  togglePauseOverlay () {
+    if (this.game.isPaused) {
+      this.overlay.visible = true
+      this.pauseBtn.visible = false
+
+      if (this.game.isGameOver) {
+        this.replayBtn.visible = true
+        this.gameOverBanner.visible = true
+      } else {
+        this.pauseBanner.visible = true
+        this.resumeBtn.visible = true
+      }
+    } else {
+      this.overlay.visible = false
+      this.pauseBtn.visible = true
+
+      if (this.game.isGameOver) {
+        this.replayBtn.visible = false
+        this.gameOverBanner.visible = false
+      } else {
+        this.pauseBanner.visible = false
+        this.resumeBtn.visible = false
+      }
+    }
+  }
+
   showAuthors () {
     //
   }
 
+  pauseGame () {
+    signals.onGamePause.dispatch()
+  }
+
+  resumeGame () {
+    signals.onGameResume.dispatch()
+  }
+
   startGame () {
-    signals.onGameStart.dispatch()
+    if (!this.game.isPaused) signals.onGameStart.dispatch()
   }
 
   replayGame () {

@@ -3,9 +3,11 @@ import Phaser from 'phaser'
 import signals from '../signals'
 import config from '../config'
 
-export default class extends Phaser.Sprite {
+import DisplayCharacter from './DisplayCharacter'
+
+export default class extends DisplayCharacter {
   constructor (game) {
-    super(game, 0, 0, 'player')
+    super(game, 0, 0, 'player', true)
 
     // Деление спрайта на именованные анимации и списком кадров в них
     this.animations.add('stand', [0])
@@ -20,9 +22,6 @@ export default class extends Phaser.Sprite {
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    // Добавляем спрайт в игровой мир
-    this.game.add.existing(this)
-
     this.slowedDown = false
 
     signals.jump.add(this.jump, this)
@@ -31,9 +30,6 @@ export default class extends Phaser.Sprite {
     signals.speedDown.add(this.slowDown, this)
     signals.speedReset.add(this.resetSpeed, this)
     signals.onGameStart.add(this.start, this)
-
-    signals.onGamePause.add(() => { this.animations.paused = true })
-    signals.onGameResume.add(() => { this.animations.paused = false })
 
     this.startPosition = {
       x: this.game.width / 2 - this.body.offset.x - this.body.width,
