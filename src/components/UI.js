@@ -94,14 +94,10 @@ export default class {
   }
 
   _initButtons () {
-    this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', () => {
-      signals.onGamePause.dispatch()
-    }, this)
+    this.pauseBtn = this.game.add.button(this.game.width - 64, 32, 'pauseBtn', this.pauseGame, this)
     this.pauseBtn.fixedToCamera = true
 
-    this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', () => {
-      signals.onGameResume.dispatch()
-    })
+    this.resumeBtn = this.game.add.button(this.game.width / 2, this.game.height / 2, 'resumeBtn', this.resumeGame, this)
     this.resumeBtn.anchor.setTo(0.5)
     this.resumeBtn.fixedToCamera = true
     this.resumeBtn.visible = false
@@ -146,6 +142,14 @@ export default class {
 
   showAuthors () {
     //
+  }
+
+  pauseGame () {
+    signals.onGamePause.dispatch()
+  }
+
+  resumeGame () {
+    signals.onGameResume.dispatch()
   }
 
   startGame () {
