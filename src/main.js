@@ -18,7 +18,7 @@ class Game extends Phaser.Game {
 
     // Desktop
     const width = config.gameWidth
-    const height = docElement.clientHeight <= config.gameHeight ? docElement.clientHeight - 80 : config.gameHeight
+    const height = docElement.clientHeight <= config.gameHeight ? docElement.clientHeight : config.gameHeight
 
     super(width, height, Phaser.CANVAS, 'content', null, false, false)
 
