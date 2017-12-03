@@ -1,5 +1,7 @@
 import signals from '../signals'
 
+import config from '../config'
+
 export default class {
   constructor (game) {
     this.game = game
@@ -33,9 +35,11 @@ export default class {
   }
 
   startAnimation () {
-    for (var i = 0; i < this.layers.length; i++) {
-      this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)
-    }
+    this.game.time.events.add(0, () => {
+      for (var i = 0; i < this.layers.length; i++) {
+        this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)
+      }
+    }, this).autoDestroy = true
   }
 
   reset () {
