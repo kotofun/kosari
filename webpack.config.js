@@ -24,7 +24,7 @@ module.exports = {
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
+    publicPath: '/',
     filename: 'bundle.js'
   },
   watch: true,
@@ -49,9 +49,18 @@ module.exports = {
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
       { test: /p2\.js/, use: ['expose-loader?p2'] },
-      { test: /\.png$/, use: 'file-loader' },
-      { test: /\.woff|\.woff2|\.svg|.eot|\.ttf/, use: 'file-loader' },
-      { test: /\.mp3$/, use: 'file-loader' }
+      {
+        test: /\.png|\.woff|\.woff2|\.svg|.eot|\.ttf|\.mp3$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/',
+              publicPath: '/dist/'
+            }
+          }
+        ]
+      }
     ]
   },
   node: {
