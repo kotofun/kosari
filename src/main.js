@@ -36,3 +36,5 @@ class Game extends Phaser.Game {
 }
 
 window.game = new Game()
+
+window.scrollTo(0, 1)
