@@ -4,8 +4,10 @@ import config from '../config'
 import Controller from '../components/Controller'
 
 const handleCorrect = game => {
+  window.scrollTo(0, 0)
   if (game.state.current !== 'Game') game.paused = false
   document.getElementById('rotate').style.display = 'none'
+  window.scrollTo(0, 1)
 }
 
 const handleIncorrect = game => {
@@ -15,6 +17,7 @@ const handleIncorrect = game => {
 
 export default class extends Phaser.State {
   init () {
+    this.scale.compatibility.scrollTo = false
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
 
     this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE
