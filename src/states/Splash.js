@@ -1,12 +1,12 @@
 import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
 
-import PlayerSprite from '../../assets/sprites/player.png'
-import PlayerJson from '../../assets/sprites/player.json'
-import ChaserSprite from '../../assets/sprites/chaser.png'
-import ChaserJson from '../../assets/sprites/chaser.json'
-import GrassSprite from '../../assets/sprites/grass.png'
-import GrassJson from '../../assets/sprites/grass.json'
+import PlayerSprite from '../../assets/sprites/player_winter.png'
+import PlayerJson from '../../assets/sprites/player_winter.json'
+import ChaserSprite from '../../assets/sprites/chaser_winter.png'
+import ChaserJson from '../../assets/sprites/chaser_winter.json'
+import GrassSprite from '../../assets/sprites/snowdrift.png'
+import GrassJson from '../../assets/sprites/snowdrift.json'
 import BGSprite from '../../assets/sprites/bg.png'
 import BGJson from '../../assets/sprites/bg.json'
 import BatSprite from '../../assets/sprites/enemies/bat.png'
@@ -22,6 +22,8 @@ import PauseBtnSprite from '../../assets/images/pauseBtn.png'
 import ReplayBtnSprite from '../../assets/images/replayBtn.png'
 import ResumeBtnSprite from '../../assets/images/resumeBtn.png'
 import ControlsInfoSprite from '../../assets/images/controlsInfo.png'
+
+import SnowflakesSprite from '../../assets/sprites/snowflakes.png'
 
 import SplashSprite from '../../assets/sprites/splash.png'
 
@@ -64,6 +66,8 @@ export default class extends Phaser.State {
     this.load.image('controlsInfo', ControlsInfoSprite)
 
     this.load.spritesheet('splash', SplashSprite, 256, 128)
+
+    this.load.spritesheet('snowflakes', SnowflakesSprite, 96, 96)
 
     this.load.audio('sound.background', SoundBG)
     this.load.audio('sound.jump', SoundJump)
