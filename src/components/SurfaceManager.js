@@ -33,7 +33,7 @@ export default class {
   init () {
     for (let i = 0; i * config.tileSize - this.game.world.width < config.tileSize * 2; i++) {
       let grass = _grass.getFirstDead()
-      grass.reset(i * config.tileSize, this.game.world.height - config.tileSize - grass.height)
+      grass.reset(i * config.tileSize, this.game.world.height - config.tileSize)
     }
   }
 
@@ -50,7 +50,7 @@ export default class {
 
     if (grass === null) return
 
-    grass.reset(floor.left, floor.top - grass.height)
+    grass.reset(floor.left, floor.top)
   }
 
   mow (mower) {
