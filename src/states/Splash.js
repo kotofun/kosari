@@ -23,6 +23,8 @@ import ReplayBtnSprite from '../../assets/images/replayBtn.png'
 import ResumeBtnSprite from '../../assets/images/resumeBtn.png'
 import ControlsInfoSprite from '../../assets/images/controlsInfo.png'
 
+import SnowflakesSprite from '../../assets/sprites/snowflakes.png'
+
 import SplashSprite from '../../assets/sprites/splash.png'
 
 import SoundBG from '../../assets/audio/background.mp3'
@@ -64,6 +66,8 @@ export default class extends Phaser.State {
     this.load.image('controlsInfo', ControlsInfoSprite)
 
     this.load.spritesheet('splash', SplashSprite, 256, 128)
+
+    this.load.spritesheet('snowflakes', SnowflakesSprite, 96, 96)
 
     this.load.audio('sound.background', SoundBG)
     this.load.audio('sound.jump', SoundJump)
