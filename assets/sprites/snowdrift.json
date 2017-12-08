@@ -1,28 +1,64 @@
 {
 "frames": [
-	{
-		"filename": "snowdrift_1",
+{
+		"filename": "live_1_1",
 		"frame": {"x":0, "y":0, "w":32, "h":32},
 		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
 		"sourceSize": {"w":32,"h":32}
 	},
 	{
-		"filename": "snowdrift_2",
+		"filename": "live_2_1",
 		"frame": {"x":32, "y":0, "w":32, "h":32},
 		"spriteSourceSize": {"x":32,"y":0,"w":32,"h":32},
 		"sourceSize": {"w":32,"h":32}
 	},
 	{
-		"filename": "snowdrift_3",
+		"filename": "live_3_1",
 		"frame": {"x":64, "y":0, "w":32, "h":32},
 		"spriteSourceSize": {"x":64,"y":0,"w":32,"h":32},
 		"sourceSize": {"w":32,"h":32}
 	},
 	{
-		"filename": "snowdrift_4",
+		"filename": "live_4_1",
 		"frame": {"x":96, "y":0, "w":32, "h":32},
 		"spriteSourceSize": {"x":96,"y":0,"w":32,"h":32},
 		"sourceSize": {"w":32,"h":32}
+	},
+	{
+		"filename": "kill_1_1",
+		"frame": {"x":0, "y":32, "w":64, "h":64},
+		"spriteSourceSize": {"x":0,"y":32,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
+	},
+	{
+		"filename": "kill_1_2",
+		"frame": {"x":64, "y":32, "w":64, "h":64},
+		"spriteSourceSize": {"x":64,"y":32,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
+	},
+	{
+		"filename": "kill_1_3",
+		"frame": {"x":0, "y":96, "w":64, "h":64},
+		"spriteSourceSize": {"x":0,"y":96,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
+	},
+	{
+		"filename": "kill_1_4",
+		"frame": {"x":64, "y":96, "w":64, "h":64},
+		"spriteSourceSize": {"x":64,"y":96,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
+	},
+	{
+		"filename": "kill_1_5",
+		"frame": {"x":0, "y":160, "w":64, "h":64},
+		"spriteSourceSize": {"x":0,"y":160,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
+	},
+	{
+		"filename": "kill_1_6",
+		"frame": {"x":64, "y":160, "w":64, "h":64},
+		"spriteSourceSize": {"x":64,"y":160,"w":64,"h":64},
+		"sourceSize": {"w":64,"h":64}
 	}
 ],
 "meta": {
