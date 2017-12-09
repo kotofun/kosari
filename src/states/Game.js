@@ -82,8 +82,12 @@ export default class extends Phaser.State {
       if (floor instanceof Swamp && !this.game.vars.godMode) signals.onGameOver.dispatch()
     })
 
-    this.enemies.collide(this.player, this.playerSlowdown)
-    this.obstacles.collide(this.player)
+    let collided = this.enemies.collide(this.player, this.playerSlowdown)
+    collided |= this.obstacles.collide(this.player, this.playerSlowdown)
+
+    if (!collided && this.player.slowedDown && this.game.isStarted) {
+      signals.speedReset.dispatch()
+    }
 
     this.chaser.catch(this.player, () => {
       if (!this.game.vars.godMode) signals.onGameOver.dispatch()
