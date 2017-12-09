@@ -30,7 +30,8 @@ export default {
 
   player: {
     jumpSpeed: { x: 0, y: 630 },
-    backlogRate: 0.6
+    slowdownRate: 0.6,
+    cooldown: 1000
   },
 
   chaser: {

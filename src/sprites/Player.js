@@ -16,14 +16,12 @@ export default class extends DisplayCharacter {
 
     // Анимация бега это стандартная анимация
     this.attackReady = true
-    this.backlogRate = 1
+    this.slowdownRate = 1
 
     // Включаем физику
     this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
-
-    this.slowedDown = false
 
     signals.jump.add(this.jump, this)
     signals.attack.add(this.attack, this)
@@ -60,7 +58,7 @@ export default class extends DisplayCharacter {
 
   run () {
     if (this.game.isStarted) {
-      this.body.velocity.x = this.game.vars.speed * this.backlogRate
+      this.body.velocity.x = this.game.vars.speed * this.slowdownRate
     }
   }
 
@@ -87,14 +85,19 @@ export default class extends DisplayCharacter {
   }
 
   slowDown () {
-    this.slowedDown = true
-    this.backlogRate = config.player.backlogRate
-    this.game.time.events.add(700, () => { this.speedReset() }, this).autoDestroy = true
+    // понижаем скорость на коэффициент замедления
+    this.slowdownRate = config.player.slowdownRate
+    // добавляем таймер кулдауна
+    this.game.time.events.add(
+      config.player.cooldown, // через какое время сработает таймер
+      () => { this.resetSpeed() }, // функция, которая выполнится
+      this // контекст для функции
+    ).autoDestroy = true // удалить таймер автоматически
   }
 
   resetSpeed () {
-    this.slowedDown = false
-    this.backlogRate = 1
+    // сбрасываем коэффициент замедления
+    this.slowdownRate = 1
   }
 
   reset (x, y) {
