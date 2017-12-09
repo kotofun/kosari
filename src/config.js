@@ -28,11 +28,7 @@ export default {
 
   initialSpeed: 147.69230769230888715,
 
-  player: {
-    jumpSpeed: { x: 0, y: 630 },
-    slowdownRate: 0.6,
-    cooldown: 1000
-  },
+  player: { jumpSpeed: { x: 0, y: 630 } },
 
   chaser: {
     backlogRate: 0.75
