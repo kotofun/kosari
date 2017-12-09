@@ -28,7 +28,10 @@ export default {
 
   initialSpeed: 147.69230769230888715,
 
-  player: { jumpSpeed: { x: 0, y: 630 } },
+  player: {
+    jumpSpeed: { x: 0, y: 630 },
+    backlogRate: 0.6
+  },
 
   chaser: {
     backlogRate: 0.75

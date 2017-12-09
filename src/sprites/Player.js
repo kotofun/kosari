@@ -16,6 +16,7 @@ export default class extends DisplayCharacter {
 
     // Анимация бега это стандартная анимация
     this.attackReady = true
+    this.backlogRate = 1
 
     // Включаем физику
     this.game.physics.enable(this)
@@ -28,7 +29,6 @@ export default class extends DisplayCharacter {
     signals.attack.add(this.attack, this)
 
     signals.speedDown.add(this.slowDown, this)
-    signals.speedReset.add(this.resetSpeed, this)
     signals.onGameStart.add(this.start, this)
 
     this.startPosition = {
@@ -60,7 +60,7 @@ export default class extends DisplayCharacter {
 
   run () {
     if (this.game.isStarted) {
-      this.body.velocity.x = this.game.vars.speed
+      this.body.velocity.x = this.game.vars.speed * this.backlogRate
     }
   }
 
@@ -88,10 +88,13 @@ export default class extends DisplayCharacter {
 
   slowDown () {
     this.slowedDown = true
+    this.backlogRate = config.player.backlogRate
+    this.game.time.events.add(700, () => { this.speedReset() }, this).autoDestroy = true
   }
 
   resetSpeed () {
     this.slowedDown = false
+    this.backlogRate = 1
   }
 
   reset (x, y) {
