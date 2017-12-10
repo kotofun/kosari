@@ -27,12 +27,12 @@ export default {
   gravity: { y: 2900 },
 
   initialSpeed: 147.69230769230888715,
-  
+
   player: {
     jumpSpeed: { x: 0, y: 630 },
     slowdownRate: 0.8,
     cooldown: 1000,
-    jumpDuration: 50
+    jumpDuration: 80
   },
 
   chaser: {
