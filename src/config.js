@@ -73,7 +73,7 @@ export default {
       Grave: { p: 65, between: { min: 1 } }
     },
     enemies: {
-      Skeleton: {p: 17, between: { min: 0} }
+      Skeleton: {p: 17, between: { min: 2} }
     }
   },
 
