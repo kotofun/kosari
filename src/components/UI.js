@@ -56,6 +56,10 @@ export default class {
     this.controlsInfo.fixedToCamera = true
 
     this._initMenu()
+
+    this.signs = this.game.add.group()
+    this.signLabels = this.game.add.group()
+
     this.overlay = _createOverlay(this.game)
     this.distance = _createDistance(this.game)
     this.gameOverBanner = _createGameOverBanner(this.game)
@@ -138,6 +142,33 @@ export default class {
         this.resumeBtn.visible = false
       }
     }
+  }
+
+  addSign (x, y, size, text) {
+    // добавляем спрайт таблички
+    const sign = this.game.add.sprite(x, y, 'sign.distance')
+    // ставим якорь внизу, по центру
+    sign.anchor.setTo(0.5, 1)
+    // добавляем текст для таблички
+    const signText = this.game.add.text(sign.left + sign.width / 2, sign.top + 30, text)
+    signText.font = 'HaxrCorp'
+    signText.fontSize = 24
+    signText.fill = '#8A0707'
+    signText.smoothed = false
+    signText.anchor.setTo(0.5)
+
+    // засовываем в массив табличек для дальнейшего удаления
+    this.signs.add(sign)
+    this.signLabels.add(signText)
+  }
+
+  update () {
+    this.signs.forEachAlive(sign => {
+      if (sign.right < this.game.camera.view.x) sign.kill()
+    })
+    this.signLabels.forEachAlive(label => {
+      if (label.right < this.game.camera.view.x) label.kill()
+    })
   }
 
   showAuthors () {

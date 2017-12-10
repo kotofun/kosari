@@ -34,10 +34,10 @@ export default class extends Phaser.State {
       this.floor = new FloorFactory(this.game, this.terrain.current.type)
       this.enemies = new EnemyManager(this, this.terrain)
 
+      this.ui = new UI(this.game)
+
       this.player = new Player(this.game)
       this.chaser = new Chaser(this.game, this.floor)
-
-      this.ui = new UI(this.game)
 
       // Ставим флаг, чтобы при перезапуске объекты
       // не создавались заново
@@ -96,6 +96,7 @@ export default class extends Phaser.State {
     this.surface.update()
     this.obstacles.update()
     this.enemies.update()
+    this.ui.update()
   }
 
   render () {
@@ -105,7 +106,17 @@ export default class extends Phaser.State {
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
     }
 
-    this.ui.distance.text = Math.floor(this.camera.x / 32) + 'м'
+    const distance = Math.floor(this.camera.x / 32)
+    this.ui.distance.text = distance + 'м'
+
+    const signDistance = Math.floor((this.camera.x + this.game.width) / 32)
+    const signPosition = signDistance * 32 + Math.floor(this.game.width * 0.5 / 32) * 32
+
+    if ((this.game.isStarted) && (signDistance % 100 === 0) && this.prevSign !== signPosition) {
+      this.ui.addSign(signPosition, this.game.height - 32, 'middle', signDistance + 'м')
+
+      this.prevSign = signPosition
+    }
   }
 
   // TODO: Stop the game, show game over animation and show highscores
