@@ -17,12 +17,14 @@ export default class extends DisplayCharacter {
     // Анимация бега это стандартная анимация
     this.attackReady = true
 
+    this.jumptimer = 0
+
     // Включаем физику
     this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    signals.jump.add(this.jump, this)
+    signals.jump.add(keycode => { this.jumpKey = keycode }, this)
     signals.attack.add(this.attack, this)
 
     signals.onGameStart.add(this.start, this)
@@ -71,6 +73,8 @@ export default class extends DisplayCharacter {
       // бежим, если ни во что не воткнулись
       this.run()
     }
+
+    this.jump()
   }
 
   run () {
@@ -88,10 +92,25 @@ export default class extends DisplayCharacter {
   // Игрок стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down || this.body.wasTouching.down }
 
+  jumpIsActive () {
+    return this.game.input.keyboard.downDuration(this.jumpKey, config.player.jumpDuration)
+  }
+
   jump () {
     if (this.isOnFloor()) {
+      this.jumps = 1
+      this.jumping = false
+    }
+
+    if (this.jumps > 0 && this.jumpIsActive()) {
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
+      this.jumping = true
       this.game.sounds.jump.play()
+    }
+
+    if (this.jumping && this.game.input.keyboard.upDuration(this.jumpKey)) {
+      this.jumps--
+      this.jumping = false
     }
   }
 

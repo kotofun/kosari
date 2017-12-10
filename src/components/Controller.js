@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import signals from '../signals'
+import config from '../config'
 
 const keys = {
   pause: Phaser.Keyboard.ESC,
@@ -37,7 +38,7 @@ export default class {
     // Сбрасываем всё управление
     this.disable()
 
-    // Блочим нажатия на alt и tab, чтобы не появлялось меню паузы
+    // Блочим нажатия на alt или tab, чтобы не появлялось меню паузы
     this.preventKeys()
 
     // Привязываем управление для десктопов
@@ -45,9 +46,9 @@ export default class {
       // Прыжок
       keys.jump
         .map(k => this.game.input.keyboard.addKey(k))
-        .map(k => {
+        .map((k, i) => {
           k.onDown.add(() => {
-            signals.jump.dispatch()
+            signals.jump.dispatch(keys.jump[i])
           }, this)
         })
 
