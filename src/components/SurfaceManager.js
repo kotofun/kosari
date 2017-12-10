@@ -59,7 +59,7 @@ export default class {
         if (Phaser.Rectangle.intersects(grass.getBounds(), mower.getBounds())) {
           if (mower instanceof Player) this.game.stats.mowedGrass.Player++
           if (mower instanceof Chaser) this.game.stats.mowedGrass.Chaser++
-          grass.kill()
+          grass.damage()
         }
       })
     }

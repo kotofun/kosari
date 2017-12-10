@@ -46,11 +46,7 @@ export default class extends Phaser.Sprite {
     this.animations.add('kill', killAnimation)
   }
 
-  kill (...args) {
-    if (this.right < this.game.camera.view.x) {
-      return super.kill(...args)
-    }
-
+  damage (...args) {
     // проверяем, живой ли спрайт для атаки
     if (this.health) {
       // убираем все жизни у спрайта
