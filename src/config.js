@@ -35,7 +35,7 @@ export default {
   },
 
   chaser: {
-    backlogRate: 0.75
+    backlogRate: 0.9 // was 0.75
   },
 
   ground: {
@@ -70,10 +70,10 @@ export default {
       Swamp: { p: 10, inRow: { max: 2 } }
     },
     obstacles: {
-      Grave: { p: 70, between: { min: 0 } }
+      Grave: { p: 65, between: { min: 1 } }
     },
     enemies: {
-      Skeleton: {p: 20, between: { min: 0} }
+      Skeleton: {p: 7, between: { min: 2} }
     }
   },
 
