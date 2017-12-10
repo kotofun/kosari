@@ -82,12 +82,8 @@ export default class extends Phaser.State {
       if (floor instanceof Swamp && !this.game.vars.godMode) signals.onGameOver.dispatch()
     })
 
-    let collided = this.enemies.collide(this.player, this.playerSlowdown)
-    collided |= this.obstacles.collide(this.player, this.playerSlowdown)
-
-    if (!collided && this.player.slowedDown && this.game.isStarted) {
-      signals.speedReset.dispatch()
-    }
+    this.enemies.collide(this.player)
+    this.obstacles.collide(this.player)
 
     this.chaser.catch(this.player, () => {
       if (!this.game.vars.godMode) signals.onGameOver.dispatch()
@@ -110,10 +106,6 @@ export default class extends Phaser.State {
     }
 
     this.ui.distance.text = Math.floor(this.camera.x / 32) + 'м'
-  }
-
-  playerSlowdown (player, obstacle) {
-    if (player.body.touching.right) signals.speedDown.dispatch()
   }
 
   // TODO: Stop the game, show game over animation and show highscores
