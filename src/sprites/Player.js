@@ -86,7 +86,7 @@ export default class extends DisplayCharacter {
   }
 
   // Игрок стоит на твердой поверхности ?
-  isOnFloor () { return this.body.touching.down }
+  isOnFloor () { return this.body.touching.down || this.body.wasTouching.down }
 
   jump () {
     if (this.isOnFloor()) {
