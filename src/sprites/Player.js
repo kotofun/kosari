@@ -17,14 +17,26 @@ export default class extends DisplayCharacter {
     // Анимация бега это стандартная анимация
     this.attackReady = true
 
-    this.jumptimer = 0
-
     // Включаем физику
     this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    signals.jump.add(keycode => { this.jumpKey = keycode }, this)
+    this.jumping = false
+    this.jumpTimer = 0
+
+    signals.onJumpStart.add(() => {
+      if (this.isOnFloor()) {
+        this.jumping = true
+        this.jumpTimer = new Date
+      }
+    })
+
+    signals.onJumpEnd.add(() => {
+      this.jumping = false
+      this.jumpTimer = 0
+    })
+
     signals.attack.add(this.attack, this)
 
     signals.onGameStart.add(this.start, this)
@@ -92,25 +104,16 @@ export default class extends DisplayCharacter {
   // Игрок стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down || this.body.wasTouching.down }
 
-  jumpIsActive () {
-    return this.game.input.keyboard.downDuration(this.jumpKey, config.player.jumpDuration)
-  }
-
   jump () {
-    if (this.isOnFloor()) {
-      this.jumps = 1
-      this.jumping = false
-    }
-
-    if (this.jumps > 0 && this.jumpIsActive()) {
+    if (this.jumping && (new Date - this.jumpTimer <= config.player.jumpDuration)) {
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
-      this.jumping = true
-      this.game.sounds.jump.play()
+    } else {
+      this.jumpTimer = 0
+      this.jumping = false
     }
 
-    if (this.jumping && this.game.input.keyboard.upDuration(this.jumpKey)) {
-      this.jumps--
-      this.jumping = false
+    if (this.isOnFloor()) {
+      this.game.sounds.jump.play()
     }
   }
 
