@@ -30,6 +30,7 @@ export default class {
     signals.speedDown.add(this.stopAnimation, this)
     // signals.speedUp.add(this.startAnimation, this)
     signals.speedReset.add(this.startAnimation, this)
+    signals.speedUpdate.add(this.startAnimation, this)
 
     signals.onGameStart.add(this.startAnimation, this)
     signals.onGameOver.add(this.stopAnimation, this)
@@ -44,12 +45,11 @@ export default class {
     }
   }
 
-  startAnimation () {
-    this.game.time.events.add(0, () => {
-      for (var i = 0; i < this.layers.length; i++) {
-        this.layers[i].autoScroll(-(this.game.vars.speed / 5) * (i + 1), 0)
-      }
-    }, this).autoDestroy = true
+  startAnimation (speed) {
+    for (var i = 0; i < this.layers.length; i++) {
+      speed = speed || (this.game.vars.speed / 5)
+      this.layers[i].autoScroll(-(speed) * (i + 1), 0)
+    }
   }
 
   reset () {

@@ -22,13 +22,9 @@ export default class extends DisplayCharacter {
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    this.slowedDown = false
-
     signals.jump.add(this.jump, this)
     signals.attack.add(this.attack, this)
 
-    signals.speedDown.add(this.slowDown, this)
-    signals.speedReset.add(this.resetSpeed, this)
     signals.onGameStart.add(this.start, this)
 
     this.startPosition = {
@@ -36,10 +32,15 @@ export default class extends DisplayCharacter {
       y: this.game.height - config.tileSize - this.body.offset.y - this.body.height - 1
     }
 
+    this.speed = 0
+
     this.reset(this.startPosition.x, this.startPosition.y)
   }
 
   start () {
+    // устанавливаем начальную скорость
+    this.speed = this.game.vars.speed
+
     // Устанавливаем анимацию по-умолчанию
     this.events.onAnimationComplete.add(() => { this.animateRun() })
 
@@ -55,13 +56,33 @@ export default class extends DisplayCharacter {
   animateMow () { this.animations.play('mow', 30) }
 
   update () {
-    this.run()
+    // если игра еще не начата или на паузе - выходим
+    if (!this.game.isStarted || this.game.isPaused) return
+
+    // провереем воткнулся ли игрок в препятствие
+    // пока мы не проверяем в кого именно воткнулись
+    if (this.isTouchedRight()) {
+      // включаем режим куллдауна
+      this.enableCooldownMode()
+
+      // оповещаем всех о том, что мы воткнулись
+      signals.speedDown.dispatch()
+    } else {
+      // бежим, если ни во что не воткнулись
+      this.run()
+    }
   }
 
   run () {
     if (this.game.isStarted) {
-      this.body.velocity.x = this.game.vars.speed
+      this.body.velocity.x = this.speed
+
+      signals.speedUpdate.dispatch(this.speed / 5)
     }
+  }
+
+  isTouchedRight () {
+    return this.body.touching.right || this.body.wasTouching.right
   }
 
   // Игрок стоит на твердой поверхности ?
@@ -86,12 +107,30 @@ export default class extends DisplayCharacter {
     }
   }
 
-  slowDown () {
-    this.slowedDown = true
+  enableCooldownMode () {
+    // понижаем скорость на коэффициент замедления
+    this.speed = this.game.vars.speed * config.player.slowdownRate
+
+    // если событие по таймеру было уже создано
+    if (this.cooldownEvent) {
+      // удаляем его
+      this.game.time.events.remove(this.cooldownEvent)
+    }
+
+    // добавляем отмену кулдауна по таймеру
+    this.cooldownEvent = this.game.time.events.add(
+      config.player.cooldown, // через какое время сработает таймер
+      () => { this.resetSpeed() }, // функция, которая выполнится
+      this // контекст для функции
+    )
   }
 
   resetSpeed () {
-    this.slowedDown = false
+    // восстанавливаем скорость
+    this.speed = this.game.vars.speed
+
+    // оповещаем всех о сбросе скорости
+    signals.speedReset.dispatch()
   }
 
   reset (x, y) {
@@ -103,6 +142,7 @@ export default class extends DisplayCharacter {
     super.reset(x, y)
 
     this.body.velocity.x = 0
+    this.speed = 0
 
     this.events.onAnimationComplete.removeAll()
     this.animateStand()

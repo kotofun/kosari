@@ -22,5 +22,6 @@ export default {
 
   speedUp: new Phaser.Signal(),
   speedReset: new Phaser.Signal(),
-  speedDown: new Phaser.Signal()
+  speedDown: new Phaser.Signal(),
+  speedUpdate: new Phaser.Signal()
 }
