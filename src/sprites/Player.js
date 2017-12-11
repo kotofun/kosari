@@ -22,18 +22,27 @@ export default class extends DisplayCharacter {
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    this.jumping = false
+    this.isJumping = false
     this.jumpTimer = 0
 
+    // пришел сигнал для начала прыжка?
     signals.onJumpStart.add(() => {
+      // проверим находится ли игрок на земле,
+      // чтобы не начинать повторный прыжок в воздухе
       if (this.isOnFloor()) {
-        this.jumping = true
-        this.jumpTimer = new Date
+        // устанавливаем флаг прыжка
+        this.isJumping = true
+        // записываем текущее время для проверки
+        // длительности прыжка
+        this.jumpTimer = this.game.time.time
       }
     })
 
+    // пришел сигнал для окончания прыжка?
     signals.onJumpEnd.add(() => {
-      this.jumping = false
+      // отключаем режим прыжка
+      this.isJumping = false
+      // сбрасываем время начала текущего прыжка
       this.jumpTimer = 0
     })
 
@@ -86,7 +95,11 @@ export default class extends DisplayCharacter {
       this.run()
     }
 
-    this.jump()
+    // игрок в прыжке?
+    if (this.isJumping) {
+      // продолжаем прыгать
+      this.jump()
+    }
   }
 
   run () {
@@ -105,14 +118,21 @@ export default class extends DisplayCharacter {
   isOnFloor () { return this.body.touching.down || this.body.wasTouching.down }
 
   jump () {
-    if (this.jumping && (new Date - this.jumpTimer <= config.player.jumpDuration)) {
+    // определяем сколько длится прыжок
+    const duration = this.game.time.time - this.jumpTimer
+    // прыжок по времени не превысил значение в конфиге?
+    if (duration <= config.player.jumpDuration) {
+      // продолжаем прыгать
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
     } else {
+      // отключаем прыжок
       this.jumpTimer = 0
-      this.jumping = false
+      this.isJumping = false
     }
 
+    // игрок находится на земле?
     if (this.isOnFloor()) {
+      // проиграем звук прыжка
       this.game.sounds.jump.play()
     }
   }
