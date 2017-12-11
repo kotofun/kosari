@@ -31,7 +31,7 @@ export default {
     jumpSpeed: { x: 0, y: 530 },
     slowdownRate: 0.8,
     cooldown: 1000,
-    jumpDuration: 100
+    jumpDuration: 125
   },
 
   chaser: {
