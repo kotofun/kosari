@@ -2,7 +2,8 @@ import Phaser from 'phaser'
 
 export default {
   // controller signals
-  jump: new Phaser.Signal(),
+  onJumpStart: new Phaser.Signal(),
+  onJumpEnd: new Phaser.Signal(),
   attack: new Phaser.Signal(),
   mow: new Phaser.Signal(),
 

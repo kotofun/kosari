@@ -24,15 +24,14 @@ export default {
 
   bg: { color: '#5d5b6a' },
 
-  gravity: { y: 4000 },
-
+  gravity: { y: 3500 },
   initialSpeed: 147.69230769230888715,
 
   player: {
     jumpSpeed: { x: 0, y: 530 },
     slowdownRate: 0.8,
     cooldown: 1000,
-    jumpDuration: 150
+    jumpDuration: 125
   },
 
   chaser: {

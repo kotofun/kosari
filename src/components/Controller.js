@@ -46,10 +46,13 @@ export default class {
       // Прыжок
       keys.jump
         .map(k => this.game.input.keyboard.addKey(k))
-        .map((k, i) => {
+        .map(k => {
           k.onDown.add(() => {
-            signals.jump.dispatch(keys.jump[i])
-          }, this)
+            signals.onJumpStart.dispatch()
+          })
+          k.onUp.add(() => {
+            signals.onJumpEnd.dispatch()
+          })
         })
 
       // Атака
@@ -68,8 +71,12 @@ export default class {
     // Привязываем управление для мобилок (тапы)
     } else {
       // Прыжок
-      this.game.input.onTap.add((pointer, doubleTap) => {
-        if (pointer.x <= this.game.world.width / 2) signals.jump.dispatch()
+      this.game.input.onDown.add((pointer) => {
+        if (pointer.x <= this.game.world.width / 2) signals.onJumpStart.dispatch()
+      }, this)
+
+      this.game.input.onUp.add((pointer) => {
+        if (pointer.x <= this.game.world.width / 2) signals.onJumpEnd.dispatch()
       }, this)
 
       // Атака

@@ -17,14 +17,35 @@ export default class extends DisplayCharacter {
     // Анимация бега это стандартная анимация
     this.attackReady = true
 
-    this.jumptimer = 0
-
     // Включаем физику
     this.game.physics.enable(this)
     // Устанавливаем размеры физического тела
     this.body.setSize(19, 54, 43, 10)
 
-    signals.jump.add(keycode => { this.jumpKey = keycode }, this)
+    this.isJumping = false
+    this.jumpTimer = 0
+
+    // пришел сигнал для начала прыжка?
+    signals.onJumpStart.add(() => {
+      // проверим находится ли игрок на земле,
+      // чтобы не начинать повторный прыжок в воздухе
+      if (this.isOnFloor()) {
+        // устанавливаем флаг прыжка
+        this.isJumping = true
+        // записываем текущее время для проверки
+        // длительности прыжка
+        this.jumpTimer = this.game.time.time
+      }
+    })
+
+    // пришел сигнал для окончания прыжка?
+    signals.onJumpEnd.add(() => {
+      // отключаем режим прыжка
+      this.isJumping = false
+      // сбрасываем время начала текущего прыжка
+      this.jumpTimer = 0
+    })
+
     signals.attack.add(this.attack, this)
 
     signals.onGameStart.add(this.start, this)
@@ -74,7 +95,11 @@ export default class extends DisplayCharacter {
       this.run()
     }
 
-    this.jump()
+    // игрок в прыжке?
+    if (this.isJumping) {
+      // продолжаем прыгать
+      this.jump()
+    }
   }
 
   run () {
@@ -92,25 +117,23 @@ export default class extends DisplayCharacter {
   // Игрок стоит на твердой поверхности ?
   isOnFloor () { return this.body.touching.down || this.body.wasTouching.down }
 
-  jumpIsActive () {
-    return this.game.input.keyboard.downDuration(this.jumpKey, config.player.jumpDuration)
-  }
-
   jump () {
-    if (this.isOnFloor()) {
-      this.jumps = 1
-      this.jumping = false
-    }
-
-    if (this.jumps > 0 && this.jumpIsActive()) {
+    // определяем сколько длится прыжок
+    const duration = this.game.time.time - this.jumpTimer
+    // прыжок по времени не превысил значение в конфиге?
+    if (duration <= config.player.jumpDuration) {
+      // продолжаем прыгать
       this.body.velocity.y = -this.game.vars.player.jumpSpeed.y
-      this.jumping = true
-      this.game.sounds.jump.play()
+    } else {
+      // отключаем прыжок
+      this.jumpTimer = 0
+      this.isJumping = false
     }
 
-    if (this.jumping && this.game.input.keyboard.upDuration(this.jumpKey)) {
-      this.jumps--
-      this.jumping = false
+    // игрок находится на земле?
+    if (this.isOnFloor()) {
+      // проиграем звук прыжка
+      this.game.sounds.jump.play()
     }
   }
 
