@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Кровавая коса. Начало.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="/fonts.css" type="text/css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #191820;
+            width: 100%;
+            height: 100%;
+        }
+        #rotate {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #191820;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+        }
+        #rotate > p{
+            font-family: 'HaxrCorp';
+            color: #fff;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        #content > canvas{
+            margin: 0 auto;
+        }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+            display: table;
+            margin-top: 1px;
+        }
+        #v-align {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #font-preloader {
+            font-family: 'HaxrCorp';
+            opacity: 0;
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="v-align">
+            <div id="content"></div>
+            <form action="#" onsubmit="return false">
+                <button onclick="toggleGodMode(this)">Отключить режим бессмертия</button>
+                <button onclick="toggleBgMusic(this)">Отключить фоновую музыку</button>
+                <br>
+                <label for="speed">
+                    Скорость игрового мира
+                    <input name="speed" type="number" min="0" max="500" value="200" oninput="changeSpeed(this)">
+                    <span>100</span>
+                </label>
+                <br>
+                <label for="gravity">
+                    Гравитация
+                    <input name="gravity" type="number" min="100" max="5000" value="2900" oninput="changeGravity(this)">
+                </label>
+                <br>
+                <label for="">Скорость прыжка: <input type="number" min="0" max="1000" value="600" oninput="changePlayerJumpSpeed(this)"></label>
+                <br>
+                <label for="player_position">Позиция игрока:
+                    <input name="player_position" type="number" min="0" max="512" value="150" oninput="changePlayerPosition(this)">
+                </label>
+            </form>
+        </div>
+    </div>
+    <div id="rotate">
+      <p>Поверни мобилку, бро!</p>
+    </div>
+
+    <div id="font-preloader">.</div>
+    <script src="dist/vendor.bundle.js"></script>
+    <script src="dist/bundle.js"></script>
+
+    <script>
+        var game = window.game
+
+        function changeSpeed (obj) {
+            game.vars.speed = +obj.value
+            obj.nextElementSibling.innerText = obj.value
+        }
+        function changeGravity (obj) {
+            game.physics.arcade.gravity.y = +obj.value
+        }
+        function changePlayerPosition (obj) {
+            game.camera.deadzone.width = +obj.value
+            game.state.states.Game.Player.position.x = game.camera.view.x + game.camera.deadzone.width
+        }
+        function changePlayerJumpSpeed (obj) {
+            game.vars.player.jumpSpeed.y = +obj.value
+        }
+        function toggleGodMode (obj) {
+            var godMode = game.vars.godMode
+            obj.innerText = godMode ? 'Включить режим бессмертия' : 'Отключить режим бессмертия'
+            game.vars.godMode = !godMode
+            if (game.vars.godMode) game.paused = false
+        }
+        function toggleBgMusic (obj) {
+            if (game.sounds.background.isPlaying) {
+                obj.innerText = 'Включить фоновую музыку'
+                game.sounds.background.stop()
+            } else {
+                obj.innerText = 'Отключить фоновую музыку'
+                game.sounds.background.play()
+            }
+        }
+    </script>
+</body>
+
+</html>

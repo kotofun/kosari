@@ -3,27 +3,72 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Phaser - ES6 - Webpack</title>
+    <title>Кровавая коса. Начало.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
-
+    <link rel="stylesheet" href="/fonts.css" type="text/css">
     <style>
         html,
         body {
             margin: 0;
             padding: 0;
+            background: #191820;
+            width: 100%;
+            height: 100%;
+        }
+        #rotate {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #191820;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+        }
+        #rotate > p{
+            font-family: 'HaxrCorp';
+            color: #fff;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        #content > canvas{
+            margin: 0 auto;
+        }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+            display: table;
+            margin-top: 1px;
+        }
+        #v-align {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #font-preloader {
+            font-family: 'HaxrCorp';
+            opacity: 0;
+            position: fixed;
         }
     </style>
 </head>
 
 <body>
-
-    <div id="content"></div>
-    <script src="dist/vendor.bundle.js"></script>
-    <script src="dist/bundle.js"></script>
-
+    <div id="wrapper">
+        <div id="v-align">
+            <div id="content"></div>
+        </div>
+    </div>
+    <div id="rotate">
+      <p>Поверни мобилку, бро!</p>
+    </div>
+    <div id="font-preloader">.</div>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+        <script src="<%=htmlWebpackPlugin.files.chunks[chunk].entry%>"></script>
+    <% } %>
 </body>
 
 </html>

@@ -5,8 +5,10 @@
   "author": "leandro cabrera <leandcabrera@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
+    "watch": "webpack",
+    "dev": "webpack --config webpack.develop.config.js",
+    "pre": "webpack --config webpack.prerelease.config.js",
+    "release": "webpack --config webpack.release.config.js",
     "test": "eslint ./src/**/**.js"
   },
   "license": "MIT",
@@ -18,6 +20,7 @@
     "babel-preset-es2015": "^6.24.1",
     "browser-sync": "^2.18.13",
     "browser-sync-webpack-plugin": "^1.2.0",
+    "copy-webpack-plugin": "^4.1.1",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
@@ -25,10 +28,12 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "expose-loader": "^0.7.3",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
     "webpack": "^3.4.1"
   },
   "dependencies": {
-    "phaser-ce": "^2.8.3",
-    "webfontloader": "^1.6.28"
+    "fastclick": "^1.0.6",
+    "phaser-ce": "^2.8.7"
   }
 }

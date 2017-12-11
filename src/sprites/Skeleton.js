@@ -1,6 +1,12 @@
-import Phaser from 'phaser'
+import AbstractEnemy from './AbstractEnemy'
 
-// TODO: create Skeleton sprite
+export default class extends AbstractEnemy {
+  constructor (game) {
+    super(game, 'enemies/skeleton', true)
 
-export default class extends Phaser.Sprite {
+    this.body.setSize(28, 50, 2, 16)
+
+    this.animations.add('idle')
+    this.animations.play('idle', 10, true)
+  }
 }

@@ -18,13 +18,13 @@ module.exports = {
       'babel-polyfill',
       path.resolve(__dirname, 'src/main.js')
     ],
-    vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
+    vendor: ['pixi', 'p2', 'phaser']
   },
   devtool: 'cheap-source-map',
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
+    publicPath: '/',
     filename: 'bundle.js'
   },
   watch: true,
@@ -38,7 +38,8 @@ module.exports = {
       host: process.env.IP || 'localhost',
       port: process.env.PORT || 3000,
       server: {
-        baseDir: ['./', './build']
+        baseDir: ['./', './build'],
+        index: 'index.dev.html'
       }
     })
   ],
@@ -47,7 +48,19 @@ module.exports = {
       { test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'src') },
       { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
       { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
-      { test: /p2\.js/, use: ['expose-loader?p2'] }
+      { test: /p2\.js/, use: ['expose-loader?p2'] },
+      {
+        test: /\.png|\.woff|\.woff2|\.svg|.eot|\.ttf|\.mp3$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/',
+              publicPath: '/dist/'
+            }
+          }
+        ]
+      }
     ]
   },
   node: {
@@ -59,7 +72,8 @@ module.exports = {
     alias: {
       'phaser': phaser,
       'pixi': pixi,
-      'p2': p2
+      'p2': p2,
+      'assets': path.join(__dirname, './assets')
     }
   }
 }

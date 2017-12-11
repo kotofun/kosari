@@ -1,22 +1,16 @@
-import Phaser from 'phaser'
 import { generateSurfacePiceBitmap } from '../utils'
-import groundTileSet from '../../assets/images/ground.json'
+import groundTileSet from '../../assets/tilesets/ground.json'
+import AbstractFloor from './AbstractFloor'
 
-export default class extends Phaser.Sprite {
-  constructor ({ game, type, height = 1, speed = 0 }) {
+export default class extends AbstractFloor {
+  constructor ({ game, type, height = 1, x = null, y = null }) {
     let bmd = generateSurfacePiceBitmap(game, type, height, groundTileSet, 'surface')
-    let x = game.world.width
-    let y = game.world.height - bmd.height
 
-    super(game, x, y, bmd, 0)
+    let _x = (x !== null) ? x : game.world.width
+    let _y = (y !== null) ? y : game.world.height - bmd.height
 
-    this.game.physics.arcade.enable(this)
-    this.body.allowGravity = false
-    this.body.immovable = true
-    this.speed = speed
-  }
+    super(game, _x, _y, bmd, 0)
 
-  set speed (value) {
-    this.body.velocity.x = value
+    this.standable = true
   }
 }
