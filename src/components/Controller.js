@@ -71,11 +71,11 @@ export default class {
     // Привязываем управление для мобилок (тапы)
     } else {
       // Прыжок
-      this.game.input.onTap.add((pointer, doubleTap) => {
+      this.game.input.onDown.add((pointer) => {
         if (pointer.x <= this.game.world.width / 2) signals.onJumpStart.dispatch()
       }, this)
 
-      this.game.input.onUp.add((pointer, doubleTap) => {
+      this.game.input.onUp.add((pointer) => {
         if (pointer.x <= this.game.world.width / 2) signals.onJumpEnd.dispatch()
       }, this)
 
