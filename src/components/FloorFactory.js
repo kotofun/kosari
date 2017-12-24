@@ -43,8 +43,8 @@ export default class {
   constructor(game, starting) {
     this.game = game
 
-    _poolLookup['Ground'] = new GroundPool(game, 30)
-    _poolLookup['Swamp'] = new SwampPool(game, 30)
+    _poolLookup['Ground'] = new GroundPool(game)
+    _poolLookup['Swamp'] = new SwampPool(game)
 
     // init terrain objects
     _floor = this.game.add.group()
