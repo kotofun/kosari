@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Задроты</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" href="flags.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.min.js"></script>
   <style>
@@ -21,6 +22,7 @@
     <table class="table table-bordered table-dark tble-sm text-center">
       <thead>
         <tr>
+          <th scope="col">Страна</th>
           <th scope="col">Время результата</th>
           <th scope="col">Дистация</th>
           <th scope="col">Снега убрано игроком</th>
@@ -29,6 +31,9 @@
       </thead>
       <tbody class="table-stripped">
         <tr v-for="nerd in nerds">
+          <td>
+            <img src="blank.gif" v-if="nerd.Country.length > 0" v-bind:class="'flag flag-' + nerd.Country"/>
+          </td>
           <td>{{ (new Date(nerd.CreatedAt)).toLocaleString() }}</td>
           <td>{{ nerd.Distance }}</td>
           <td>{{ nerd.PlayerMowedGrass }}</td>
