@@ -7,6 +7,14 @@ import signals from '../signals'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
+import SwampPool from '../pool/SwampPool'
+import GroundPool from '../pool/GroundPool'
+
+const _poolLookup = {
+  Ground: null,
+  Swamp: null
+}
+
 const _terrainTypes = Object.keys(config.terrain)
 const _floorTypes = { Ground, Swamp }
 const _counters = {
@@ -32,8 +40,11 @@ const lastHeight = group => last(group).height / config.tileSize || 1
 const addFloor = e => { _floor.add(e) }
 
 export default class {
-  constructor (game, starting) {
+  constructor(game, starting) {
     this.game = game
+
+    _poolLookup['Ground'] = new GroundPool(game, 30)
+    _poolLookup['Swamp'] = new SwampPool(game, 30)
 
     // init terrain objects
     _floor = this.game.add.group()
@@ -44,19 +55,24 @@ export default class {
     signals.floorHold.add(tilesCount => { _hold = tilesCount }, this)
   }
 
-  init () {
+  init() {
+    let ground
     while (lastRight(_floor) - this.game.world.width < config.tileSize * 2) {
-      addFloor(new Ground({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      ground = _poolLookup['Ground'].get()
+
+      ground.init({ type: 'middle', x: lastRight(_floor), height: 1 })
+      addFloor(ground)
     }
   }
 
-  getAt (index) {
+  getAt(index) {
     return _floor.getAt(index)
   }
 
-  update () {
+  update() {
     const firstFloor = _floor.getAt(0)
-    if (!firstFloor.inCamera) _floor.remove(firstFloor)
+    if (!firstFloor.inCamera)
+      this.kill(firstFloor)
 
     while (lastRight(_floor) - (this.game.camera.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(_terrainTypes[_current])
@@ -69,7 +85,7 @@ export default class {
     return _counters.terrainLength
   }
 
-  change (next) {
+  change(next) {
     if (_terrainTypes[next] === undefined) {
       throw new Error('undefined terrain type')
     }
@@ -78,7 +94,7 @@ export default class {
     _counters.terrainLength = 0
   }
 
-  next () {
+  next() {
     if (_hold > 0) {
       _hold = 0
       return _counters.last
@@ -111,7 +127,7 @@ export default class {
     return nextFloorType
   }
 
-  generate (terrain) {
+  generate(terrain) {
     let nextFloorType = this.next()
 
     if (_counters.row[nextFloorType] === undefined) _counters.row = { [nextFloorType]: 0 }
@@ -122,23 +138,44 @@ export default class {
     }
 
     if (_counters.last === nextFloorType) {
-      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      this.createFloor(nextFloorType, { type: 'middle', x: lastRight(_floor), height: 1 })
+
     } else {
-      _floor.remove(last(_floor))
-      addFloor(new _floorTypes[_counters.last]({ game: this.game, type: 'right', x: lastRight(_floor), height: 1 }))
-      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'left', x: lastRight(_floor), height: 1 }))
+      this.kill(last(_floor))
+
+      this.createFloor(_counters.last, { type: 'right', x: lastRight(_floor), height: 1 })
+      this.createFloor(nextFloorType, { type: 'left', x: lastRight(_floor), height: 1 })
     }
 
     _counters.last = nextFloorType
   }
 
-  collide (obj, ...args) {
+  createFloor(type, config) {
+    let floor = _poolLookup[type].get()
+    addFloor(floor.init(config))
+    return floor
+  }
+
+  kill(floor) {
+    let currentPool
+    if (floor instanceof Ground)
+      currentPool = _poolLookup['Ground']
+
+    else if (floor instanceof Swamp)
+      currentPool = _poolLookup['Swamp']
+
+    _floor.remove(floor)
+    currentPool.kill(floor)
+  }
+
+  collide(obj, ...args) {
     return this.game.physics.arcade.collide(obj, _floor, ...args)
   }
 
-  reset () {
+  reset() {
+    _poolLookup['Ground'].clear()
+    _poolLookup['Swamp'].clear()
     _floor.removeAll(true, true)
-
     _hold = 0
 
     _counters.row = { 'Ground': 0 }
