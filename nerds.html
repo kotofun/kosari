@@ -33,6 +33,7 @@
         <tr v-for="nerd in nerds">
           <td>
             <img src="blank.gif" v-if="nerd.Country.length > 0" v-bind:class="'flag flag-' + nerd.Country"/>
+            <img src="blank.gif" v-else v-bind:class="'flag flag-prt'"/>
           </td>
           <td>{{ (new Date(nerd.CreatedAt)).toLocaleString() }}</td>
           <td>{{ nerd.Distance }}</td>
