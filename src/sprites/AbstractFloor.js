@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import AbstractObjectPool from '../pool/AbstractObjectPool'
 
 export default class extends Phaser.Sprite {
   constructor (...args) {
@@ -10,7 +9,7 @@ export default class extends Phaser.Sprite {
     this.body.immovable = true
   }
 
-  init(){
+  init () {
     this.body.setSize(this.width, this.height)
   }
 }

@@ -15,7 +15,7 @@ export const anyFrom = (arr) => {
 }
 
 export const generateSurfacePiceBitmap = (bmd, type, yCount, tileSet, alias) => {
-  function getArea(type, y) {
+  function getArea (type, y) {
     switch (type) {
       case 'left': {
         if (y === 0) {
@@ -52,8 +52,8 @@ export const generateSurfacePiceBitmap = (bmd, type, yCount, tileSet, alias) => 
   let tileWidth = tileSet.tileWidth
   let tileHeight = tileSet.tileHeight
 
-  bmd.clear();
-  bmd.resize(tileWidth, tileHeight);
+  bmd.clear()
+  bmd.resize(tileWidth, tileHeight)
 
   for (let y = 0; y < yCount; y++) {
     let rect = getArea(type, y)
