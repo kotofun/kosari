@@ -1,12 +1,7 @@
 export default class AbstractObjectPool {
-  constructor (game, preCreate = 0) {
-    this.game = game
+  constructor () {
     this.killed = []
     this.active = []
-
-    for (let i = 0; i < preCreate; i++) {
-      this.kill(this.get())
-    }
   }
 
   kill (object) {
@@ -42,7 +37,7 @@ export default class AbstractObjectPool {
     return object
   }
 
-  _create () { }
-  _onKill (object) { }
-  _onActive (object) { }
+  _create () {}
+  _onKill (object) {}
+  _onActive (object) {}
 }
