@@ -5,17 +5,14 @@ cache:
   - node_modules/
 
 build-dev:
+  except:
+    - develop
+    - master    
   script:
-    - 'which ssh-agent || ( apk update && apk add openssh-client )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - npm install
-    - npm run dev
-    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/dev/*'
-    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/dev/
+    - echo "$CI_COMMIT_REF_NAME"
+    - echo "$CI_COMMIT_REF_SLUG"
+#    - npm install
+#    - npm run dev
 
 build-pre:
   only:
