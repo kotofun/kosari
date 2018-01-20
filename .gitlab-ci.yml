@@ -1,20 +1,12 @@
 image: node:8-alpine
 
-# Pick zero or more services to be used on all builds.
-# Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
-#services:
-#  - mysql:latest
-#  - redis:latest
-#  - postgres:latest
-
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
   paths:
   - node_modules/
 
-build:
+build-dev:
+  only:
+    - develop
   script:
     - 'which ssh-agent || ( apk update && apk add openssh-client )'
     - eval $(ssh-agent -s)
@@ -26,6 +18,33 @@ build:
     - npm run dev
     - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/dev/*'
     - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/dev/
-#  artifacts:
-#    paths:
-#    - public
+
+build-pre:
+  only:
+    - develop
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - npm install
+    - npm run pre
+    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/pre/*'
+    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/pre/
+
+#build-prod:
+#  only:
+#    - master
+#  script:
+#    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+#    - eval $(ssh-agent -s)
+#    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+#    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#    - npm install
+#    - npm run release
+#    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/release/*'
+#    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/release/
