@@ -1,0 +1,50 @@
+image: node:8-alpine
+
+cache:
+  paths:
+  - node_modules/
+
+build-dev:
+  only:
+    - develop
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - npm install
+    - npm run dev
+    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/dev/*'
+    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/dev/
+
+build-pre:
+  only:
+    - develop
+  script:
+    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - npm install
+    - npm run pre
+    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/pre/*'
+    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/pre/
+
+#build-prod:
+#  only:
+#    - master
+#  script:
+#    - 'which ssh-agent || ( apk update && apk add openssh-client )'
+#    - eval $(ssh-agent -s)
+#    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#    - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
+#    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
+#    - chmod 644 ~/.ssh/known_hosts
+#    - npm install
+#    - npm run release
+#    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/release/*'
+#    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/release/
