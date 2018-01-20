@@ -20,13 +20,14 @@ env:
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - 'mkdir -p ~/.ssh && chmod 700 ~/.ssh'
-    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - ssh-keyscan kosari.koto.fun >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
 
 build:
   script:
     - npm install
     - npm run dev
+    - scp -r dist maxim@kosari.koto.fun:/tmp
 #  artifacts:
 #    paths:
 #    - public
