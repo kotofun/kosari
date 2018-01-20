@@ -24,7 +24,8 @@ build:
     - chmod 644 ~/.ssh/known_hosts
     - npm install
     - npm run dev
-    - scp -r dist maxim@kosari.koto.fun:/tmp
+    - ssh maxim@kosari.koto.fun 'rm -rfv ~/kosari/dev/*'
+    - scp -rv dist/* maxim@kosari.koto.fun:~/kosari/dev/
 #  artifacts:
 #    paths:
 #    - public
