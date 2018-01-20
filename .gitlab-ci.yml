@@ -14,9 +14,10 @@ cache:
   paths:
   - node_modules/
 
-script:
-  - npm install
-  - npm run dev
+build:
+  script:
+    - npm install
+    - npm run dev
 #  artifacts:
 #    paths:
 #    - public
