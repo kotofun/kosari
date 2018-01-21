@@ -7,11 +7,12 @@ import signals from '../signals'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
+import PoolManager from '../pool/PoolManager'
 import DisplayObjectPool from '../pool/DisplayObjectPool'
 
-const _poolLookup = {
-  Ground: null,
-  Swamp: null
+const _constructors = {
+  Ground,
+  Swamp
 }
 
 const _terrainTypes = Object.keys(config.terrain)
@@ -37,12 +38,15 @@ const lastHeight = group => last(group).height / config.tileSize || 1
 
 const addFloor = e => { _floor.add(e) }
 
+let _poolManager
+
 export default class {
   constructor (game, starting) {
     this.game = game
 
-    _poolLookup['Ground'] = new DisplayObjectPool(game, Ground)
-    _poolLookup['Swamp'] = new DisplayObjectPool(game, Swamp)
+    _poolManager = new PoolManager(game, DisplayObjectPool)
+    _poolManager.create(Ground)
+    _poolManager.create(Swamp)
 
     // init terrain objects
     _floor = this.game.add.group()
@@ -55,7 +59,7 @@ export default class {
 
   init () {
     while (lastRight(_floor) - this.game.world.width < config.tileSize * 2) {
-      let ground = _poolLookup['Ground'].get()
+      let ground = _poolManager.getPoolFor(Ground).get()
 
       ground.init({ type: 'middle', x: lastRight(_floor), height: 1 })
       addFloor(ground)
@@ -147,15 +151,21 @@ export default class {
     _counters.last = nextFloorType
   }
 
-  createFloor (type, config) {
-    let floor = _poolLookup[type].get()
+  createFloor (object, config) {
+    // Это должно быть в PoolManager но из-за манглинга имен классов babel
+    // не удается получить доступ к оригинальному имени конструктора.
+    if (typeof object === 'string') {
+      object = _constructors[object]
+    }
+
+    let floor = _poolManager.getPoolFor(object).get()
     addFloor(floor.init(config))
 
     return floor
   }
 
   kill (floor) {
-    let pool = DisplayObjectPool.getInstanceByObject(floor)
+    let pool = _poolManager.getPoolFor(floor)
     _floor.remove(floor)
     pool.kill(floor)
   }
@@ -165,8 +175,7 @@ export default class {
   }
 
   reset () {
-    _poolLookup['Ground'].clear()
-    _poolLookup['Swamp'].clear()
+    _poolManager.clear()
     _floor.removeAll(true, true)
     _hold = 0
 

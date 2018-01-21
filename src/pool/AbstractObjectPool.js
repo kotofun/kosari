@@ -1,5 +1,3 @@
-let _pools = []
-
 export default class AbstractObjectPool {
   constructor (game, objectConstructor) {
     this.game = game
@@ -7,8 +5,6 @@ export default class AbstractObjectPool {
 
     this.killed = []
     this.active = []
-
-    _pools.push(this)
   }
 
   kill (object) {
@@ -43,16 +39,6 @@ export default class AbstractObjectPool {
     this._onActive(object)
 
     return object
-  }
-
-  static getInstanceByObject (object) {
-    for (let key in _pools) {
-      if (_pools.hasOwnProperty(key) && object instanceof _pools[key]._objectConstructor) {
-        return _pools[key]
-      }
-    }
-
-    throw new Error('Could not find pool instance')
   }
 
   _create () {
