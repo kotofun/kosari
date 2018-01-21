@@ -125,9 +125,9 @@ export default class extends Phaser.State {
       this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
-      this._debugBodies()
     }
-
+    
+    this._debugBodies()
     const distance = Math.floor(this.camera.x / 32)
     this.ui.distance.text = distance + 'м'
 
