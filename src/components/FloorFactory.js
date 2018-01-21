@@ -171,7 +171,11 @@ export default class {
   }
 
   collide (obj, ...args) {
-    return this.game.physics.arcade.collide(obj, _floor, ...args)
+    let ground = _floor.children.filter(floor => floor instanceof Ground)
+    let swamps = _floor.children.filter(floor => floor instanceof Swamp)
+
+    this.game.physics.arcade.collide(obj, ground, ...args)
+    this.game.physics.arcade.collide(obj, swamps, ...args)
   }
 
   reset () {
