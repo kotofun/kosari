@@ -51,6 +51,9 @@ module.exports = {
       {from: 'nerds.html'},
       {from: 'fonts.css'},
       {from: 'robots.txt'},
+      {from: 'blank.gif'},
+      {from: 'flags.png'},
+      {from: 'flags.css'},
       {from: 'assets/fonts', to: './assets/fonts'},
       {from: 'assets/images/loader-bar.png', to: './assets/images/loader-bar.png'},
       {from: 'assets/images/loader-bg.png', to: './assets/images/loader-bg.png'}

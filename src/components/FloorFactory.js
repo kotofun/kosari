@@ -7,8 +7,15 @@ import signals from '../signals'
 import Swamp from '../sprites/Swamp'
 import Ground from '../sprites/Ground'
 
+import PoolManager from '../pool/PoolManager'
+import DisplayObjectPool from '../pool/DisplayObjectPool'
+
+const _constructors = {
+  Ground,
+  Swamp
+}
+
 const _terrainTypes = Object.keys(config.terrain)
-const _floorTypes = { Ground, Swamp }
 const _counters = {
   row: { 'Ground': 0 },
   between: { 'Ground': 0, 'Swamp': 0 },
@@ -31,9 +38,15 @@ const lastHeight = group => last(group).height / config.tileSize || 1
 
 const addFloor = e => { _floor.add(e) }
 
+let _poolManager
+
 export default class {
   constructor (game, starting) {
     this.game = game
+
+    _poolManager = new PoolManager(game, DisplayObjectPool)
+    _poolManager.create(Ground)
+    _poolManager.create(Swamp)
 
     // init terrain objects
     _floor = this.game.add.group()
@@ -46,7 +59,10 @@ export default class {
 
   init () {
     while (lastRight(_floor) - this.game.world.width < config.tileSize * 2) {
-      addFloor(new Ground({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      let ground = _poolManager.getPoolFor(Ground).get()
+
+      ground.init({ type: 'middle', x: lastRight(_floor), height: 1 })
+      addFloor(ground)
     }
   }
 
@@ -56,7 +72,9 @@ export default class {
 
   update () {
     const firstFloor = _floor.getAt(0)
-    if (!firstFloor.inCamera) _floor.remove(firstFloor)
+    if (!firstFloor.inCamera) {
+      this.kill(firstFloor)
+    }
 
     while (lastRight(_floor) - (this.game.camera.x + this.game.camera.view.width) < config.tileSize * 2) {
       this.generate(_terrainTypes[_current])
@@ -122,14 +140,34 @@ export default class {
     }
 
     if (_counters.last === nextFloorType) {
-      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'middle', x: lastRight(_floor), height: 1 }))
+      this.createFloor(nextFloorType, { type: 'middle', x: lastRight(_floor), height: 1 })
     } else {
-      _floor.remove(last(_floor))
-      addFloor(new _floorTypes[_counters.last]({ game: this.game, type: 'right', x: lastRight(_floor), height: 1 }))
-      addFloor(new _floorTypes[nextFloorType]({ game: this.game, type: 'left', x: lastRight(_floor), height: 1 }))
+      this.kill(last(_floor))
+
+      this.createFloor(_counters.last, { type: 'right', x: lastRight(_floor), height: 1 })
+      this.createFloor(nextFloorType, { type: 'left', x: lastRight(_floor), height: 1 })
     }
 
     _counters.last = nextFloorType
+  }
+
+  createFloor (object, config) {
+    // Это должно быть в PoolManager но из-за манглинга имен классов babel
+    // не удается получить доступ к оригинальному имени конструктора.
+    if (typeof object === 'string') {
+      object = _constructors[object]
+    }
+
+    let floor = _poolManager.getPoolFor(object).get()
+    addFloor(floor.init(config))
+
+    return floor
+  }
+
+  kill (floor) {
+    let pool = _poolManager.getPoolFor(floor)
+    _floor.remove(floor)
+    pool.kill(floor)
   }
 
   collide (obj, ...args) {
@@ -137,8 +175,8 @@ export default class {
   }
 
   reset () {
+    _poolManager.clear()
     _floor.removeAll(true, true)
-
     _hold = 0
 
     _counters.row = { 'Ground': 0 }

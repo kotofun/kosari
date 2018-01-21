@@ -8,7 +8,7 @@ import Grave from '../sprites/Grave'
 const _obstacleTypes = { Grave }
 const _obstacles = {}
 
-let _prevObstacle
+let _prevObstacle = null
 
 const _init = (game) => {
   for (const obstacleType in _obstacleTypes) {
@@ -33,7 +33,7 @@ export default class {
     if (obstaclesConfig === undefined) return
 
     if (!floor.standable) return
-    if (_prevObstacle !== undefined && _prevObstacle.right > floor.left) return
+    if (_prevObstacle !== null && _prevObstacle.right > floor.left) return
 
     for (const obstacleType in obstaclesConfig) {
       if (Phaser.Utils.chanceRoll(obstaclesConfig[obstacleType].p)) {
@@ -42,7 +42,7 @@ export default class {
         if (obstacle === null) return
 
         // check if this obstacle has a property between
-        if (obstaclesConfig[obstacleType].between !== undefined && _prevObstacle !== undefined) {
+        if (obstaclesConfig[obstacleType].between !== undefined && _prevObstacle !== null) {
           // gap between new obstacle and previous in tiles
           const between = Math.ceil((floor.left - _prevObstacle.right) / config.tileSize)
 
@@ -80,5 +80,7 @@ export default class {
     for (const obstacleType in _obstacles) {
       _obstacles[obstacleType].forEachAlive(obstacle => { obstacle.kill() })
     }
+
+    _prevObstacle = null
   }
 }
