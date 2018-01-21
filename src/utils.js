@@ -14,7 +14,7 @@ export const anyFrom = (arr) => {
   return arr[rnd(0, arr.length - 1)]
 }
 
-export const generateSurfacePiceBitmap = (game, type, yCount, tileSet, alias) => {
+export const generateSurfacePiceBitmap = (bmd, type, yCount, tileSet, alias) => {
   function getArea (type, y) {
     switch (type) {
       case 'left': {
@@ -52,7 +52,8 @@ export const generateSurfacePiceBitmap = (game, type, yCount, tileSet, alias) =>
   let tileWidth = tileSet.tileWidth
   let tileHeight = tileSet.tileHeight
 
-  let bmd = game.make.bitmapData(tileWidth, yCount * tileHeight)
+  bmd.clear()
+  bmd.resize(tileWidth, tileHeight)
 
   for (let y = 0; y < yCount; y++) {
     let rect = getArea(type, y)

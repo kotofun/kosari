@@ -8,4 +8,8 @@ export default class extends Phaser.Sprite {
     this.body.allowGravity = false
     this.body.immovable = true
   }
+
+  init () {
+    this.body.setSize(this.width, this.height)
+  }
 }
