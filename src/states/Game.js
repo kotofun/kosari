@@ -79,6 +79,7 @@ export default class extends Phaser.State {
 
   update () {
     this.floor.collide(this.player, (player, floor) => {
+      console.log('hitted the swamp!', floor)
       if (floor instanceof Swamp && !this.game.vars.godMode) signals.onGameOver.dispatch()
     })
 
@@ -86,6 +87,7 @@ export default class extends Phaser.State {
     this.obstacles.collide(this.player)
 
     this.chaser.catch(this.player, () => {
+      console.log('catched by chaser!')
       if (!this.game.vars.godMode) signals.onGameOver.dispatch()
     })
 
