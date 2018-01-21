@@ -103,11 +103,29 @@ export default class extends Phaser.State {
     this.ui.update()
   }
 
+  _debugBodies () {
+    const rDebugBody = displayObject => {
+      if (displayObject.body && displayObject.visible) {
+        const color = displayObject.body.touching.none ? '#ff0000' : '#00ff00'
+        this.game.debug.body(displayObject, color, false)
+      }
+
+      if (Array.isArray(displayObject.children)) {
+        for (let i = 0; i < displayObject.children.length; ++i) {
+          rDebugBody(displayObject.children[i])
+        }
+      }
+    }
+
+    rDebugBody(this.game.world)
+  }
+
   render () {
     if (__DEV__) {
       this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
+      this._debugBodies()
     }
 
     const distance = Math.floor(this.camera.x / 32)
