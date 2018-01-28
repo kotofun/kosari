@@ -80,7 +80,6 @@ export default class extends Phaser.State {
   update () {
     this.floor.collide(this.player, (player, floor) => {
       if (floor instanceof Swamp && !this.game.vars.godMode) {
-        console.log('hitted the swamp!', floor)
         signals.onGameOver.dispatch()
       }
     })
@@ -89,7 +88,6 @@ export default class extends Phaser.State {
     this.obstacles.collide(this.player)
 
     this.chaser.catch(this.player, () => {
-      console.log('catched by chaser!')
       if (!this.game.vars.godMode) signals.onGameOver.dispatch()
     })
 
@@ -125,9 +123,9 @@ export default class extends Phaser.State {
       this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
+      this._debugBodies()
     }
-    
-    this._debugBodies()
+
     const distance = Math.floor(this.camera.x / 32)
     this.ui.distance.text = distance + 'м'
 
