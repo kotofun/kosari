@@ -171,11 +171,11 @@ export default class {
   }
 
   collide (obj, ...args) {
-    let ground = _floor.children.filter(floor => floor instanceof Ground)
-    let swamps = _floor.children.filter(floor => floor instanceof Swamp)
+    const standable = _floor.children.filter(floor => floor.standable)
+    const nonStandable = _floor.children.filter(floor => !floor.standable)
 
-    this.game.physics.arcade.collide(obj, ground, ...args)
-    this.game.physics.arcade.collide(obj, swamps, ...args)
+    this.game.physics.arcade.collide(obj, standable, ...args)
+    this.game.physics.arcade.collide(obj, nonStandable, ...args)
   }
 
   reset () {
