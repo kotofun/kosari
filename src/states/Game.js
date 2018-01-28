@@ -124,11 +124,13 @@ export default class extends Phaser.State {
       this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
+      this.game.debug.text(`Player mowed: ${this.game.stats.mowedGrass.Player}`, 2, 62, '#00ff00')
+      this.game.debug.text(`Chaser mowed: ${this.game.stats.mowedGrass.Chaser}`, 2, 78, '#00ff00')
       this._debugBodies()
       let i = 0
       for (let poolName in PoolManager.pools) {
         let enemyPoolsDebugStr = ' a: ' + PoolManager.pools[poolName].active.length + ' k: ' + PoolManager.pools[poolName].killed.length
-        this.game.debug.text(poolName + enemyPoolsDebugStr, 2, 62 + i * 16, '#00ff00')
+        this.game.debug.text(poolName + enemyPoolsDebugStr, 2, 94 + i * 16, '#00ff00')
         i++
       }
     }
