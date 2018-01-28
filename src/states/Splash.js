@@ -21,6 +21,7 @@ import GraveSprite from '../../assets/images/grave.png'
 import PauseBtnSprite from '../../assets/images/pauseBtn.png'
 import ReplayBtnSprite from '../../assets/images/replayBtn.png'
 import ResumeBtnSprite from '../../assets/images/resumeBtn.png'
+import NerdsBtnSprite from '../../assets/images/recordsBtn.png'
 import ControlsInfoSprite from '../../assets/images/controlsInfo.png'
 import DistanceSignSprite from '../../assets/images/distance_sign.png'
 
@@ -64,6 +65,7 @@ export default class extends Phaser.State {
     this.load.image('pauseBtn', PauseBtnSprite)
     this.load.image('resumeBtn', ResumeBtnSprite)
     this.load.image('replayBtn', ReplayBtnSprite)
+    this.load.image('nerdsBtn', NerdsBtnSprite)
     this.load.image('controlsInfo', ControlsInfoSprite)
     this.load.image('sign.distance', DistanceSignSprite)
 
