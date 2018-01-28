@@ -3,27 +3,24 @@ import Phaser from 'phaser'
 import config from '../config'
 import signals from '../signals'
 
+import DisplayObjectPool from '../pool/DisplayObjectPool'
+import PoolManager from '../pool/PoolManager'
+
 import Grave from '../sprites/Grave'
 
-const _obstacleTypes = { Grave }
-const _obstacles = {}
+const _constructors = { Grave }
 
 let _prevObstacle = null
-
-const _init = (game) => {
-  for (const obstacleType in _obstacleTypes) {
-    _obstacles[obstacleType] = game.add.group()
-    for (let i = 0; i < config.obstacle[obstacleType].max; i++) {
-      _obstacles[obstacleType].add(new _obstacleTypes[obstacleType](game, 0, 0))
-    }
-  }
-}
 
 export default class {
   constructor (game) {
     this.game = game
+    this._obstacles = this.game.add.group()
 
-    _init(this.game)
+    this._poolManager = new PoolManager(this.game, DisplayObjectPool)
+    for (let obstacleType in _constructors) {
+      this._poolManager.create(_constructors[obstacleType], obstacleType)
+    }
 
     signals.terrainCreated.add(this.generate, this)
   }
@@ -37,10 +34,6 @@ export default class {
 
     for (const obstacleType in obstaclesConfig) {
       if (Phaser.Utils.chanceRoll(obstaclesConfig[obstacleType].p)) {
-        const obstacle = _obstacles[obstacleType].getFirstDead()
-
-        if (obstacle === null) return
-
         // check if this obstacle has a property between
         if (obstaclesConfig[obstacleType].between !== undefined && _prevObstacle !== null) {
           // gap between new obstacle and previous in tiles
@@ -49,7 +42,8 @@ export default class {
           if (between <= obstaclesConfig[obstacleType].between.min) continue
         }
 
-        // positioning a new obstacle
+        const obstacle = this._poolManager.getPoolFor(obstacleType).get()
+        this._obstacles.add(obstacle)
         obstacle.reset(floor.left, floor.top - config.tileSize)
 
         _prevObstacle = obstacle
@@ -60,26 +54,21 @@ export default class {
   }
 
   update () {
-    for (const obstacleType in _obstacles) {
-      _obstacles[obstacleType].forEachAlive(obstacle => {
-        if (obstacle.right < this.game.camera.view.x) obstacle.kill()
-      })
-    }
+    this._obstacles.forEachAlive(obstacle => {
+      if (obstacle.right < this.game.camera.view.x) {
+        this._obstacles.remove(obstacle)
+        this._poolManager.getPoolFor(obstacle).kill(obstacle)
+      }
+    })
   }
 
   collide (obj, ...args) {
-    let collided = false
-    for (const obstacleType in _obstacles) {
-      collided |= this.game.physics.arcade.collide(obj, _obstacles[obstacleType], ...args)
-    }
-
-    return collided
+    return this.game.physics.arcade.collide(obj, this._obstacles, ...args)
   }
 
   reset () {
-    for (const obstacleType in _obstacles) {
-      _obstacles[obstacleType].forEachAlive(obstacle => { obstacle.kill() })
-    }
+    this._poolManager.clear()
+    this._obstacles.removeAll()
 
     _prevObstacle = null
   }

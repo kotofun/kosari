@@ -1,4 +1,4 @@
-let _pools = []
+const _pools = {}
 let _poolConstructor
 
 export default class PoolManager {
@@ -7,9 +7,14 @@ export default class PoolManager {
     _poolConstructor = poolConstructor
   }
 
-  create (objectConstructor) {
+  static get pools () {
+    return _pools
+  }
+
+  create (objectConstructor, constructorName) {
     let pool = new _poolConstructor(this.game, objectConstructor)
-    _pools.push(pool)
+
+    _pools[constructorName] = pool
 
     return pool
   }
@@ -21,6 +26,8 @@ export default class PoolManager {
       pool = this._findPoolByObject(object)
     } else if (typeof object === 'function') {
       pool = this._findPoolByConstructor(object)
+    } if (typeof object === 'string') {
+      pool = this._findPoolByName(object)
     }
 
     if (pool === undefined) {
@@ -42,6 +49,14 @@ export default class PoolManager {
     for (let key in _pools) {
       if (_pools.hasOwnProperty(key) && _constructor === _pools[key]._objectConstructor) {
         return _pools[key]
+      }
+    }
+  }
+
+  _findPoolByName (constructorName) {
+    for (let name in _pools) {
+      if (_pools.hasOwnProperty(name) && constructorName === name) {
+        return _pools[name]
       }
     }
   }
