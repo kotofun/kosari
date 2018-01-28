@@ -110,6 +110,11 @@ export default class {
     this.replayBtn.anchor.setTo(0.5)
     this.replayBtn.fixedToCamera = true
     this.replayBtn.visible = false
+
+    this.nerdsBtn = this.game.add.button(this.game.world.centerX, 100, 'nerdsBtn', this.showNerds, this)
+    this.nerdsBtn.anchor.setTo(0.5)
+    this.nerdsBtn.fixedToCamera = true
+    this.nerdsBtn.visible = false
   }
 
   showPreferences () {
@@ -118,10 +123,15 @@ export default class {
     this.preferencesTitle.visible = true
   }
 
+  showNerds () {
+    window.open('/nerds', '_blank')
+  }
+
   togglePauseOverlay () {
     if (this.game.isPaused) {
       this.overlay.visible = true
       this.pauseBtn.visible = false
+      this.nerdsBtn.visible = true
 
       if (this.game.isGameOver) {
         this.replayBtn.visible = true
@@ -133,6 +143,7 @@ export default class {
     } else {
       this.overlay.visible = false
       this.pauseBtn.visible = true
+      this.nerdsBtn.visible = false
 
       if (this.game.isGameOver) {
         this.replayBtn.visible = false
