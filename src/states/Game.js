@@ -15,6 +15,7 @@ import SurfaceManager from '../components/SurfaceManager'
 import FloorFactory from '../components/FloorFactory'
 import UI from '../components/UI'
 
+import PoolManager from '../pool/PoolManager'
 import Stats from '../components/Stats'
 
 import Swamp from '../sprites/Swamp'
@@ -124,6 +125,12 @@ export default class extends Phaser.State {
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
       this._debugBodies()
+      let i = 0
+      for (let poolName in PoolManager.pools) {
+        let enemyPoolsDebugStr = ' a: ' + PoolManager.pools[poolName].active.length + ' k: ' + PoolManager.pools[poolName].killed.length
+        this.game.debug.text(poolName + enemyPoolsDebugStr, 2, 62 + i * 16, '#00ff00')
+        i++
+      }
     }
 
     const distance = Math.floor(this.camera.x / 32)
