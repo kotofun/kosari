@@ -27,8 +27,9 @@ export default class extends DisplayCharacter {
     // Добавляем спрайт в игровой мир
     this.game.add.existing(this)
 
-    // Флаг готовности атаки
-    this.attackReady = true
+    // Переменная для кулдауна атаки
+    this.lastAttackTime = this.game.time.time
+
     // Скорость отставания относительно игрока. (Подробнее смотреть slowDown)
     this.backlogRate = 1
 
@@ -90,9 +91,12 @@ export default class extends DisplayCharacter {
   }
 
   mow () {
-    if (this.attackReady && this.game.isStarted && !this.animations.paused) {
-      this.attackReady = false
-      this.game.time.events.add(Phaser.Timer.SECOND, () => { this.attackReady = true }, this).autoDestroy = true
+    let ableToAttack = this.game.time.time - this.lastAttackTime > config.chaser.attackCooldown
+
+    // если кулдаун прошел И игра началась И она не на паузе
+    if (ableToAttack && this.game.isStarted && !this.animations.paused) {
+      // обновляем момент атаки
+      this.lastAttackTime = this.game.time.time
 
       signals.mow.dispatch(this)
       this.animateMow()

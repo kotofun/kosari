@@ -14,8 +14,8 @@ export default class extends DisplayCharacter {
     this.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     this.animations.add('mow', [15, 16, 17])
 
-    // Анимация бега это стандартная анимация
-    this.attackReady = true
+    // Переменная для кулдауна атаки
+    this.lastAttackTime = this.game.time.time
 
     // Включаем физику
     this.game.physics.enable(this)
@@ -138,9 +138,11 @@ export default class extends DisplayCharacter {
   }
 
   attack () {
-    if (this.attackReady) {
-      this.attackReady = false
-      this.game.time.events.add(Phaser.Timer.HALF, () => { this.attackReady = true }, this).autoDestroy = true
+    // если с момента последней атаки прошло столько
+    // сколько у нас в конфиге тогда атакуем
+    if (this.game.time.time - this.lastAttackTime > config.player.attackCooldown) {
+      // обновляем момент атаки
+      this.lastAttackTime = this.game.time.time
 
       // Анимация и звук атаки
       this.game.sounds.attack.play()
