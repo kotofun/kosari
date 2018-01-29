@@ -31,11 +31,13 @@ export default {
     jumpSpeed: { x: 0, y: 530 },
     slowdownRate: 0.8,
     cooldown: 1000,
-    jumpDuration: 125
+    jumpDuration: 125,
+    attackCooldown: 500 // milliseconds
   },
 
   chaser: {
-    backlogRate: 0.9 // was 0.75
+    backlogRate: 0.9, // was 0.75
+    attackCooldown: 1000 // milliseconds
   },
 
   ground: {

@@ -15,6 +15,7 @@ import SurfaceManager from '../components/SurfaceManager'
 import FloorFactory from '../components/FloorFactory'
 import UI from '../components/UI'
 
+import PoolManager from '../pool/PoolManager'
 import Stats from '../components/Stats'
 
 import Swamp from '../sprites/Swamp'
@@ -79,7 +80,9 @@ export default class extends Phaser.State {
 
   update () {
     this.floor.collide(this.player, (player, floor) => {
-      if (floor instanceof Swamp && !this.game.vars.godMode) signals.onGameOver.dispatch()
+      if (floor instanceof Swamp && !this.game.vars.godMode) {
+        signals.onGameOver.dispatch()
+      }
     })
 
     this.enemies.collide(this.player)
@@ -99,11 +102,37 @@ export default class extends Phaser.State {
     this.ui.update()
   }
 
+  _debugBodies () {
+    const rDebugBody = displayObject => {
+      if (displayObject.body && displayObject.visible) {
+        const color = displayObject.body.touching.none ? '#ff0000' : '#00ff00'
+        this.game.debug.body(displayObject, color, false)
+      }
+
+      if (Array.isArray(displayObject.children)) {
+        for (let i = 0; i < displayObject.children.length; ++i) {
+          rDebugBody(displayObject.children[i])
+        }
+      }
+    }
+
+    rDebugBody(this.game.world)
+  }
+
   render () {
     if (__DEV__) {
       this.game.debug.text('fps: ' + this.game.time.fps, 2, 14, '#00ff00')
       this.game.debug.text('God Mode: ' + this.game.vars.godMode, 2, 30, '#00ff00')
       this.game.debug.text(`Terrain: ${this.terrain.current.type} [${this.terrain.current.length}]`, 2, 46, '#00ff00')
+      this.game.debug.text(`Player mowed: ${this.game.stats.mowedGrass.Player}`, 2, 62, '#00ff00')
+      this.game.debug.text(`Chaser mowed: ${this.game.stats.mowedGrass.Chaser}`, 2, 78, '#00ff00')
+      this._debugBodies()
+      let i = 0
+      for (let poolName in PoolManager.pools) {
+        let enemyPoolsDebugStr = ' a: ' + PoolManager.pools[poolName].active.length + ' k: ' + PoolManager.pools[poolName].killed.length
+        this.game.debug.text(poolName + enemyPoolsDebugStr, 2, 94 + i * 16, '#00ff00')
+        i++
+      }
     }
 
     const distance = Math.floor(this.camera.x / 32)

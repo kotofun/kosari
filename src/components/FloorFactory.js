@@ -10,10 +10,7 @@ import Ground from '../sprites/Ground'
 import PoolManager from '../pool/PoolManager'
 import DisplayObjectPool from '../pool/DisplayObjectPool'
 
-const _constructors = {
-  Ground,
-  Swamp
-}
+const _constructors = { Ground, Swamp }
 
 const _terrainTypes = Object.keys(config.terrain)
 const _counters = {
@@ -44,9 +41,10 @@ export default class {
   constructor (game, starting) {
     this.game = game
 
-    _poolManager = new PoolManager(game, DisplayObjectPool)
-    _poolManager.create(Ground)
-    _poolManager.create(Swamp)
+    this._poolManager = new PoolManager(game, DisplayObjectPool)
+    for (let flootType in _constructors) {
+      this._poolManager.create(_constructors[flootType], flootType)
+    }
 
     // init terrain objects
     _floor = this.game.add.group()
@@ -59,7 +57,7 @@ export default class {
 
   init () {
     while (lastRight(_floor) - this.game.world.width < config.tileSize * 2) {
-      let ground = _poolManager.getPoolFor(Ground).get()
+      let ground = this._poolManager.getPoolFor(Ground).get()
 
       ground.init({ type: 'middle', x: lastRight(_floor), height: 1 })
       addFloor(ground)
@@ -158,24 +156,28 @@ export default class {
       object = _constructors[object]
     }
 
-    let floor = _poolManager.getPoolFor(object).get()
+    let floor = this._poolManager.getPoolFor(object).get()
     addFloor(floor.init(config))
 
     return floor
   }
 
   kill (floor) {
-    let pool = _poolManager.getPoolFor(floor)
+    let pool = this._poolManager.getPoolFor(floor)
     _floor.remove(floor)
     pool.kill(floor)
   }
 
   collide (obj, ...args) {
-    return this.game.physics.arcade.collide(obj, _floor, ...args)
+    const standable = _floor.children.filter(floor => floor.standable)
+    const nonStandable = _floor.children.filter(floor => !floor.standable)
+
+    this.game.physics.arcade.collide(obj, standable, ...args)
+    this.game.physics.arcade.collide(obj, nonStandable, ...args)
   }
 
   reset () {
-    _poolManager.clear()
+    this._poolManager.clear()
     _floor.removeAll(true, true)
     _hold = 0
 
