@@ -4,6 +4,7 @@ import { centerGameObjects } from '../utils'
 import PlayerSprite from '../../assets/sprites/player_winter.png'
 import PlayerJson from '../../assets/sprites/player_winter.json'
 import ChaserSprite from '../../assets/sprites/chaser_winter.png'
+import ChaserSpriteValentine from '../../assets/sprites/chaser_valentine.png'
 import ChaserJson from '../../assets/sprites/chaser_winter.json'
 import GrassSprite from '../../assets/sprites/snowdrift.png'
 import GrassJson from '../../assets/sprites/snowdrift.json'
@@ -54,7 +55,11 @@ export default class extends Phaser.State {
     // (анимации прописываются каждому объекту в его файле в папке sprites)
 
     this.load.atlas('player', PlayerSprite, null, PlayerJson)
-    this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('chaser', ChaserSpriteValentine, null, ChaserJson)
+    } else {
+      this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    }
     this.load.image('surface', SurfaceSprite)
 
     this.load.atlas('grass', GrassSprite, null, GrassJson)
