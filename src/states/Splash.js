@@ -11,6 +11,8 @@ import BGSprite from '../../assets/sprites/bg.png'
 import BGJson from '../../assets/sprites/bg.json'
 import BatSprite from '../../assets/sprites/enemies/bat.png'
 import BatJson from '../../assets/sprites/enemies/bat.json'
+import CorgySprite from '../../assets/sprites/enemies/corgy.png'
+import CorgyJson from '../../assets/sprites/enemies/corgy.json'
 import SkeletonSprite from '../../assets/sprites/enemies/skeleton.png'
 import SkeletonJson from '../../assets/sprites/enemies/skeleton.json'
 import MenuSprite from '../../assets/sprites/menu.png'
@@ -59,6 +61,7 @@ export default class extends Phaser.State {
 
     this.load.atlas('enemies/skeleton', SkeletonSprite, null, SkeletonJson)
     this.load.atlas('enemies/bat', BatSprite, null, BatJson)
+    this.load.atlas('enemies/corgy', CorgySprite, null, CorgyJson)
 
     this.load.atlas('menu', MenuSprite, null, MenuJson)
 
