@@ -14,15 +14,18 @@ export default class {
       this.game.add.tileSprite(0, this.game.height - 86, this.game.width, 86, 'bg', 'grass')
     ]
 
-    // Новогодний снег
-    this.snowflakes = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'snowflakes')
+    const today = new Date()
+    if (today.getUTCMonth() >= 10 || today.getUTCMonth() < 2) {
+      // Новогодний снег
+      this.snowflakes = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'snowflakes')
 
-    // Добавляем в слои бэкграунда самым последним
-    this.layers.push(this.snowflakes)
+      // Добавляем в слои бэкграунда самым последним
+      this.layers.push(this.snowflakes)
 
-    // Добавляем анимацию снегопада
-    this.snowflakes.animations.add('falling')
-    this.snowflakes.animations.play('falling', 15, true)
+      // Добавляем анимацию снегопада
+      this.snowflakes.animations.add('falling')
+      this.snowflakes.animations.play('falling', 15, true)
+    }
 
     // Bind bg layers to camera
     this.layers.map(l => { l.fixedToCamera = true })
