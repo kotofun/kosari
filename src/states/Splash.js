@@ -4,12 +4,14 @@ import { centerGameObjects } from '../utils'
 import PlayerSprite from '../../assets/sprites/player_winter.png'
 import PlayerJson from '../../assets/sprites/player_winter.json'
 import ChaserSprite from '../../assets/sprites/chaser_winter.png'
+import ChaserSpriteValentine from '../../assets/sprites/chaser_valentine.png'
 import ChaserJson from '../../assets/sprites/chaser_winter.json'
 import GrassSprite from '../../assets/sprites/snowdrift.png'
 import GrassJson from '../../assets/sprites/snowdrift.json'
 import BGSprite from '../../assets/sprites/bg.png'
 import BGJson from '../../assets/sprites/bg.json'
 import BatSprite from '../../assets/sprites/enemies/bat.png'
+import BatValentineSprite from '../../assets/sprites/enemies/bat_valentine.png'
 import BatJson from '../../assets/sprites/enemies/bat.json'
 import CorgySprite from '../../assets/sprites/enemies/corgy.png'
 import CorgyJson from '../../assets/sprites/enemies/corgy.json'
@@ -39,6 +41,8 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
+    const today = new Date()
+
     // Полоса загрузки
     this.stage.backgroundColor = '#191820'
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
@@ -51,7 +55,11 @@ export default class extends Phaser.State {
     // (анимации прописываются каждому объекту в его файле в папке sprites)
 
     this.load.atlas('player', PlayerSprite, null, PlayerJson)
-    this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('chaser', ChaserSpriteValentine, null, ChaserJson)
+    } else {
+      this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    }
     this.load.image('surface', SurfaceSprite)
 
     this.load.atlas('grass', GrassSprite, null, GrassJson)
@@ -60,8 +68,12 @@ export default class extends Phaser.State {
     this.load.atlas('bg', BGSprite, null, BGJson)
 
     this.load.atlas('enemies/skeleton', SkeletonSprite, null, SkeletonJson)
-    this.load.atlas('enemies/bat', BatSprite, null, BatJson)
     this.load.atlas('enemies/corgy', CorgySprite, null, CorgyJson)
+    if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('enemies/bat', BatValentineSprite, null, BatJson)
+    } else {
+      this.load.atlas('enemies/bat', BatSprite, null, BatJson)
+    }
 
     this.load.atlas('menu', MenuSprite, null, MenuJson)
 
