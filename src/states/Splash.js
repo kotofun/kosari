@@ -1,13 +1,22 @@
 import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
 
-import PlayerSprite from '../../assets/sprites/player_winter.png'
-import PlayerJson from '../../assets/sprites/player_winter.json'
-import ChaserSprite from '../../assets/sprites/chaser_winter.png'
+import PlayerSprite from '../../assets/sprites/player.png'
+import PlayerJson from '../../assets/sprites/player.json'
+import PlayerSpriteWinter from '../../assets/sprites/player_winter.png'
+import PlayerJsonWinter from '../../assets/sprites/player_winter.json'
+
+import ChaserSprite from '../../assets/sprites/chaser.png'
+import ChaserJson from '../../assets/sprites/chaser.json'
+import ChaserSpriteWinter from '../../assets/sprites/chaser_winter.png'
+import ChaserJsonWinter from '../../assets/sprites/chaser_winter.json'
 import ChaserSpriteValentine from '../../assets/sprites/chaser_valentine.png'
-import ChaserJson from '../../assets/sprites/chaser_winter.json'
-import GrassSprite from '../../assets/sprites/snowdrift.png'
-import GrassJson from '../../assets/sprites/snowdrift.json'
+
+import GrassSprite from '../../assets/sprites/grass.png'
+import GrassJson from '../../assets/sprites/grass.json'
+import SnowdriftSprite from '../../assets/sprites/snowdrift.png'
+import SnowdriftJson from '../../assets/sprites/snowdrift.json'
+
 import BGSprite from '../../assets/sprites/bg.png'
 import BGJson from '../../assets/sprites/bg.json'
 import BatSprite from '../../assets/sprites/enemies/bat.png'
@@ -54,15 +63,23 @@ export default class extends Phaser.State {
     // Загрузка ассетов и атласов и именование
     // (анимации прописываются каждому объекту в его файле в папке sprites)
 
-    this.load.atlas('player', PlayerSprite, null, PlayerJson)
     if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('player', PlayerSpriteWinter, null, PlayerJsonWinter)
       this.load.atlas('chaser', ChaserSpriteValentine, null, ChaserJson)
+    } else if (today.getUTCMonth() >= 10 || today.getUTCMonth() < 2) {
+      this.load.atlas('player', PlayerSpriteWinter, null, PlayerJsonWinter)
+      this.load.atlas('chaser', ChaserSpriteWinter, null, ChaserJsonWinter)
     } else {
+      this.load.atlas('player', PlayerSprite, null, PlayerJson)
       this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
     }
     this.load.image('surface', SurfaceSprite)
 
-    this.load.atlas('grass', GrassSprite, null, GrassJson)
+    if (today.getUTCMonth() >= 10 || today.getUTCMonth() < 2) {
+      this.load.atlas('grass', SnowdriftSprite, null, SnowdriftJson)
+    } else {
+      this.load.atlas('grass', GrassSprite, null, GrassJson)
+    }
     this.load.image('grave', GraveSprite)
 
     this.load.atlas('bg', BGSprite, null, BGJson)
