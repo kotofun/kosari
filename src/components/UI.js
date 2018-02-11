@@ -58,6 +58,13 @@ export default class {
     this._initMenu()
 
     this.signs = this.game.add.group()
+    // Перемещаем таблички поверх бэка но за землю
+    this.game.world.sendToBack(this.signs)
+    this.game.world.moveUp(this.signs)
+    this.game.world.moveUp(this.signs)
+    this.game.world.moveUp(this.signs)
+    this.game.world.moveUp(this.signs)
+    this.game.world.moveUp(this.signs)
     this.signLabels = this.game.add.group()
 
     this.overlay = _createOverlay(this.game)
@@ -171,6 +178,12 @@ export default class {
     // засовываем в массив табличек для дальнейшего удаления
     this.signs.add(sign)
     this.signLabels.add(signText)
+  }
+
+  addBanner (x, y) {
+    const banner = this.game.add.sprite(x, y, 'sign.banner')
+    banner.anchor.setTo(0.4, 1)
+    this.signs.add(banner)
   }
 
   update () {
