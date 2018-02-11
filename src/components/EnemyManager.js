@@ -8,8 +8,9 @@ import PoolManager from '../pool/PoolManager'
 
 import Skeleton from '../sprites/Skeleton'
 import Bat from '../sprites/Bat'
+import Corgy from '../sprites/Corgy'
 
-const _constructors = { Bat, Skeleton }
+const _constructors = { Bat, Skeleton, Corgy }
 
 export default class {
   constructor (context, terrain) {

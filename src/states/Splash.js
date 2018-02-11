@@ -1,16 +1,29 @@
 import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
 
-import PlayerSprite from '../../assets/sprites/player_winter.png'
-import PlayerJson from '../../assets/sprites/player_winter.json'
-import ChaserSprite from '../../assets/sprites/chaser_winter.png'
-import ChaserJson from '../../assets/sprites/chaser_winter.json'
-import GrassSprite from '../../assets/sprites/snowdrift.png'
-import GrassJson from '../../assets/sprites/snowdrift.json'
+import PlayerSprite from '../../assets/sprites/player.png'
+import PlayerJson from '../../assets/sprites/player.json'
+import PlayerSpriteWinter from '../../assets/sprites/player_winter.png'
+import PlayerJsonWinter from '../../assets/sprites/player_winter.json'
+
+import ChaserSprite from '../../assets/sprites/chaser.png'
+import ChaserJson from '../../assets/sprites/chaser.json'
+import ChaserSpriteWinter from '../../assets/sprites/chaser_winter.png'
+import ChaserJsonWinter from '../../assets/sprites/chaser_winter.json'
+import ChaserSpriteValentine from '../../assets/sprites/chaser_valentine.png'
+
+import GrassSprite from '../../assets/sprites/grass.png'
+import GrassJson from '../../assets/sprites/grass.json'
+import SnowdriftSprite from '../../assets/sprites/snowdrift.png'
+import SnowdriftJson from '../../assets/sprites/snowdrift.json'
+
 import BGSprite from '../../assets/sprites/bg.png'
 import BGJson from '../../assets/sprites/bg.json'
 import BatSprite from '../../assets/sprites/enemies/bat.png'
+import BatValentineSprite from '../../assets/sprites/enemies/bat_valentine.png'
 import BatJson from '../../assets/sprites/enemies/bat.json'
+import CorgySprite from '../../assets/sprites/enemies/corgy.png'
+import CorgyJson from '../../assets/sprites/enemies/corgy.json'
 import SkeletonSprite from '../../assets/sprites/enemies/skeleton.png'
 import SkeletonJson from '../../assets/sprites/enemies/skeleton.json'
 import MenuSprite from '../../assets/sprites/menu.png'
@@ -24,6 +37,7 @@ import ResumeBtnSprite from '../../assets/images/resumeBtn.png'
 import NerdsBtnSprite from '../../assets/images/recordsBtn.png'
 import ControlsInfoSprite from '../../assets/images/controlsInfo.png'
 import DistanceSignSprite from '../../assets/images/distance_sign.png'
+import BannerSprite from '../../assets/images/banner.png'
 
 import SnowflakesSprite from '../../assets/sprites/snowflakes.png'
 
@@ -37,6 +51,8 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
+    const today = new Date()
+
     // Полоса загрузки
     this.stage.backgroundColor = '#191820'
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
@@ -48,17 +64,34 @@ export default class extends Phaser.State {
     // Загрузка ассетов и атласов и именование
     // (анимации прописываются каждому объекту в его файле в папке sprites)
 
-    this.load.atlas('player', PlayerSprite, null, PlayerJson)
-    this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('player', PlayerSpriteWinter, null, PlayerJsonWinter)
+      this.load.atlas('chaser', ChaserSpriteValentine, null, ChaserJson)
+    } else if (today.getUTCMonth() >= 10 || today.getUTCMonth() < 2) {
+      this.load.atlas('player', PlayerSpriteWinter, null, PlayerJsonWinter)
+      this.load.atlas('chaser', ChaserSpriteWinter, null, ChaserJsonWinter)
+    } else {
+      this.load.atlas('player', PlayerSprite, null, PlayerJson)
+      this.load.atlas('chaser', ChaserSprite, null, ChaserJson)
+    }
     this.load.image('surface', SurfaceSprite)
 
-    this.load.atlas('grass', GrassSprite, null, GrassJson)
+    if (today.getUTCMonth() >= 10 || today.getUTCMonth() < 2) {
+      this.load.atlas('grass', SnowdriftSprite, null, SnowdriftJson)
+    } else {
+      this.load.atlas('grass', GrassSprite, null, GrassJson)
+    }
     this.load.image('grave', GraveSprite)
 
     this.load.atlas('bg', BGSprite, null, BGJson)
 
     this.load.atlas('enemies/skeleton', SkeletonSprite, null, SkeletonJson)
-    this.load.atlas('enemies/bat', BatSprite, null, BatJson)
+    this.load.atlas('enemies/corgy', CorgySprite, null, CorgyJson)
+    if (today.getUTCMonth() === 1 && (today.getUTCDate() >= 14 && today.getUTCDate() < 21)) {
+      this.load.atlas('enemies/bat', BatValentineSprite, null, BatJson)
+    } else {
+      this.load.atlas('enemies/bat', BatSprite, null, BatJson)
+    }
 
     this.load.atlas('menu', MenuSprite, null, MenuJson)
 
@@ -68,6 +101,7 @@ export default class extends Phaser.State {
     this.load.image('nerdsBtn', NerdsBtnSprite)
     this.load.image('controlsInfo', ControlsInfoSprite)
     this.load.image('sign.distance', DistanceSignSprite)
+    this.load.image('sign.banner', BannerSprite)
 
     this.load.spritesheet('splash', SplashSprite, 256, 128)
 
