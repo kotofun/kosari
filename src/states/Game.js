@@ -141,6 +141,11 @@ export default class extends Phaser.State {
     const signDistance = Math.floor((this.camera.x + this.game.width) / 32)
     const signPosition = signDistance * 32 + Math.floor(this.game.width * 0.5 / 32) * 32
 
+    if ((this.game.isStarted) && (signDistance % 150 === 0) && this.prevSign !== signPosition) {
+      this.ui.addBanner(signPosition, this.game.height)
+      this.prevSign = signPosition
+    }
+
     if ((this.game.isStarted) && (signDistance % 100 === 0) && this.prevSign !== signPosition) {
       this.ui.addSign(signPosition, this.game.height - 32, 'middle', signDistance + 'м')
 

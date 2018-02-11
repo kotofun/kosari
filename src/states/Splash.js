@@ -37,6 +37,7 @@ import ResumeBtnSprite from '../../assets/images/resumeBtn.png'
 import NerdsBtnSprite from '../../assets/images/recordsBtn.png'
 import ControlsInfoSprite from '../../assets/images/controlsInfo.png'
 import DistanceSignSprite from '../../assets/images/distance_sign.png'
+import BannerSprite from '../../assets/images/banner.png'
 
 import SnowflakesSprite from '../../assets/sprites/snowflakes.png'
 
@@ -100,6 +101,7 @@ export default class extends Phaser.State {
     this.load.image('nerdsBtn', NerdsBtnSprite)
     this.load.image('controlsInfo', ControlsInfoSprite)
     this.load.image('sign.distance', DistanceSignSprite)
+    this.load.image('sign.banner', BannerSprite)
 
     this.load.spritesheet('splash', SplashSprite, 256, 128)
 
